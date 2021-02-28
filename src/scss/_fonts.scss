@@ -1,25 +1,25 @@
 @font-face {
-  font-family: 'Open Sans';
-  src: local('Open Sans Regular'), local('OpenSans-Regular'),
-    url('/assets/fonts/OpenSans-Regular.eot'),
-    url('/assets/fonts/OpenSans-Regular.eot?#iefix') format('embedded-opentype'),
-    url('/assets/fonts/OpenSans-Regular.woff2') format('woff2'),
-    url('/assets/fonts/OpenSans-Regular.woff') format('woff'),
-    url('/assets/fonts/OpenSans-Regular.ttf') format('truetype');
+  font-family: 'Roboto';
+  src: url('Roboto-Regular.eot');
+  src: local('Roboto'), local('Roboto-Regular'),
+    url('/assets/fonts/Roboto-Regular.eot?#iefix') format('embedded-opentype'),
+    url('/assets/fonts/Roboto-Regular.woff2') format('woff2'),
+    url('/assets/fonts/Roboto-Regular.woff') format('woff'),
+    url('/assets/fonts/Roboto-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Open Sans';
-  src: local('Open Sans Bold'), local('OpenSans-Bold'),
-    url('/assets/fonts/OpenSans-Bold.eot'),
-    url('/assets/fonts/OpenSans-Bold.eot?#iefix') format('embedded-opentype'),
-    url('/assets/fonts/OpenSans-Bold.woff2') format('woff2'),
-    url('/assets/fonts/OpenSans-Bold.woff') format('woff'),
-    url('/assets/fonts/OpenSans-Bold.ttf') format('truetype');
-  font-weight: bold;
+  font-family: 'Roboto';
+  src: url('Roboto-Medium.eot');
+  src: local('Roboto Medium'), local('Roboto-Medium'),
+    url('/assets/fonts/Roboto-Medium.eot?#iefix') format('embedded-opentype'),
+    url('/assets/fonts/Roboto-Medium.woff2') format('woff2'),
+    url('/assets/fonts/Roboto-Medium.woff') format('woff'),
+    url('/assets/fonts/Roboto-Medium.ttf') format('truetype');
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
