@@ -93,7 +93,7 @@ const getPlugins = () => {
     // Генерирует файл HTML5
     new HtmlWebpackPlugin({
       template: '../public/index.html',
-      title: 'travelta',
+      title: 'Travelta',
       minify: {
         removeComments: isProd,
         collapseWhitespace: isProd,
