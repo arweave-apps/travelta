@@ -1,0 +1,27 @@
+.header {
+  @include display(flex, space-between, center);
+
+  background: $bg-color;
+  width: 100%;
+  height: rem(40);
+}
+
+.nav {
+  &__lists {
+    @include display(flex, center, center);
+  }
+
+  &__link {
+    @include font-sans(rem(18), $main-font-color);
+    text-decoration: none;
+    margin-left: 20px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &--active {
+      color: $active-link-color;
+    }
+  }
+}

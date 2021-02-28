@@ -1,0 +1,7 @@
+.users {
+  @include display(flex, flex-start, center);
+
+  &__item {
+    min-width: 100px;
+  }
+}

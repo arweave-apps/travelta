@@ -1,0 +1,114 @@
+{
+  "name": "travelta",
+  "version": "1.0.0",
+  "description": "travelta",
+  "main": "index.ts",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack --mode development",
+    "build": "cross-env NODE_ENV=production webpack --mode production",
+    "start": "cross-env NODE_ENV=development webpack serve --mode development",
+    "stats": "webpack --json > stats.json && webpack-bundle-analyzer stats.json",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix --color"
+  },
+  "author": "Sergey Vakhramov <vsa8813@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/websega/travelta.git"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.13.0",
+    "@babel/core": "^7.13.1",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/preset-env": "^7.13.5",
+    "@babel/preset-react": "^7.12.13",
+    "@babel/preset-typescript": "^7.13.0",
+    "@commitlint/cli": "^12.0.0",
+    "@types/classnames": "^2.2.11",
+    "@types/fork-ts-checker-webpack-plugin": "^0.4.5",
+    "@types/node": "^14.14.31",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.1",
+    "@types/react-redux": "^7.1.16",
+    "@types/react-router-dom": "^5.1.7",
+    "@typescript-eslint/eslint-plugin": "^4.15.2",
+    "@typescript-eslint/parser": "^4.15.2",
+    "autoprefixer": "^10.2.4",
+    "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^7.0.0",
+    "cross-env": "^7.0.3",
+    "css-loader": "^5.1.0",
+    "css-minimizer-webpack-plugin": "^1.1.5",
+    "cz-customizable": "^6.3.0",
+    "eslint": "^7.20.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-import-resolver-webpack": "^0.13.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.3.0",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-sonarjs": "^0.6.0",
+    "eslint-webpack-plugin": "^2.5.2",
+    "html-webpack-plugin": "^5.2.0",
+    "husky": "^4.3.8",
+    "lint-staged": "^10.5.4",
+    "mini-css-extract-plugin": "^1.3.9",
+    "postcss": "^8.2.6",
+    "postcss-loader": "^5.0.0",
+    "prettier": "^2.2.1",
+    "react-svg-loader": "^3.0.3",
+    "sass": "^1.32.8",
+    "sass-loader": "^11.0.1",
+    "ts-loader": "^8.0.17",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.2",
+    "webpack": "^5.24.2",
+    "webpack-bundle-analyzer": "^4.4.0",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.1"
+  },
+  "dependencies": {
+    "@types/react-transition-group": "^4.4.1",
+    "@types/redux-logger": "^3.0.8",
+    "axios": "^0.21.1",
+    "classnames": "^2.2.6",
+    "core-js": "^3.9.0",
+    "imagemin-gifsicle": "^7.0.0",
+    "imagemin-mozjpeg": "^9.0.0",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-webpack-plugin": "^2.4.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-redux": "^7.2.2",
+    "react-router-dom": "^5.2.0",
+    "react-transition-group": "^4.4.1",
+    "redux": "^4.0.5",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
+    "sass-resources-loader": "^2.1.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "config/git/commitizen.js"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS -g './config/git/commitlint.js'"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "npm run lint:fix"
+    ]
+  }
+}

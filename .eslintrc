@@ -1,0 +1,76 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "extends": [
+    "airbnb",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:jsx-a11y/recommended",
+    "plugin:sonarjs/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "react-hooks",
+    "jsx-a11y",
+    "sonarjs",
+    "prettier"
+  ],
+  "rules": {
+    "sonarjs/cognitive-complexity": 0,
+    "no-use-before-define": [0],
+    "react/jsx-filename-extension": 0,
+    "react/no-access-state-in-setstate": 1,
+    "jsx-a11y/click-events-have-key-events": 1,
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "packageDir": "./"
+      }
+    ],
+    "linebreak-style": 0,
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "no-plusplus": "off",
+    "max-len": ["warn", 80, { "ignoreUrls": true }],
+    "object-curly-spacing": ["error", "always"],
+    "react/state-in-constructor": "off",
+    "react/no-did-mount-set-state": "error",
+    "react/no-direct-mutation-state": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/prop-types": "off",
+    "import/extensions": "off",
+    "react/require-default-props": 0,
+    "no-underscore-dangle": 0,
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ]
+  },
+  "settings": {
+    "import/parsers": { "@typescript-eslint/parser": [".ts", ".tsx"] },
+    "import/resolver": "webpack",
+    "import/ignore": ".(css)$",
+    "react": {
+      "pragma": "React",
+      "version": "detect"
+    }
+  }
+}
