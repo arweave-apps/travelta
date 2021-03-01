@@ -47,21 +47,28 @@ svg {
   fill: currentColor;
 }
 
+.container-big {
+  width: 100%;
+  max-width: 1323px;
+  height: 100%;
+  margin: 0 auto;
+}
+
 // полоса прокрутки
-::-webkit-scrollbar-track {
-  background-color: #edeff1;
-}
+// ::-webkit-scrollbar-track {
+//   background-color: #edeff1;
+// }
 
-::-webkit-scrollbar-thumb {
-  background-color: rgba(151, 151, 151, 0.45);
-  border-radius: 1000px;
-}
+// ::-webkit-scrollbar-thumb {
+//   background-color: rgba(151, 151, 151, 0.45);
+//   border-radius: 1000px;
+// }
 
-::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(151, 151, 151, 0.85);
-  border-radius: 1000px;
-}
+// ::-webkit-scrollbar-thumb:hover {
+//   background-color: rgba(151, 151, 151, 0.85);
+//   border-radius: 1000px;
+// }
 
-::-webkit-scrollbar {
-  width: 6px;
-}
+// ::-webkit-scrollbar {
+//   width: 6px;
+// }

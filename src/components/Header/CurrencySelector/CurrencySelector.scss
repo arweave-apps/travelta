@@ -1,0 +1,24 @@
+.currency-selector {
+  @include display(flex, space-between, center);
+  position: relative;
+
+  &__btn {
+    @include font-roboto(rem(16), $main-font-color, 400, normal, rem(21));
+
+    width: rem(60);
+    height: rem(30);
+
+    border: 1px solid #d5dce7;
+    border-radius: rem(20);
+    padding: 0;
+
+    background: transparent;
+
+    transition: background 0.2s linear;
+
+    &:hover {
+      cursor: pointer;
+      background: lighten($color: #184f88, $amount: 10%);
+    }
+  }
+}

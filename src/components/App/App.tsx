@@ -1,24 +1,12 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import fetchUsers from '../../redux/actions/user/user';
-
-import Home from '../Home';
-import About from '../About';
-import Users from '../Users';
-
 import Header from '../Header';
+import Home from '../Home';
 
-import './App.css';
+import './App.scss';
 
 const App = (): JSX.Element => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchUsers());
-  }, [dispatch]);
-
   return (
     <div className="app">
       <Header />
@@ -26,12 +14,21 @@ const App = (): JSX.Element => {
         <Route exact path="/">
           <Home />
         </Route>
-        <Route exact path="/users">
+        {/* <Route exact path="/avia">
           <Users />
-        </Route>
-        <Route exact path="/about">
+        </Route> */}
+        {/* <Route exact path="/train">
           <About />
         </Route>
+        <Route exact path="/auto">
+          <About />
+        </Route>
+        <Route exact path="/hotels">
+          <About />
+        </Route>
+        <Route exact path="/tour">
+          <About />
+        </Route> */}
       </Switch>
     </div>
   );

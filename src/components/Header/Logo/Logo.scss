@@ -1,0 +1,15 @@
+.logo {
+  @include display(flex, space-between, center);
+  text-decoration: none;
+
+  &__img {
+    height: rem(26);
+    width: rem(26);
+
+    margin-right: 20px;
+  }
+
+  &__title {
+    @include font-roboto(rem(18), $main-font-color, 400, normal, rem(28));
+  }
+}

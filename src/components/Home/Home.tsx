@@ -1,11 +1,13 @@
 import React from 'react';
-import Counter from '../Counter';
+
+import './Home.scss';
 
 const Home = (): JSX.Element => {
   return (
-    <div>
-      <Counter />
-    </div>
+    <>
+      <section className="info">sdsddssd</section>
+      <div>Ваша реклама здесь =)</div>
+    </>
   );
 };
 

@@ -41,14 +41,14 @@ $breakpoints: (
 }
 
 // Fonts
-@mixin font-sans(
+@mixin font-roboto(
   $size: false,
   $colour: false,
   $weight: normal,
   $style: normal,
   $lh: false
 ) {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
 
   @if $size {
     font-size: $size;
@@ -88,11 +88,4 @@ $breakpoints: (
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-// Reset button style
-@mixin reset-btn() {
-  padding: 0;
-  background-color: transparent;
-  border: none;
 }

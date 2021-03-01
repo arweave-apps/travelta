@@ -1,45 +1,30 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+
+import LogoImg from '../../assets/images/logo.svg';
+import CurrencySelector from './CurrencySelector';
+import HeaderNav from './HeaderNav';
 
 import './Header.scss';
+import Logo from './Logo';
+
+const paths = [
+  { url: '/avia', name: 'Авиа билеты' },
+  { url: '/train', name: 'Ж/д билеты' },
+  { url: '/auto', name: 'Прокат авто' },
+  { url: '/hotels', name: 'Отели' },
+  { url: '/tour', name: 'Туры' },
+];
 
 const Header = (): JSX.Element => {
   return (
     <header className="header">
-      <nav className="nav">
-        <ul className="nav__lists">
-          <li className="nav__list">
-            <NavLink
-              exact
-              className="nav__link"
-              activeClassName="nav__link--active"
-              to="/"
-            >
-              Home
-            </NavLink>
-          </li>
-          <li className="nav__list">
-            <NavLink
-              exact
-              className="nav__link"
-              activeClassName="nav__link--active"
-              to="/users"
-            >
-              Users
-            </NavLink>
-          </li>
-          <li className="nav__list">
-            <NavLink
-              exact
-              className="nav__link"
-              activeClassName="nav__link--active"
-              to="/about"
-            >
-              About
-            </NavLink>
-          </li>
-        </ul>
-      </nav>
+      <div className="container-big">
+        <div className="header__inner">
+          <Logo img={<LogoImg />} />
+          <HeaderNav items={paths} />
+          <CurrencySelector />
+        </div>
+      </div>
     </header>
   );
 };

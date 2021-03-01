@@ -1,27 +1,12 @@
 .header {
-  @include display(flex, space-between, center);
-
-  background: $bg-color;
   width: 100%;
-  height: rem(40);
-}
+  height: rem(60);
 
-.nav {
-  &__lists {
-    @include display(flex, center, center);
-  }
+  background: $home-header-color;
 
-  &__link {
-    @include font-sans(rem(18), $main-font-color);
-    text-decoration: none;
-    margin-left: 20px;
-
-    &:hover {
-      text-decoration: underline;
-    }
-
-    &--active {
-      color: $active-link-color;
-    }
+  &__inner {
+    @include display(grid, space-between, center);
+    grid-template-columns: auto auto auto;
+    height: inherit;
   }
 }
