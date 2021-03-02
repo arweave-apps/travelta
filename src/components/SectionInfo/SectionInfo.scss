@@ -1,18 +1,20 @@
 .info {
   width: 100%;
   height: calc(100vh - 60px);
-  padding-top: 250px;
+
+  padding-top: 160px;
+
   background-color: $home-color;
 
   &__title {
-    @include font-roboto(rem(36), $main-font-color, normal, normal, rem(42));
-    margin-bottom: 10px;
+    @include font-roboto(rem(52), $main-font-color, 500, normal, rem(42));
+    margin-bottom: 16px;
     text-align: center;
   }
 
   &__subtitle {
     @include font-roboto(rem(18), $main-font-color, normal, normal, rem(21));
     text-align: center;
-    margin-bottom: 160px;
+    margin-bottom: 70px;
   }
 }
