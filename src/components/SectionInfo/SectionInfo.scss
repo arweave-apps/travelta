@@ -14,12 +14,12 @@
   &__titles {
     grid-area: info-titles;
     align-self: flex-end;
-    margin-bottom: 70px;
+    margin-bottom: rem(70);
   }
 
   &__title {
     @include font-roboto(rem(52), $main-font-color, 500, normal, rem(42));
-    margin-bottom: 16px;
+    margin-bottom: rem(16);
     text-align: center;
   }
 

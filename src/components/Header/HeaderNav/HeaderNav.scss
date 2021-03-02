@@ -7,7 +7,7 @@
     position: relative;
 
     &:not(:last-child) {
-      margin-right: 20px;
+      margin-right: rem(20);
     }
   }
 

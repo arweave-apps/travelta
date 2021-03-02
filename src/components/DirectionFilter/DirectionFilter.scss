@@ -1,13 +1,13 @@
 .direction-filter {
   @include display(flex, flex-start, center);
   @include font-roboto(rem(18), $primary-text-color, normal, normal, rem(16));
-  margin-bottom: 75px;
+  margin-bottom: rem(7);
 
   &__label {
-    margin-right: 20px;
+    margin-right: rem(2);
   }
 
   &__input {
-    margin-right: 10px;
+    margin-right: rem(1);
   }
 }
