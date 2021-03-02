@@ -9,10 +9,12 @@ const SectionInfo = (): JSX.Element => {
     <section className="info">
       <div className="container-big">
         <div className="info__inner">
-          <h2 className="info__title">Исследуй новые места</h2>
-          <h3 className="info__subtitle">
-            Найди отличный отель, тур, машину, ж/д или авиабилеты
-          </h3>
+          <div className="info__titles">
+            <h2 className="info__title">Исследуй новые места</h2>
+            <h3 className="info__subtitle">
+              Найди отличный отель, тур, машину, ж/д или авиабилеты
+            </h3>
+          </div>
 
           <SearchPanel />
         </div>

@@ -16,19 +16,16 @@
     border: 2px solid $border-color;
 
     border-radius: 0;
-    padding: 0 30px 0 16px;
+    padding: 0;
 
     &--origin {
       border-radius: $radius 0 0 $radius;
-      border-right: none;
     }
-    &--destination {
-      border-right: none;
-    }
-    &--depart {
-      border-right: none;
-    }
-    &--return {
+
+    &--destination,
+    &--depart,
+    &--return,
+    &--origin {
       border-right: none;
     }
 
@@ -49,7 +46,7 @@
 
     background: $panel-color;
 
-    padding: 0 0 0 16px;
+    padding: 0;
 
     border: 2px solid $border-color;
     border-bottom: 2px solid $border-color;

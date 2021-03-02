@@ -26,7 +26,7 @@ const SearchForm = (): JSX.Element => {
       <label htmlFor="depart" className="search-form__label ">
         <input
           id="depart"
-          type="date"
+          type="text"
           placeholder="Отправление"
           className="search-form__input search-form__input--depart"
         />
@@ -35,7 +35,7 @@ const SearchForm = (): JSX.Element => {
       <label htmlFor="return" className="search-form__label ">
         <input
           id="return"
-          type="date"
+          type="text"
           placeholder="Прибытие"
           className="search-form__input search-form__input--return"
         />
