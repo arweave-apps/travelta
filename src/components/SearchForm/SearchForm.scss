@@ -1,0 +1,79 @@
+.search-form {
+  display: grid;
+  grid-template-columns: 0.9fr 0.9fr 0.9fr 0.9fr 0.9fr 1fr;
+  grid-template-rows: 60px;
+
+  &__label {
+    height: 60px;
+  }
+
+  &__input {
+    @include font-roboto(rem(18), $primary-text-color, normal, normal, rem(16));
+    width: 100%;
+    height: inherit;
+
+    background: $panel-color;
+    border: 2px solid $border-color;
+
+    border-radius: 0;
+    padding: 0 30px 0 16px;
+
+    &--origin {
+      border-radius: $radius 0 0 $radius;
+      border-right: none;
+    }
+    &--destination {
+      border-right: none;
+    }
+    &--depart {
+      border-right: none;
+    }
+    &--return {
+      border-right: none;
+    }
+
+    &::placeholder {
+      @include font-roboto(
+        rem(16),
+        $secondary-text-color,
+        normal,
+        normal,
+        (19)
+      );
+    }
+  }
+
+  &__select {
+    width: 100%;
+    height: inherit;
+
+    background: $panel-color;
+
+    padding: 0 0 0 16px;
+
+    border: 2px solid $border-color;
+    border-bottom: 2px solid $border-color;
+    border-right: 2px solid $border-color;
+    border-radius: 0 $radius $radius 0;
+  }
+
+  &__button {
+    @include font-roboto(rem(16), $main-font-color, normal, normal, rem(19));
+
+    height: inherit;
+
+    margin-left: 20px;
+
+    background: $accent-color;
+    border: none;
+    border-radius: $radius;
+    padding: 0;
+
+    transition: background 0.2s linear;
+
+    &:hover {
+      cursor: pointer;
+      background: lighten($accent-color, 6%);
+    }
+  }
+}
