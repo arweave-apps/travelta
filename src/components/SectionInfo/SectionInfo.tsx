@@ -11,7 +11,7 @@ const SectionInfo = (): JSX.Element => {
         <div className="info__inner">
           <h2 className="info__title">Исследуй новые места</h2>
           <h3 className="info__subtitle">
-            Найди отличный отель, тур, машину или авиабилеты
+            Найди отличный отель, тур, машину, ж/д или авиабилеты
           </h3>
 
           <SearchPanel />
