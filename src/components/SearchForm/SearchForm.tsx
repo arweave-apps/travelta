@@ -1,5 +1,6 @@
 import React from 'react';
 
+import SimpleButton from '../SimpleButton';
 import SwitchIcon from '../../assets/images/icons/arrows.svg';
 
 import './SearchForm.scss';
@@ -49,9 +50,7 @@ const SearchForm = (): JSX.Element => {
 
         <div className="search-form__select">select</div>
 
-        <button type="submit" className="search-form__button">
-          Найти
-        </button>
+        <SimpleButton submit label="Найти" />
       </form>
     </div>
   );

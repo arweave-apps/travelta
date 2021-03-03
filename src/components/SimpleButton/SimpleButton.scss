@@ -1,0 +1,19 @@
+.button {
+  @include font-roboto(rem(16), $main-font-color, normal, normal, rem(19));
+
+  height: inherit;
+
+  margin-left: rem(20);
+
+  background: $accent-color;
+  border: none;
+  border-radius: $radius;
+  padding: 0;
+
+  transition: background 0.2s linear;
+
+  &:hover {
+    cursor: pointer;
+    background: lighten($accent-color, 6%);
+  }
+}
