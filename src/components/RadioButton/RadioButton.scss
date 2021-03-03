@@ -1,6 +1,10 @@
 .radio {
   margin-right: rem(20);
 
+  @include mq('tablet-small') {
+    margin-bottom: rem(10);
+  }
+
   &__label {
     display: inline-block;
     position: relative;
@@ -9,6 +13,10 @@
 
     cursor: pointer;
     padding-left: rem(30);
+
+    @include mq('phone-wide') {
+      font-size: rem(16);
+    }
 
     &:before,
     &:after {
@@ -26,6 +34,11 @@
       border: 2px solid rgba($primary-text-color, 0.5);
 
       transition: box-shadow 0.2s linear, border 0.2s linear;
+
+      @include mq('phone-wide') {
+        width: rem(18);
+        height: rem(18);
+      }
     }
 
     &:after {
@@ -40,6 +53,11 @@
       transform: scale(0);
 
       transition: transform 0.2s linear;
+
+      @include mq('phone-wide') {
+        width: rem(8);
+        height: rem(8);
+      }
     }
   }
 

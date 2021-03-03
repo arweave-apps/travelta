@@ -6,7 +6,7 @@ type TextInputProps = { placeholder: string; id: string };
 
 const TextInput = ({ placeholder, id }: TextInputProps): JSX.Element => {
   return (
-    <label htmlFor={id} className="label">
+    <label htmlFor={id} className={`label ${id}`}>
       <input id={id} type="text" placeholder={placeholder} className="input" />
     </label>
   );

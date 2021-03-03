@@ -1,11 +1,5 @@
 .label {
   height: rem(60);
-
-  &:first-child {
-    input {
-      border-radius: $radius 0 0 $radius;
-    }
-  }
 }
 
 .input {

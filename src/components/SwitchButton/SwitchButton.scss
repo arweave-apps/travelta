@@ -1,7 +1,9 @@
 .switch-btn {
   position: absolute;
-  top: 32%;
-  left: 15.49%;
+  top: 50%;
+  right: -12.5px;
+
+  transform: translateY(-50%);
 
   width: rem(24);
   height: rem(24);
@@ -10,26 +12,45 @@
   border: 2px solid $border-color;
   border-radius: 100%;
   padding: 0;
-  padding-top: 2px;
+  padding-top: 3px;
 
   z-index: z('switch-btn');
 
-  transition: border-color 0.2s linear;
+  transition: border-color 0.2s linear, box-shadow 0.2s linear;
+
+  box-shadow: 0 0 9px 2px rgb($border-color, 0.7);
+
+  @include mq('phablet') {
+    top: 100%;
+    right: 50%;
+
+    transform: translate(50%, -50%);
+  }
 
   & svg {
     width: rem(12);
     height: rem(12);
     color: $border-color;
 
-    transition: color 0.2s linear;
+    transition: color 0.2s linear, transform 0.2s linear;
+
+    @include mq('phablet') {
+      transform: rotate(90deg);
+    }
   }
 
   &:hover svg {
     color: $active-color;
+    transform: rotate(180deg);
+
+    @include mq('phablet') {
+      transform: rotate(-90deg);
+    }
   }
 
   &:hover {
     cursor: pointer;
     border-color: $active-color;
+    box-shadow: 0 0 9px 2px rgb($active-color, 0.7);
   }
 }

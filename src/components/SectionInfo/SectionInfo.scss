@@ -9,22 +9,51 @@
     grid-template-columns: 1fr 2fr 1fr;
     grid-template-rows: 1.5fr 1fr 1fr;
     grid-template-areas: '. info-titles .' 'search-panel search-panel search-panel';
+
+    @include mq('desktop') {
+      grid-template-areas: 'info-titles info-titles info-titles' 'search-panel search-panel search-panel';
+    }
   }
 
   &__titles {
     grid-area: info-titles;
     align-self: flex-end;
     margin-bottom: rem(70);
+
+    @include mq('phablet') {
+      margin-bottom: rem(30);
+    }
   }
 
   &__title {
     @include font-roboto(rem(52), $main-font-color, 500, normal, rem(42));
     margin-bottom: rem(16);
     text-align: center;
+
+    @include mq('tablet') {
+      font-size: rem(48);
+    }
+
+    @include mq('phablet') {
+      font-size: rem(32);
+    }
+
+    @include mq('phone-wide') {
+      font-size: rem(26);
+    }
+
+    @include mq('phone') {
+      font-size: rem(24);
+      margin-bottom: rem(5);
+    }
   }
 
   &__subtitle {
     @include font-roboto(rem(18), $main-font-color, normal, normal, rem(21));
     text-align: center;
+
+    @include mq('phablet') {
+      font-size: rem(16);
+    }
   }
 }

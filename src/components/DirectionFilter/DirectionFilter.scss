@@ -1,4 +1,14 @@
 .direction-filter {
   @include display(flex, flex-start, center);
   margin-bottom: rem(70);
+
+  @include mq('tablet-small') {
+    flex-wrap: wrap;
+    width: 50%;
+    margin-bottom: rem(30);
+  }
+
+  @include mq('phone-wide') {
+    width: 100%;
+  }
 }

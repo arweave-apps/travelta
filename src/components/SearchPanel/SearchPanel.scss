@@ -4,4 +4,12 @@
   border-radius: $radius;
 
   grid-area: search-panel;
+
+  @include mq('phone-wide') {
+    padding: rem(40) rem(30);
+  }
+
+  @include mq('phone') {
+    padding: rem(20) rem(10);
+  }
 }
