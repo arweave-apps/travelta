@@ -1,5 +1,5 @@
 .currency-selector {
-  @include display(flex, space-between, center);
+  @include display(flex, flex-end, center);
   position: relative;
 
   &__btn {

@@ -1,6 +1,6 @@
 .nav {
   &__lists {
-    @include display(flex, space-between, center);
+    @include display(flex, center, center);
   }
 
   &__list {

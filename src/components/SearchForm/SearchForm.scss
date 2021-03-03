@@ -4,7 +4,7 @@
   grid-template-rows: rem(60);
 
   &__label {
-    height: rem(60)
+    height: rem(60);
   }
 
   &__input {
@@ -16,7 +16,7 @@
     border: 2px solid $border-color;
 
     border-radius: 0;
-    padding: 0;
+    padding: 0 rem(16);
 
     &--origin {
       border-radius: $radius 0 0 $radius;
@@ -46,7 +46,7 @@
 
     background: $panel-color;
 
-    padding: 0;
+    padding: 0 rem(16);
 
     border: 2px solid $border-color;
     border-bottom: 2px solid $border-color;
@@ -72,5 +72,40 @@
       cursor: pointer;
       background: lighten($accent-color, 6%);
     }
+  }
+}
+
+.switch-btn {
+  position: absolute;
+  top: 32%;
+  left: 94%;
+
+  width: rem(24);
+  height: rem(24);
+
+  background: $panel-color;
+  border: 2px solid $border-color;
+  border-radius: 100%;
+  padding: 0;
+  padding-top: 2px;
+
+  transition: background 0.2s linear;
+
+  z-index: z('switch-btn');
+
+  & svg {
+    width: rem(12);
+    height: rem(12);
+    color: $border-color;
+
+    transition: color 0.2s linear;
+  }
+
+  &:hover svg {
+    color: $bg-color;
+  }
+
+  &:hover {
+    cursor: pointer;
   }
 }

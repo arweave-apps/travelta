@@ -6,7 +6,7 @@
 
   &__inner {
     @include display(grid, space-between, center);
-    grid-template-columns: auto auto auto;
+    grid-template-columns: 1fr 2fr 1fr;
     height: inherit;
   }
 }

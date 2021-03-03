@@ -1,5 +1,5 @@
 .logo {
-  @include display(flex, space-between, center);
+  @include display(flex, flex-start, center);
   text-decoration: none;
 
   &__img {
