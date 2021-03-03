@@ -50,7 +50,7 @@ const SearchForm = (): JSX.Element => {
 
         <div className="search-form__select">select</div>
 
-        <SimpleButton submit label="Найти" />
+        <SimpleButton submit title="Найти" />
       </form>
     </div>
   );
