@@ -29,13 +29,13 @@
     }
 
     &:after {
-      top: 4px;
+      top: 3px;
       left: 5px;
 
       width: rem(10);
       height: rem(10);
 
-      background: $active-link-color;
+      background: $active-color;
 
       transform: scale(0);
 
@@ -48,7 +48,7 @@
 
     &:checked + label:before {
       animation: pulse 0.2s linear forwards;
-      border: 2px solid $active-link-color;
+      border: 2px solid $active-color;
     }
 
     &:checked + label:after {
@@ -59,12 +59,12 @@
 
 @keyframes pulse {
   0% {
-    box-shadow: 0px 0px 0px 1px rgba($active-link-color, 0);
+    box-shadow: 0px 0px 0px 1px rgba($active-color, 0);
   }
   50% {
-    box-shadow: 0px 0px 0px 10px rgba($active-link-color, 0.12);
+    box-shadow: 0px 0px 0px 10px rgba($active-color, 0.12);
   }
   100% {
-    box-shadow: 0px 0px 0px 10px rgba($active-link-color, 0);
+    box-shadow: 0px 0px 0px 10px rgba($active-color, 0);
   }
 }
