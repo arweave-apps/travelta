@@ -5,9 +5,9 @@ import TextInput from '../TextInput';
 import PassangerSelect from '../PassangerSelect';
 import SimpleButton from '../SimpleButton';
 
-import './SearchForm.scss';
+import './AviaSearchForm.scss';
 
-const SearchForm = (): JSX.Element => {
+const AviaSearchForm = (): JSX.Element => {
   return (
     <form className="search-form">
       <div className="search-form__origin">
@@ -38,4 +38,4 @@ const SearchForm = (): JSX.Element => {
   );
 };
 
-export default SearchForm;
+export default AviaSearchForm;

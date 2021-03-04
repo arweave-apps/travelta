@@ -1,6 +1,6 @@
 import React from 'react';
 import DirectionFilter from '../DirectionFilter';
-import SearchForm from '../SearchForm';
+import AviaSearchForm from '../AviaSearchForm';
 
 import './SearchPanel.scss';
 
@@ -8,7 +8,7 @@ const SearchPanel = (): JSX.Element => {
   return (
     <div className="search-panel">
       <DirectionFilter />
-      <SearchForm />
+      <AviaSearchForm />
     </div>
   );
 };
