@@ -1,16 +1,11 @@
 import React from 'react';
-import DirectionFilter from '../DirectionFilter';
-import AviaSearchForm from '../AviaSearchForm';
 
 import './SearchPanel.scss';
 
-const SearchPanel = (): JSX.Element => {
-  return (
-    <div className="search-panel">
-      <DirectionFilter />
-      <AviaSearchForm />
-    </div>
-  );
+type SearchPanelProps = { children: React.ReactNode };
+
+const SearchPanel = ({ children }: SearchPanelProps): JSX.Element => {
+  return <div className="search-panel">{children}</div>;
 };
 
 export default SearchPanel;

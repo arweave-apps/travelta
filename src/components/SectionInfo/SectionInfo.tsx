@@ -1,10 +1,10 @@
 import React from 'react';
 
-import SearchPanel from '../SearchPanel';
-
 import './SectionInfo.scss';
 
-const SectionInfo = (): JSX.Element => {
+type SectionInfoProps = { children: React.ReactNode };
+
+const SectionInfo = ({ children }: SectionInfoProps): JSX.Element => {
   return (
     <section className="info">
       <div className="container-big">
@@ -16,7 +16,7 @@ const SectionInfo = (): JSX.Element => {
             </h3>
           </div>
 
-          <SearchPanel />
+          {children}
         </div>
       </div>
     </section>
