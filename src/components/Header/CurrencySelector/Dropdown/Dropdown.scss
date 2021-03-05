@@ -24,6 +24,23 @@
 
     transition: background 0.2s ease-in;
 
+    &--active {
+      background: $active-item-color;
+
+      &:before {
+        @include pseudo();
+        width: 2px;
+        height: 100%;
+
+        top: 0;
+        left: 0;
+        bottom: 0;
+        background: $accent-color;
+
+        transition: background 0.2s ease-in;
+      }
+    }
+
     & :first-child {
       margin-right: rem(20);
     }
