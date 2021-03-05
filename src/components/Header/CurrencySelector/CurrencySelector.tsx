@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrency } from '../../../redux/actions/settings/settings';
 import { InitialSettingsStateType } from '../../../redux/reducers/settings';
@@ -17,25 +17,55 @@ type StateType = {
   settings: InitialSettingsStateType;
 };
 
+function useOutsideClick(
+  ref: React.RefObject<HTMLDivElement>,
+  func: () => void,
+  isOpen: boolean
+) {
+  useEffect(() => {
+    function clickOutsideHandler(e: MouseEvent) {
+      if (
+        isOpen &&
+        e.target instanceof Node &&
+        ref.current &&
+        !ref.current.contains(e.target)
+      ) {
+        func();
+      }
+    }
+
+    document.addEventListener('click', clickOutsideHandler);
+
+    return () => {
+      document.removeEventListener('click', clickOutsideHandler);
+    };
+  }, [func, isOpen, ref]);
+}
+
 const CurrencySelector = (): JSX.Element => {
   const dispatch = useDispatch();
   const currency = useSelector(({ settings }: StateType) => settings.currency);
   const [isOpen, setOpen] = useState<boolean>(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(wrapperRef, () => setOpen(false), isOpen);
 
-  const selectorHandler = () => {
+  const toggleDropDownMenu = () => {
     setOpen(!isOpen);
   };
 
-  const dropdownHandler = (value: string) => {
-    dispatch(setCurrency(value));
-  };
+  const currencySelectHandler = useCallback(
+    (value: string) => {
+      dispatch(setCurrency(value));
+    },
+    [dispatch]
+  );
 
   return (
-    <div className="currency-selector">
+    <div ref={wrapperRef} className="currency-selector">
       <button
         type="button"
         className="currency-selector__btn"
-        onClick={selectorHandler}
+        onClick={toggleDropDownMenu}
       >
         <span>{currency}</span>
       </button>
@@ -43,7 +73,7 @@ const CurrencySelector = (): JSX.Element => {
       {isOpen && (
         <Dropdown
           items={currencyList}
-          onClick={dropdownHandler}
+          onClick={currencySelectHandler}
           currentCurrency={currency}
         />
       )}
