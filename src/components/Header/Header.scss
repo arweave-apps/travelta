@@ -9,17 +9,4 @@
     grid-template-columns: auto auto auto;
     grid-template-rows: $header-hight;
   }
-
-  &__nav-toggle {
-    width: 20px;
-    height: 20px;
-    background: #fff;
-    display: none;
-
-    @include mq('tablet') {
-      display: block;
-      grid-column: 1/2;
-      grid-row: 1/1;
-    }
-  }
 }

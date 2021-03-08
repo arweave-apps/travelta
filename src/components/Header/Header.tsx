@@ -6,6 +6,7 @@ import HeaderNav from './HeaderNav';
 
 import './Header.scss';
 import Logo from './Logo';
+import NavToggle from '../NavToggle';
 
 const paths = [
   { url: '/avia', name: 'Авиа билеты' },
@@ -23,7 +24,7 @@ const Header = (): JSX.Element => {
           <Logo img={<LogoImg />} />
           <HeaderNav items={paths} />
           <CurrencySelector />
-          <div className="header__nav-toggle">t</div>
+          <NavToggle />
         </div>
       </div>
     </header>
