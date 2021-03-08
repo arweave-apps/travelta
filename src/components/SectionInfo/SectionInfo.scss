@@ -4,7 +4,7 @@
   background-color: $alternative-bg-color;
 
   &__inner {
-    height: calc(100vh - 60px);
+    height: calc(100vh - #{$header-hight});
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
     grid-template-rows: 1.5fr 1fr 1fr;
@@ -12,6 +12,10 @@
 
     @include mq('desktop') {
       grid-template-areas: 'info-titles info-titles info-titles' 'search-panel search-panel search-panel';
+    }
+
+    @include mq('phone-wide') {
+      height: calc(100vh + #{$header-hight});
     }
   }
 

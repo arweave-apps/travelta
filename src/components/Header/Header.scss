@@ -1,16 +1,13 @@
 .header {
   width: 100%;
-  height: rem(60);
+  height: $header-hight;
 
   background: $home-header-color;
 
   &__inner {
     @include display(grid, space-between, center);
     grid-template-columns: auto auto auto;
-    grid-template-rows: 60px;
-
-    @include mq('tablet') {
-    }
+    grid-template-rows: $header-hight;
   }
 
   &__nav-toggle {
