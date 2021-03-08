@@ -1,5 +1,7 @@
 import React from 'react';
 
+import classNames from 'classnames';
+
 import './TextInput.scss';
 
 type TextInputProps = {
@@ -23,7 +25,9 @@ const TextInput = ({
         id={id}
         type="text"
         placeholder={placeholder}
-        className="input"
+        className={classNames('input', {
+          'input--pointer': readonly,
+        })}
         value={value}
         onChange={onChange}
         readOnly={readonly}
