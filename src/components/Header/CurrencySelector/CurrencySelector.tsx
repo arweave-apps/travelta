@@ -1,7 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { setCurrency } from '../../../redux/actions/settings/settings';
 import { InitialSettingsStateType } from '../../../redux/reducers/settings';
+
+import useOutsideClick from '../../../hooks/useOutsideClick';
 
 import Dropdown from './Dropdown';
 
@@ -16,31 +19,6 @@ const currencyList = [
 type StateType = {
   settings: InitialSettingsStateType;
 };
-
-function useOutsideClick(
-  ref: React.RefObject<HTMLDivElement>,
-  func: () => void,
-  isOpen: boolean
-) {
-  useEffect(() => {
-    function clickOutsideHandler(e: MouseEvent) {
-      if (
-        isOpen &&
-        e.target instanceof Node &&
-        ref.current &&
-        !ref.current.contains(e.target)
-      ) {
-        func();
-      }
-    }
-
-    document.addEventListener('click', clickOutsideHandler);
-
-    return () => {
-      document.removeEventListener('click', clickOutsideHandler);
-    };
-  }, [func, isOpen, ref]);
-}
 
 const CurrencySelector = (): JSX.Element => {
   const dispatch = useDispatch();
