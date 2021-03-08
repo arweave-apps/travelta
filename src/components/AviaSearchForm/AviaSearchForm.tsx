@@ -36,12 +36,16 @@ const AviaSearchForm = (): JSX.Element => {
           />
         </div>
 
-        <div className="search-form__depart">
-          <TextInput placeholder="Когда" id="depart" readonly />
-        </div>
+        <div className="search-form__date-picker">
+          <div className="search-form__depart">
+            <TextInput placeholder="Когда" id="depart" readonly />
+          </div>
 
-        <div className="search-form__return">
-          <TextInput placeholder="Обратно" id="return" readonly />
+          <div className="search-form__return">
+            <TextInput placeholder="Обратно" id="return" readonly />
+          </div>
+
+          <CalendarPicker />
         </div>
 
         <div className="search-form__select">
@@ -52,8 +56,6 @@ const AviaSearchForm = (): JSX.Element => {
           <SimpleButton submit title="Найти" />
         </div>
       </form>
-
-      <CalendarPicker />
     </>
   );
 };
