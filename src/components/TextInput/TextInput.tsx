@@ -7,6 +7,7 @@ type TextInputProps = {
   id: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  readonly?: boolean;
 };
 
 const TextInput = ({
@@ -14,6 +15,7 @@ const TextInput = ({
   id,
   value,
   onChange,
+  readonly,
 }: TextInputProps): JSX.Element => {
   return (
     <label htmlFor={id} className={`label ${id}`}>
@@ -24,6 +26,7 @@ const TextInput = ({
         className="input"
         value={value}
         onChange={onChange}
+        readOnly={readonly}
       />
     </label>
   );
