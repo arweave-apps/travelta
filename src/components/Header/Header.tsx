@@ -23,6 +23,7 @@ const Header = (): JSX.Element => {
           <Logo img={<LogoImg />} />
           <HeaderNav items={paths} />
           <CurrencySelector />
+          <div className="header__nav-toggle">t</div>
         </div>
       </div>
     </header>

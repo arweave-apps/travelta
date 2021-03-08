@@ -21,4 +21,9 @@
       background: lighten($home-header-color, 10%);
     }
   }
+
+  @include mq('tablet') {
+    grid-column: 3/4;
+    grid-row: 1/1;
+  }
 }

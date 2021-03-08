@@ -12,4 +12,9 @@
   &__title {
     @include font-roboto(rem(18), $main-font-color, 400, normal, rem(28));
   }
+
+  @include mq('tablet') {
+    grid-column: 2/3;
+    grid-row: 1/1;
+  }
 }

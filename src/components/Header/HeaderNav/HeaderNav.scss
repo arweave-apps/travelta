@@ -1,6 +1,10 @@
 .nav {
   &__lists {
     @include display(flex, center, center);
+
+    @include mq('tablet') {
+      display: none;
+    }
   }
 
   &__list {
