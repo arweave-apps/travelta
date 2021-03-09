@@ -52,25 +52,29 @@ const CalendarPicker = (): JSX.Element => {
     setNextMonthName(nextMonth.monthName);
   }, [calendarMonthIdx, calendarNextMonthIdx, calendarNextYear, calendarYear]);
 
-  const calendarFlipHandler = (value: number) => {
-    if (calendarMonthIdx === 11 && value === 1) {
-      setCalendarMonthIdx(0);
-      setCalendarYear(calendarYear + 1);
-    } else if (calendarMonthIdx === 0 && value === -1) {
+  const calendarPrevHandler = () => {
+    if (calendarMonthIdx === 0) {
       setCalendarMonthIdx(11);
       setCalendarYear(calendarYear - 1);
-    } else {
-      setCalendarMonthIdx(calendarMonthIdx + value);
-    }
-
-    if (calendarNextMonthIdx === 11 && value === 1) {
-      setCalendarNextMonthIdx(0);
-      setCalendarNextYear(calendarNextYear + 1);
-    } else if (calendarNextMonthIdx === 0 && value === -1) {
+    } else if (calendarNextMonthIdx === 0) {
       setCalendarNextMonthIdx(11);
       setCalendarNextYear(calendarNextYear - 1);
     } else {
-      setCalendarNextMonthIdx(calendarNextMonthIdx + value);
+      setCalendarMonthIdx(calendarMonthIdx - 1);
+      setCalendarNextMonthIdx(calendarNextMonthIdx - 1);
+    }
+  };
+
+  const calendarNextHandler = () => {
+    if (calendarMonthIdx === 11) {
+      setCalendarMonthIdx(0);
+      setCalendarYear(calendarYear + 1);
+    } else if (calendarNextMonthIdx === 11) {
+      setCalendarNextMonthIdx(0);
+      setCalendarNextYear(calendarNextYear + 1);
+    } else {
+      setCalendarNextMonthIdx(calendarNextMonthIdx + 1);
+      setCalendarMonthIdx(calendarMonthIdx + 1);
     }
   };
 
@@ -101,15 +105,16 @@ const CalendarPicker = (): JSX.Element => {
         <button
           type="button"
           className="calendar__btn calendar__btn--prev"
-          onClick={() => calendarFlipHandler(-1)}
-          // disabled={monthShift === 0}
+          onClick={() => calendarPrevHandler()}
+          // disabled={calendarMonthIdx === new Date().getMonth()}
         >
           <PrevIcon />
         </button>
         <button
           type="button"
           className="calendar__btn calendar__btn--next"
-          onClick={() => calendarFlipHandler(1)}
+          onClick={() => calendarNextHandler()}
+          // disabled={calendarNextMonthIdx === new Date().getMonth() + 12}
         >
           <NextIcon />
         </button>
