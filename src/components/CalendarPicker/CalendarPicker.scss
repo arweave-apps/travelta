@@ -62,6 +62,15 @@
     background: $panel-color;
     box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.12);
 
+    &[disabled] {
+      background: darken($panel-color, 5%);
+      pointer-events: none;
+
+      & > svg {
+        color: #a7a7a7;
+      }
+    }
+
     &:hover {
       cursor: pointer;
 

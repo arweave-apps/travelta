@@ -8,15 +8,20 @@ const shortDaysNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 type CalendarMonthProps = {
   monthName: string | null;
   numberDays: Array<number | undefined> | null;
+  calendarYear: number;
 };
 
 const CalendarMonth = ({
   monthName,
   numberDays,
+  calendarYear,
 }: CalendarMonthProps): JSX.Element => {
   return (
     <div className="month">
-      <div className="month__caption">{monthName}</div>
+      <div className="month__caption">
+        {monthName}&nbsp;
+        {calendarYear}
+      </div>
 
       <div className="month__weekdays">
         {shortDaysNames.map((dayName) => {
