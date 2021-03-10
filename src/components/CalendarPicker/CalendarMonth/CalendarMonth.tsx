@@ -7,9 +7,10 @@ import './CalendarMonth.scss';
 const shortWeekDayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
 type CalendarMonthProps = {
+  date: Date;
   monthName: string | null;
   daysOfMonth: Array<number | undefined> | null;
-  calendarYear: number;
+  // calendarYear: number;
   onSelect: (monthDay: number) => void;
   startDate: number | null;
   endDate: number | null;
@@ -19,9 +20,10 @@ type CalendarMonthProps = {
 };
 
 const CalendarMonth = ({
+  date,
   monthName,
   daysOfMonth,
-  calendarYear,
+  // calendarYear,
   onSelect,
   startDate,
   endDate,
@@ -33,7 +35,7 @@ const CalendarMonth = ({
     <div className="month">
       <div className="month__caption">
         {monthName}&nbsp;
-        {calendarYear}
+        {date.getFullYear()}
       </div>
 
       <div className="month__weekdays">
@@ -62,7 +64,11 @@ const CalendarMonth = ({
               );
             }
 
-            if (monthDay < new Date().getDate()) {
+            if (
+              monthDay < new Date().getDate() &&
+              date.getMonth() === new Date().getMonth() &&
+              date.getFullYear() === new Date().getFullYear()
+            ) {
               return (
                 <div className="month__day month__day--past" key={uuidv4()}>
                   {monthDay}
