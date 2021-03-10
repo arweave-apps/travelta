@@ -105,7 +105,7 @@ const CalendarPicker = (): JSX.Element => {
           type="button"
           className="calendar__btn calendar__btn--prev"
           onClick={() => handleClickPrevMonth()}
-          // disabled={calendarMonthIdx === new Date().getMonth()}
+          disabled={dateOfPrevMonth.getMonth() === new Date().getMonth()}
         >
           <PrevIcon />
         </button>
@@ -113,7 +113,7 @@ const CalendarPicker = (): JSX.Element => {
           type="button"
           className="calendar__btn calendar__btn--next"
           onClick={() => handleClickNextMonth()}
-          // disabled={calendarNextMonthIdx === new Date().getMonth() + 12}
+          disabled={dateOfNextMonth.getMonth() === new Date().getMonth()}
         >
           <NextIcon />
         </button>
