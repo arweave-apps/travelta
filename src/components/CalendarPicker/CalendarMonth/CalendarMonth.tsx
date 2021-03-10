@@ -3,17 +3,17 @@ import { v4 as uuidv4 } from 'uuid';
 
 import './CalendarMonth.scss';
 
-const shortDaysNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+const shortWeekDayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
 type CalendarMonthProps = {
   monthName: string | null;
-  numberDays: Array<number | undefined> | null;
+  daysOfMonth: Array<number | undefined> | null;
   calendarYear: number;
 };
 
 const CalendarMonth = ({
   monthName,
-  numberDays,
+  daysOfMonth,
   calendarYear,
 }: CalendarMonthProps): JSX.Element => {
   return (
@@ -24,7 +24,7 @@ const CalendarMonth = ({
       </div>
 
       <div className="month__weekdays">
-        {shortDaysNames.map((dayName) => {
+        {shortWeekDayNames.map((dayName) => {
           return (
             <div className="month__weekday" key={uuidv4()}>
               {dayName}
@@ -34,11 +34,11 @@ const CalendarMonth = ({
       </div>
 
       <div className="month__body">
-        {numberDays &&
-          numberDays.map((numberDay) => {
+        {daysOfMonth &&
+          daysOfMonth.map((monthDay) => {
             return (
               <div className="month__day" key={uuidv4()}>
-                {numberDay}
+                {monthDay}
               </div>
             );
           })}

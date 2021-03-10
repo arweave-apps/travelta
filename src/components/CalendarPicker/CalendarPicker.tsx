@@ -27,8 +27,6 @@ const CalendarPicker = (): JSX.Element => {
   const [calendarNextMonthIdx, setCalendarNextMonthIdx] = useState<number>(0);
 
   useEffect(() => {
-    console.log('first');
-
     const now = new Date();
     const monthIdx = now.getMonth();
     const year = now.getFullYear();
@@ -40,8 +38,6 @@ const CalendarPicker = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    console.log('update');
-
     const currentMonth = getMonth(calendarYear, calendarMonthIdx);
     const nextMonth = getMonth(calendarNextYear, calendarNextMonthIdx);
 
@@ -91,13 +87,13 @@ const CalendarPicker = (): JSX.Element => {
         <div className="calendar__months">
           <CalendarMonth
             monthName={currentMonthName}
-            numberDays={currentMonthDates}
+            daysOfMonth={currentMonthDates}
             calendarYear={calendarYear}
           />
 
           <CalendarMonth
             monthName={nextMonthName}
-            numberDays={nextMonthDates}
+            daysOfMonth={nextMonthDates}
             calendarYear={calendarNextYear}
           />
         </div>
