@@ -18,7 +18,7 @@ type Month = {
   numberDays: Array<number | undefined>;
 };
 
-const getMonth = (year: number, month: number): Month => {
+const getMonthData = (year: number, month: number): Month => {
   const firstMonthDayIdx = new Date(`${year}-0${month + 1}-01`).getDay() - 1;
   const numberOfMonthDays = new Date(year, month + 1, 0).getDate();
 
@@ -37,4 +37,4 @@ const getMonth = (year: number, month: number): Month => {
   };
 };
 
-export default getMonth;
+export default getMonthData;

@@ -4,7 +4,7 @@ import NextIcon from '../../assets/images/icons/right-arrow.svg';
 import PrevIcon from '../../assets/images/icons/left-arrow.svg';
 import CalendarMonth from './CalendarMonth';
 
-import getMonth from '../../helpers/getMonth';
+import getMonthData from '../../helpers/getMonthData';
 
 import './CalendarPicker.scss';
 
@@ -38,8 +38,8 @@ const CalendarPicker = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    const currentMonth = getMonth(calendarYear, calendarMonthIdx);
-    const nextMonth = getMonth(calendarNextYear, calendarNextMonthIdx);
+    const currentMonth = getMonthData(calendarYear, calendarMonthIdx);
+    const nextMonth = getMonthData(calendarNextYear, calendarNextMonthIdx);
 
     setCurrentMonthDates(currentMonth.numberDays);
     setCurrentMonthName(currentMonth.monthName);
@@ -48,7 +48,7 @@ const CalendarPicker = (): JSX.Element => {
     setNextMonthName(nextMonth.monthName);
   }, [calendarMonthIdx, calendarNextMonthIdx, calendarNextYear, calendarYear]);
 
-  const calendarPrevHandler = () => {
+  const prevMonthHandler = () => {
     if (calendarMonthIdx === 0) {
       setCalendarMonthIdx(11);
       setCalendarYear(calendarYear - 1);
@@ -61,7 +61,7 @@ const CalendarPicker = (): JSX.Element => {
     }
   };
 
-  const calendarNextHandler = () => {
+  const nextMonthHandler = () => {
     if (calendarMonthIdx === 11) {
       setCalendarMonthIdx(0);
       setCalendarYear(calendarYear + 1);
@@ -101,7 +101,7 @@ const CalendarPicker = (): JSX.Element => {
         <button
           type="button"
           className="calendar__btn calendar__btn--prev"
-          onClick={() => calendarPrevHandler()}
+          onClick={() => prevMonthHandler()}
           // disabled={calendarMonthIdx === new Date().getMonth()}
         >
           <PrevIcon />
@@ -109,7 +109,7 @@ const CalendarPicker = (): JSX.Element => {
         <button
           type="button"
           className="calendar__btn calendar__btn--next"
-          onClick={() => calendarNextHandler()}
+          onClick={() => nextMonthHandler()}
           // disabled={calendarNextMonthIdx === new Date().getMonth() + 12}
         >
           <NextIcon />
