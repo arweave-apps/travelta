@@ -15,26 +15,30 @@ const namesOfMonths = [
 
 type Month = {
   monthName: string;
-  numberDays: Array<number | undefined>;
+  monthData: Array<number | undefined>;
 };
 
-const getMonthData = (year: number, month: number): Month => {
-  const firstMonthDayIdx = new Date(`${year}-0${month + 1}-01`).getDay() - 1;
+const getMonth = (year: number, month: number): Month => {
+  const weekDayOfBeginningOfMonth =
+    new Date(`${year}-0${month + 1}-01`).getDay() - 1;
+
   const numberOfMonthDays = new Date(year, month + 1, 0).getDate();
 
-  const missedDays: Array<undefined> = Array.from({ length: firstMonthDayIdx });
+  const missedDays: Array<undefined> = Array.from({
+    length: weekDayOfBeginningOfMonth,
+  });
 
-  const monthCalendarDates = Array.from({
+  const datesOfMonth = Array.from({
     length: numberOfMonthDays,
   }).map((_, i) => i + 1);
 
-  const numberDays = [...missedDays, ...monthCalendarDates];
+  const monthData = [...missedDays, ...datesOfMonth];
   const monthName = namesOfMonths[month];
 
   return {
     monthName,
-    numberDays,
+    monthData,
   };
 };
 
-export default getMonthData;
+export default getMonth;

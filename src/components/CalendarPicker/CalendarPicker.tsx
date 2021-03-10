@@ -4,74 +4,77 @@ import NextIcon from '../../assets/images/icons/right-arrow.svg';
 import PrevIcon from '../../assets/images/icons/left-arrow.svg';
 import CalendarMonth from './CalendarMonth';
 
-import getMonthData from '../../helpers/getMonthData';
+import getMonth from '../../utils/getMonth';
 
 import './CalendarPicker.scss';
 
 const CalendarPicker = (): JSX.Element => {
-  const [currentMonthDates, setCurrentMonthDates] = useState<Array<
+  const [prevMonthData, setPrevMonthData] = useState<Array<
     number | undefined
   > | null>([]);
 
-  const [nextMonthDates, setNextMonthDates] = useState<Array<
+  const [nextMonthData, setNextMonthData] = useState<Array<
     number | undefined
   > | null>([]);
 
-  const [currentMonthName, setCurrentMonthName] = useState<string | null>(null);
+  const [prevMonthName, setPrevMonthName] = useState<string | null>(null);
   const [nextMonthName, setNextMonthName] = useState<string | null>(null);
 
-  const [calendarYear, setCalendarYear] = useState<number>(0);
-  const [calendarNextYear, setCalendarNextYear] = useState<number>(0);
-
-  const [calendarMonthIdx, setCalendarMonthIdx] = useState<number>(0);
-  const [calendarNextMonthIdx, setCalendarNextMonthIdx] = useState<number>(0);
+  const [dateOfPrevMonth, setDateOfPrevMonth] = useState<Date>(new Date());
+  const [dateOfNextMonth, setDateOfNextMonth] = useState<Date>(new Date());
 
   useEffect(() => {
     const now = new Date();
-    const monthIdx = now.getMonth();
+    const month = now.getMonth();
     const year = now.getFullYear();
 
-    setCalendarYear(year);
-    setCalendarNextYear(year);
-    setCalendarMonthIdx(monthIdx);
-    setCalendarNextMonthIdx(monthIdx + 1);
+    setDateOfPrevMonth(new Date(year, month));
+    setDateOfNextMonth(new Date(year, month + 1));
   }, []);
 
   useEffect(() => {
-    const currentMonth = getMonthData(calendarYear, calendarMonthIdx);
-    const nextMonth = getMonthData(calendarNextYear, calendarNextMonthIdx);
+    const prevMonth = getMonth(
+      dateOfPrevMonth.getFullYear(),
+      dateOfPrevMonth.getMonth()
+    );
+    const nextMonth = getMonth(
+      dateOfNextMonth.getFullYear(),
+      dateOfNextMonth.getMonth()
+    );
 
-    setCurrentMonthDates(currentMonth.numberDays);
-    setCurrentMonthName(currentMonth.monthName);
+    setPrevMonthData(prevMonth.monthData);
+    setPrevMonthName(prevMonth.monthName);
 
-    setNextMonthDates(nextMonth.numberDays);
+    setNextMonthData(nextMonth.monthData);
     setNextMonthName(nextMonth.monthName);
-  }, [calendarMonthIdx, calendarNextMonthIdx, calendarNextYear, calendarYear]);
+  }, [dateOfPrevMonth, dateOfNextMonth]);
 
   const prevMonthHandler = () => {
-    if (calendarMonthIdx === 0) {
-      setCalendarMonthIdx(11);
-      setCalendarYear(calendarYear - 1);
-    } else if (calendarNextMonthIdx === 0) {
-      setCalendarNextMonthIdx(11);
-      setCalendarNextYear(calendarNextYear - 1);
-    } else {
-      setCalendarMonthIdx(calendarMonthIdx - 1);
-      setCalendarNextMonthIdx(calendarNextMonthIdx - 1);
-    }
+    const prevDate = new Date(
+      dateOfPrevMonth.getFullYear(),
+      dateOfPrevMonth.getMonth() - 1
+    );
+    const nextMonthDate = new Date(
+      dateOfNextMonth.getFullYear(),
+      dateOfNextMonth.getMonth() - 1
+    );
+
+    setDateOfPrevMonth(prevDate);
+    setDateOfNextMonth(nextMonthDate);
   };
 
   const nextMonthHandler = () => {
-    if (calendarMonthIdx === 11) {
-      setCalendarMonthIdx(0);
-      setCalendarYear(calendarYear + 1);
-    } else if (calendarNextMonthIdx === 11) {
-      setCalendarNextMonthIdx(0);
-      setCalendarNextYear(calendarNextYear + 1);
-    } else {
-      setCalendarNextMonthIdx(calendarNextMonthIdx + 1);
-      setCalendarMonthIdx(calendarMonthIdx + 1);
-    }
+    const prevDate = new Date(
+      dateOfPrevMonth.getFullYear(),
+      dateOfPrevMonth.getMonth() + 1
+    );
+    const nextMonthDate = new Date(
+      dateOfNextMonth.getFullYear(),
+      dateOfNextMonth.getMonth() + 1
+    );
+
+    setDateOfPrevMonth(prevDate);
+    setDateOfNextMonth(nextMonthDate);
   };
 
   return (
@@ -86,15 +89,15 @@ const CalendarPicker = (): JSX.Element => {
 
         <div className="calendar__months">
           <CalendarMonth
-            monthName={currentMonthName}
-            daysOfMonth={currentMonthDates}
-            calendarYear={calendarYear}
+            monthName={prevMonthName}
+            daysOfMonth={prevMonthData}
+            calendarYear={dateOfPrevMonth.getFullYear()}
           />
 
           <CalendarMonth
             monthName={nextMonthName}
-            daysOfMonth={nextMonthDates}
-            calendarYear={calendarNextYear}
+            daysOfMonth={nextMonthData}
+            calendarYear={dateOfNextMonth.getFullYear()}
           />
         </div>
 
