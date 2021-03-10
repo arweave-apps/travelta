@@ -19,13 +19,11 @@ type Month = {
 };
 
 const getMonth = (year: number, month: number): Month => {
-  const weekDayOfBeginningOfMonth =
-    new Date(`${year}-0${month + 1}-01`).getDay() - 1;
-
+  const monthStartsOn = new Date(`${year}-0${month + 1}-01`).getDay();
   const numberOfMonthDays = new Date(year, month + 1, 0).getDate();
 
   const missedDays: Array<undefined> = Array.from({
-    length: weekDayOfBeginningOfMonth,
+    length: monthStartsOn - 1,
   });
 
   const datesOfMonth = Array.from({

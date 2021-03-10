@@ -31,7 +31,7 @@ const CurrencySelector = (): JSX.Element => {
     setOpen(!isOpen);
   };
 
-  const currencySelectHandler = useCallback(
+  const handleClickCurrencySelector = useCallback(
     (value: string) => {
       dispatch(setCurrency(value));
     },
@@ -51,7 +51,7 @@ const CurrencySelector = (): JSX.Element => {
       {isOpen && (
         <Dropdown
           items={currencyList}
-          onClick={currencySelectHandler}
+          onClick={handleClickCurrencySelector}
           currentCurrency={currency}
         />
       )}
