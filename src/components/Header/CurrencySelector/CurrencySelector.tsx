@@ -27,11 +27,11 @@ const CurrencySelector = (): JSX.Element => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   useOutsideClick(wrapperRef, () => setOpen(false), isOpen);
 
-  const toggleDropDownMenu = () => {
+  const toggleDropdownMenu = () => {
     setOpen(!isOpen);
   };
 
-  const handleClickCurrencySelector = useCallback(
+  const handleClickDropdownList = useCallback(
     (value: string) => {
       dispatch(setCurrency(value));
     },
@@ -43,7 +43,7 @@ const CurrencySelector = (): JSX.Element => {
       <button
         type="button"
         className="currency-selector__btn"
-        onClick={toggleDropDownMenu}
+        onClick={toggleDropdownMenu}
       >
         <span>{currency}</span>
       </button>
@@ -51,7 +51,7 @@ const CurrencySelector = (): JSX.Element => {
       {isOpen && (
         <Dropdown
           items={currencyList}
-          onClick={handleClickCurrencySelector}
+          onClick={handleClickDropdownList}
           currentCurrency={currency}
         />
       )}

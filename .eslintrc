@@ -31,6 +31,7 @@
     "prettier"
   ],
   "rules": {
+    "jsx-a11y/mouse-events-have-key-events": 0,
     "sonarjs/cognitive-complexity": 0,
     "no-use-before-define": [0],
     "react/jsx-filename-extension": 0,

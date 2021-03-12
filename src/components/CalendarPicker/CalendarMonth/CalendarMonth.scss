@@ -60,21 +60,22 @@
 
     &--clickable {
       transition: background 0.2s linear;
+      cursor: pointer;
 
       &:hover {
         background: $hover-accent-color;
-        cursor: pointer;
       }
     }
 
-    &--painted {
+    &--filled {
       background: $hover-accent-color;
     }
+
     &--past {
       color: $secondary-text-color;
     }
 
-    &--bg-right {
+    &--filled-right {
       background: linear-gradient(
         270deg,
         $hover-accent-color 43%,
@@ -90,7 +91,7 @@
       }
     }
 
-    &--bg-left {
+    &--filled-left {
       background: linear-gradient(
         90deg,
         $hover-accent-color 43%,

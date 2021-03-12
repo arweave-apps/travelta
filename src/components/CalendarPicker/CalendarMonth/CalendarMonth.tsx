@@ -4,42 +4,172 @@ import classNames from 'classnames';
 
 import './CalendarMonth.scss';
 
-const shortWeekDayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+const shortWeekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+
+const monthsNames = [
+  'Январь',
+  'Февраль',
+  'Март',
+  'Апрель',
+  'Май',
+  'Июнь',
+  'Июль',
+  'Август',
+  'Сентябрь',
+  'Октябрь',
+  'Ноябрь',
+  'Декабрь',
+];
+
+const isPastDay = (comparisonDate: Date): boolean => {
+  const now = new Date();
+
+  if (comparisonDate < now) {
+    return true;
+  }
+  return false;
+};
+
+const isActive = (comparisonDate: Date, date: Date | null): boolean => {
+  if (date) {
+    return date.getTime() === comparisonDate.getTime();
+  }
+
+  return false;
+};
+
+const isFilledRightHalfCell = (
+  comparisonDate: Date,
+  startDate: Date | null,
+  hoverDate: Date | null,
+  endDate: Date | null
+): boolean => {
+  // красит вправо активный день при наведении
+  if (startDate && hoverDate) {
+    if (
+      startDate < hoverDate &&
+      comparisonDate.getTime() === startDate.getTime()
+    ) {
+      return true;
+    }
+  }
+
+  // карсит вправо активный день когда есть обе даты
+  if (startDate && endDate) {
+    if (
+      startDate < endDate &&
+      comparisonDate.getTime() === startDate.getTime()
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const isFilledLeftHalfCell = (
+  comparisonDate: Date,
+  startDate: Date | null,
+  hoverDate: Date | null,
+  endDate: Date | null
+): boolean => {
+  // красит влево активный день при наведении на даты
+  if (startDate && hoverDate) {
+    if (
+      startDate > hoverDate &&
+      comparisonDate.getTime() === startDate.getTime()
+    ) {
+      return true;
+    }
+  }
+
+  // красит влево активный день когда есть даты начала и конца
+  if (startDate && endDate) {
+    if (startDate < endDate && comparisonDate.getTime() === endDate.getTime()) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const isFilled = (
+  comparisonDate: Date,
+  startDate: Date | null,
+  hoverDate: Date | null,
+  endDate: Date | null
+): boolean => {
+  // красит когда есть обе даты
+  if (
+    startDate &&
+    endDate &&
+    startDate < comparisonDate &&
+    comparisonDate < endDate
+  ) {
+    return true;
+  }
+
+  // красит при наведении
+  if (startDate && hoverDate) {
+    if (comparisonDate > startDate && comparisonDate < hoverDate) {
+      return true;
+    }
+
+    if (comparisonDate < startDate && comparisonDate > hoverDate) {
+      return true;
+    }
+  }
+
+  return false;
+};
 
 type CalendarMonthProps = {
-  date: Date;
-  monthName: string | null;
-  daysOfMonth: Array<number | undefined> | null;
-  // calendarYear: number;
-  onSelect: (monthDay: number) => void;
-  startDate: number | null;
-  endDate: number | null;
-  hoverDate: number | null;
-  onMouseOver: (monthDay: number) => void;
-  onMouseOut: () => void;
+  calendarDate: Date | null;
+  monthDates: Array<number | undefined> | null;
+  onClickDay: (date: Date | null) => void;
+  startDate: Date | null;
+  endDate: Date | null;
+  hoverDate: Date | null;
+  onMouseEnterDay: (date: Date | null) => void;
+  onMouseLeaveMonth: () => void;
 };
 
 const CalendarMonth = ({
-  date,
-  monthName,
-  daysOfMonth,
-  // calendarYear,
-  onSelect,
+  calendarDate,
+  monthDates,
+  onClickDay,
   startDate,
   endDate,
   hoverDate,
-  onMouseOver,
-  onMouseOut,
+  onMouseEnterDay,
+  onMouseLeaveMonth,
 }: CalendarMonthProps): JSX.Element => {
+  const getYear = (date: Date | null): number => {
+    if (date) {
+      return date.getFullYear();
+    }
+    return 0;
+  };
+
+  const getMonth = (date: Date | null): number => {
+    if (date) {
+      return date.getMonth();
+    }
+    return 0;
+  };
+
+  const year = getYear(calendarDate);
+  const month = getMonth(calendarDate);
+
   return (
     <div className="month">
       <div className="month__caption">
-        {monthName}&nbsp;
-        {date.getFullYear()}
+        {monthsNames[month]}&nbsp;
+        {year}
       </div>
 
       <div className="month__weekdays">
-        {shortWeekDayNames.map((dayName) => {
+        {shortWeekDays.map((dayName) => {
           return (
             <div className="month__weekday" key={uuidv4()}>
               {dayName}
@@ -51,11 +181,12 @@ const CalendarMonth = ({
       <div
         className="month__body"
         role="presentation"
-        onMouseOut={onMouseOut}
-        onBlur={onMouseOut}
+        onMouseLeave={onMouseLeaveMonth}
       >
-        {daysOfMonth &&
-          daysOfMonth.map((monthDay) => {
+        {monthDates &&
+          monthDates.map((monthDay) => {
+            const comparisonDate = new Date(year, month, monthDay);
+
             if (!monthDay) {
               return (
                 <div className="month__day" key={uuidv4()}>
@@ -64,11 +195,7 @@ const CalendarMonth = ({
               );
             }
 
-            if (
-              monthDay < new Date().getDate() &&
-              date.getMonth() === new Date().getMonth() &&
-              date.getFullYear() === new Date().getFullYear()
-            ) {
+            if (isPastDay(comparisonDate)) {
               return (
                 <div className="month__day month__day--past" key={uuidv4()}>
                   {monthDay}
@@ -76,53 +203,37 @@ const CalendarMonth = ({
               );
             }
 
-            const isActive = monthDay === startDate || monthDay === endDate;
-
-            const isPainted =
-              (hoverDate &&
-                startDate &&
-                monthDay < startDate &&
-                monthDay >= hoverDate) ||
-              (hoverDate &&
-                startDate &&
-                monthDay > startDate &&
-                monthDay <= hoverDate) ||
-              (startDate &&
-                endDate &&
-                monthDay < endDate &&
-                monthDay > startDate);
-
-            const isRightPainted =
-              (startDate &&
-                hoverDate &&
-                startDate &&
-                hoverDate > startDate &&
-                monthDay < hoverDate &&
-                startDate === monthDay) ||
-              (startDate && endDate && startDate === monthDay);
-
-            const isLeftPainted =
-              (startDate &&
-                hoverDate &&
-                startDate &&
-                hoverDate < startDate &&
-                monthDay > hoverDate &&
-                startDate === monthDay) ||
-              (startDate && endDate && endDate === monthDay);
-
             return (
               <div
                 className={classNames('month__day month__day--clickable', {
-                  'month__day--active': isActive,
-                  'month__day--bg-right': isRightPainted,
-                  'month__day--bg-left': isLeftPainted,
-                  'month__day--painted': isPainted,
+                  'month__day--active':
+                    isActive(comparisonDate, startDate) ||
+                    isActive(comparisonDate, endDate),
+                  'month__day--filled-right': isFilledRightHalfCell(
+                    comparisonDate,
+                    startDate,
+                    hoverDate,
+                    endDate
+                  ),
+                  'month__day--filled-left': isFilledLeftHalfCell(
+                    comparisonDate,
+                    startDate,
+                    hoverDate,
+                    endDate
+                  ),
+                  'month__day--filled': isFilled(
+                    comparisonDate,
+                    startDate,
+                    hoverDate,
+                    endDate
+                  ),
                 })}
                 role="presentation"
                 key={uuidv4()}
-                onClick={() => onSelect(monthDay)}
-                onMouseOver={() => onMouseOver(monthDay)}
-                onFocus={() => onSelect(monthDay)}
+                onClick={() => onClickDay(new Date(year, month, monthDay))}
+                onMouseEnter={() =>
+                  onMouseEnterDay(new Date(year, month, monthDay))
+                }
               >
                 <div>{monthDay}</div>
               </div>

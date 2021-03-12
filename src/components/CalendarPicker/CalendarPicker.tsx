@@ -4,28 +4,25 @@ import NextIcon from '../../assets/images/icons/right-arrow.svg';
 import PrevIcon from '../../assets/images/icons/left-arrow.svg';
 import CalendarMonth from './CalendarMonth';
 
-import getMonth from '../../utils/getMonth';
+import getMonthDates from '../../utils/getMonthDate';
 
 import './CalendarPicker.scss';
 
 const CalendarPicker = (): JSX.Element => {
   const [prevMonthData, setPrevMonthData] = useState<Array<
     number | undefined
-  > | null>([]);
+  > | null>(null);
 
   const [nextMonthData, setNextMonthData] = useState<Array<
     number | undefined
-  > | null>([]);
+  > | null>(null);
 
-  const [prevMonthName, setPrevMonthName] = useState<string | null>(null);
-  const [nextMonthName, setNextMonthName] = useState<string | null>(null);
+  const [prevMonthDate, setDateOfPrevMonth] = useState<Date | null>(null);
+  const [nextMonthDate, setDateOfNextMonth] = useState<Date | null>(null);
 
-  const [dateOfPrevMonth, setDateOfPrevMonth] = useState<Date>(new Date());
-  const [dateOfNextMonth, setDateOfNextMonth] = useState<Date>(new Date());
-
-  const [startDate, setStartDate] = useState<number | null>(null);
-  const [endDate, setEndDate] = useState<number | null>(null);
-  const [hoverDate, setHoverDate] = useState<number | null>(null);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [hoverDate, setHoverDate] = useState<Date | null>(null);
   const [choiceType, setChoiceType] = useState<string>('start');
 
   useEffect(() => {
@@ -38,41 +35,42 @@ const CalendarPicker = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    const prevMonth = getMonth(
-      dateOfPrevMonth.getFullYear(),
-      dateOfPrevMonth.getMonth()
-    );
-    const nextMonth = getMonth(
-      dateOfNextMonth.getFullYear(),
-      dateOfNextMonth.getMonth()
-    );
+    if (nextMonthDate && prevMonthDate) {
+      const prevMonth = getMonthDates(
+        prevMonthDate.getFullYear(),
+        prevMonthDate.getMonth()
+      );
+      const nextMonth = getMonthDates(
+        nextMonthDate.getFullYear(),
+        nextMonthDate.getMonth()
+      );
 
-    setPrevMonthData(prevMonth.monthData);
-    setPrevMonthName(prevMonth.monthName);
+      setPrevMonthData(prevMonth);
+      setNextMonthData(nextMonth);
+    }
+  }, [prevMonthDate, nextMonthDate]);
 
-    setNextMonthData(nextMonth.monthData);
-    setNextMonthName(nextMonth.monthName);
-  }, [dateOfPrevMonth, dateOfNextMonth]);
+  const handleClickBtn = (value: number) => {
+    if (nextMonthDate && prevMonthDate) {
+      const prevDate = new Date(
+        prevMonthDate.getFullYear(),
+        prevMonthDate.getMonth() + value
+      );
+      const nextDate = new Date(
+        nextMonthDate.getFullYear(),
+        nextMonthDate.getMonth() + value
+      );
 
-  const handleClickMonthSlide = (value: number) => {
-    const prevDate = new Date(
-      dateOfPrevMonth.getFullYear(),
-      dateOfPrevMonth.getMonth() + value
-    );
-    const nextMonthDate = new Date(
-      dateOfNextMonth.getFullYear(),
-      dateOfNextMonth.getMonth() + value
-    );
-
-    setDateOfPrevMonth(prevDate);
-    setDateOfNextMonth(nextMonthDate);
+      setDateOfPrevMonth(prevDate);
+      setDateOfNextMonth(nextDate);
+    }
   };
 
   const handleClickDay = useCallback(
-    (monthDay: number) => {
+    (date: Date | null) => {
       if (choiceType === 'start') {
         if ((hoverDate && endDate && hoverDate < endDate) || !startDate) {
-          setStartDate(monthDay);
+          setStartDate(date);
           setChoiceType('end');
         } else if (hoverDate && endDate && hoverDate > endDate) {
           const tempEnd = endDate;
@@ -83,7 +81,7 @@ const CalendarPicker = (): JSX.Element => {
 
       if (choiceType === 'end') {
         if (hoverDate && startDate && hoverDate > startDate) {
-          setEndDate(monthDay);
+          setEndDate(date);
           setChoiceType('start');
         } else if (hoverDate && startDate && hoverDate < startDate) {
           const tempStart = startDate;
@@ -95,13 +93,19 @@ const CalendarPicker = (): JSX.Element => {
     [choiceType, endDate, hoverDate, startDate]
   );
 
-  const handleMouseOverMonth = useCallback((monthDay: number) => {
-    setHoverDate(monthDay);
+  const handleMouseEnterDay = useCallback((date: Date | null) => {
+    setHoverDate(date);
   }, []);
 
-  const handleMouseOutMonth = useCallback(() => {
+  const handleMouseLeaveMonth = useCallback(() => {
     setHoverDate(null);
   }, []);
+
+  const isDisabledPrevBtn = (): boolean =>
+    prevMonthDate ? prevMonthDate.getMonth() === new Date().getMonth() : false;
+
+  const isDisabledNextBtn = (): boolean =>
+    nextMonthDate ? nextMonthDate.getMonth() === new Date().getMonth() : false;
 
   return (
     <div className="calendar">
@@ -115,24 +119,22 @@ const CalendarPicker = (): JSX.Element => {
 
         <div className="calendar__months">
           <CalendarMonth
-            date={dateOfPrevMonth}
-            monthName={prevMonthName}
-            daysOfMonth={prevMonthData}
-            onSelect={handleClickDay}
-            onMouseOver={handleMouseOverMonth}
-            onMouseOut={handleMouseOutMonth}
+            calendarDate={prevMonthDate}
+            monthDates={prevMonthData}
+            onClickDay={handleClickDay}
+            onMouseEnterDay={handleMouseEnterDay}
+            onMouseLeaveMonth={handleMouseLeaveMonth}
             startDate={startDate}
             endDate={endDate}
             hoverDate={hoverDate}
           />
 
           <CalendarMonth
-            date={dateOfNextMonth}
-            monthName={nextMonthName}
-            daysOfMonth={nextMonthData}
-            onSelect={handleClickDay}
-            onMouseOver={handleMouseOverMonth}
-            onMouseOut={handleMouseOutMonth}
+            calendarDate={nextMonthDate}
+            monthDates={nextMonthData}
+            onClickDay={handleClickDay}
+            onMouseEnterDay={handleMouseEnterDay}
+            onMouseLeaveMonth={handleMouseLeaveMonth}
             startDate={startDate}
             endDate={endDate}
             hoverDate={hoverDate}
@@ -142,16 +144,16 @@ const CalendarPicker = (): JSX.Element => {
         <button
           type="button"
           className="calendar__btn calendar__btn--prev"
-          onClick={() => handleClickMonthSlide(-1)}
-          disabled={dateOfPrevMonth.getMonth() === new Date().getMonth()}
+          onClick={() => handleClickBtn(-1)}
+          disabled={isDisabledPrevBtn()}
         >
           <PrevIcon />
         </button>
         <button
           type="button"
           className="calendar__btn calendar__btn--next"
-          onClick={() => handleClickMonthSlide(1)}
-          disabled={dateOfNextMonth.getMonth() === new Date().getMonth()}
+          onClick={() => handleClickBtn(1)}
+          disabled={isDisabledNextBtn()}
         >
           <NextIcon />
         </button>
