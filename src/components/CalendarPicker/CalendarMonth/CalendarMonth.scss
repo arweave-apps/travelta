@@ -1,0 +1,118 @@
+.month {
+  width: rem(300);
+
+  &__caption {
+    @include font-roboto(
+      rem(16),
+      $alternative-text-color,
+      normal,
+      normal,
+      rem(19)
+    );
+
+    text-align: left;
+    margin-bottom: rem(24);
+    padding-left: rem(10);
+  }
+
+  &__weekdays {
+    @include display(grid, space-between, center);
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: $calendar-ceil-size;
+
+    margin-bottom: rem(14);
+  }
+
+  &__weekday {
+    @include display(flex, center, center);
+    @include font-roboto(
+      rem(13),
+      $secondary-text-color,
+      normal,
+      normal,
+      rem(13)
+    );
+
+    width: 100%;
+    height: 100%;
+  }
+
+  &__body {
+    @include display(grid, center, center);
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, $calendar-ceil-size);
+    row-gap: 6px;
+  }
+
+  &__day {
+    @include display(flex, center, center);
+    @include font-roboto(rem(14), $primary-text-color, 500, normal, rem(16));
+
+    width: 100%;
+    height: 100%;
+
+    & > div {
+      @include display(flex, center, center);
+      width: 34px;
+      height: 34px;
+      border-radius: 100%;
+    }
+
+    &--clickable {
+      transition: background 0.2s linear;
+      cursor: pointer;
+
+      &:hover {
+        background: $hover-accent-color;
+      }
+    }
+
+    &--filled {
+      background: $hover-accent-color;
+    }
+
+    &--past {
+      color: $secondary-text-color;
+    }
+
+    &--filled-right {
+      background: linear-gradient(
+        270deg,
+        $hover-accent-color 43%,
+        rgba(255, 255, 255, 0) 90%
+      );
+
+      &:hover {
+        background: linear-gradient(
+          270deg,
+          $hover-accent-color 43%,
+          rgba(255, 255, 255, 0) 90%
+        );
+      }
+    }
+
+    &--filled-left {
+      background: linear-gradient(
+        90deg,
+        $hover-accent-color 43%,
+        rgba(255, 255, 255, 0) 90%
+      );
+
+      &:hover {
+        background: linear-gradient(
+          90deg,
+          $hover-accent-color 43%,
+          rgba(255, 255, 255, 0) 90%
+        );
+      }
+    }
+
+    &--active {
+      & > div {
+        background: $accent-color;
+        color: $main-font-color;
+        font-weight: 500;
+      }
+    }
+  }
+}

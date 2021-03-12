@@ -3,7 +3,7 @@
   position: relative;
 
   &__btn {
-    @include font-roboto(rem(16), $main-font-color, 400, normal, rem(21));
+    @include font-roboto(rem(14), $main-font-color, 400, normal, rem(21));
 
     width: rem(60);
     height: rem(30);

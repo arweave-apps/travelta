@@ -18,4 +18,8 @@
   &::placeholder {
     @include font-roboto(rem(16), $secondary-text-color, normal, normal, (19));
   }
+
+  &--pointer {
+    cursor: pointer !important;
+  }
 }

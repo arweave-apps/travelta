@@ -1,5 +1,7 @@
 import React from 'react';
 
+import classNames from 'classnames';
+
 import './TextInput.scss';
 
 type TextInputProps = {
@@ -7,6 +9,7 @@ type TextInputProps = {
   id: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  readonly?: boolean;
 };
 
 const TextInput = ({
@@ -14,6 +17,7 @@ const TextInput = ({
   id,
   value,
   onChange,
+  readonly,
 }: TextInputProps): JSX.Element => {
   return (
     <label htmlFor={id} className={`label ${id}`}>
@@ -21,9 +25,12 @@ const TextInput = ({
         id={id}
         type="text"
         placeholder={placeholder}
-        className="input"
+        className={classNames('input', {
+          'input--pointer': readonly,
+        })}
         value={value}
         onChange={onChange}
+        readOnly={readonly}
       />
     </label>
   );

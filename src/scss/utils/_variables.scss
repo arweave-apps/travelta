@@ -9,10 +9,13 @@ $bg-color: #03a3df;
 $alternative-bg-color: #296aae;
 
 $accent-color: #ff6200;
+$hover-accent-color: rgba(255, 98, 0, 0.1);
+
+$main-font-color: #f0f5f8;
 
 $primary-text-color: #474747;
-$main-font-color: #f0f5f8;
 $secondary-text-color: #b8b8b8;
+$alternative-text-color: #5f87ab;
 
 $warning-color: #ef312f;
 
@@ -20,3 +23,5 @@ $active-item-color: rgba(255, 131, 54, 0.09);
 
 $radius: 10px;
 $header-hight: 60px;
+$panel-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+$calendar-ceil-size: 34px;

@@ -1,0 +1,98 @@
+.calendar {
+  position: absolute;
+  top: rem(-480);
+  left: 50%;
+  transform: translateX(-50%);
+
+  &__inner {
+    position: relative;
+    width: rem(700);
+    background: $panel-color;
+    box-shadow: $panel-shadow;
+    border-radius: 0 0 $radius $radius;
+  }
+
+  &__header {
+    @include display(flex, space-between, center);
+    width: 100%;
+    height: $header-hight;
+    border-bottom: 1px solid $border-color;
+    padding: 0 rem(20);
+  }
+
+  &__title {
+    @include font-roboto(rem(16), $primary-text-color, normal, normal, rem(16));
+  }
+
+  &__reset {
+    @include font-roboto(
+      rem(16),
+      $alternative-text-color,
+      normal,
+      normal,
+      rem(16)
+    );
+
+    background: none;
+    border: none;
+
+    transition: color 0.2s linear;
+
+    &:hover {
+      cursor: pointer;
+      color: $active-color;
+    }
+  }
+
+  &__months {
+    @include display(flex, space-between, center);
+    padding: rem(20) rem(27) rem(60) rem(27);
+  }
+
+  &__btn {
+    $btn-size: 49px;
+    position: absolute;
+    top: 60%;
+    transform: translateY(-60%);
+    width: $btn-size;
+    height: $btn-size;
+    border-radius: 100%;
+    border: none;
+
+    background: $panel-color;
+    box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.12);
+
+    &[disabled] {
+      background: darken($panel-color, 5%);
+      pointer-events: none;
+
+      & > svg {
+        color: #a7a7a7;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      & > svg {
+        color: $active-color;
+      }
+    }
+
+    & > svg {
+      width: rem(12);
+      height: rem(18);
+      color: $primary-text-color;
+
+      transition: color 0.2s linear;
+    }
+
+    &--prev {
+      left: -$btn-size/2;
+    }
+
+    &--next {
+      right: -$btn-size/2;
+    }
+  }
+}
