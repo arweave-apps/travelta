@@ -45,23 +45,23 @@ const isFilledRightHalfCell = (
   endDate: Date | null
 ): boolean => {
   // красит вправо активный день при наведении
-  if (startDate && hoverDate) {
-    if (
-      startDate < hoverDate &&
-      comparisonDate.getTime() === startDate.getTime()
-    ) {
-      return true;
-    }
+  if (
+    startDate &&
+    hoverDate &&
+    startDate < hoverDate &&
+    comparisonDate.getTime() === startDate.getTime()
+  ) {
+    return true;
   }
 
   // карсит вправо активный день когда есть обе даты
-  if (startDate && endDate) {
-    if (
-      startDate < endDate &&
-      comparisonDate.getTime() === startDate.getTime()
-    ) {
-      return true;
-    }
+  if (
+    startDate &&
+    endDate &&
+    startDate < endDate &&
+    comparisonDate.getTime() === startDate.getTime()
+  ) {
+    return true;
   }
 
   return false;
@@ -74,20 +74,23 @@ const isFilledLeftHalfCell = (
   endDate: Date | null
 ): boolean => {
   // красит влево активный день при наведении на даты
-  if (startDate && hoverDate) {
-    if (
-      startDate > hoverDate &&
-      comparisonDate.getTime() === startDate.getTime()
-    ) {
-      return true;
-    }
+  if (
+    startDate &&
+    hoverDate &&
+    startDate > hoverDate &&
+    comparisonDate.getTime() === startDate.getTime()
+  ) {
+    return true;
   }
 
   // красит влево активный день когда есть даты начала и конца
-  if (startDate && endDate) {
-    if (startDate < endDate && comparisonDate.getTime() === endDate.getTime()) {
-      return true;
-    }
+  if (
+    startDate &&
+    endDate &&
+    startDate < endDate &&
+    comparisonDate.getTime() === endDate.getTime()
+  ) {
+    return true;
   }
 
   return false;
