@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import classNames from 'classnames';
@@ -10,6 +10,7 @@ import { setActiveInputDate } from '../../redux/actions/aviaParams/aviaParams';
 import { InitialAviaParamsStateType } from '../../redux/reducers/aviaParams';
 
 import './Datepicker.scss';
+import useOutsideClick from '../../hooks/useOutsideClick';
 
 type StateType = {
   aviaParams: InitialAviaParamsStateType;
@@ -17,6 +18,17 @@ type StateType = {
 
 const Datepicker = (): JSX.Element => {
   const dispatch = useDispatch();
+  const [isOpen, setOpen] = useState<boolean>(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(wrapperRef, () => setOpen(false), isOpen);
+
+  const handleClickCalendarOpen = () => {
+    if (isOpen) {
+      return;
+    }
+
+    setOpen(true);
+  };
 
   const activeInputDate = useSelector(
     (state: StateType) => state.aviaParams.activeInputDate
@@ -35,7 +47,12 @@ const Datepicker = (): JSX.Element => {
   );
 
   return (
-    <div className="datepicker">
+    <div
+      className="datepicker"
+      ref={wrapperRef}
+      role="presentation"
+      onClick={handleClickCalendarOpen}
+    >
       <div
         className={classNames('datepicker__depart', {
           'datepicker__depart--active': activeInputDate === 'start',
@@ -66,7 +83,7 @@ const Datepicker = (): JSX.Element => {
         />
       </div>
 
-      <CalendarPicker />
+      {isOpen && <CalendarPicker />}
     </div>
   );
 };
