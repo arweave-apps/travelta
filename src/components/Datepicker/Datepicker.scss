@@ -15,6 +15,26 @@
   }
 
   &__depart {
+    &:after {
+      @include pseudo();
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 2px;
+      background: $active-color;
+      transition: width 0.2s linear;
+    }
+
+    &--active {
+      &:after {
+        width: 99.5%;
+      }
+    }
+
+    & input {
+      border-right: none;
+    }
+
     @include mq('tablet-wide') {
       & input {
         border-radius: 0 0 0 $radius;
@@ -31,6 +51,26 @@
   }
 
   &__return {
+    &:after {
+      @include pseudo();
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 2px;
+      background: $active-color;
+      transition: width 0.2s linear;
+    }
+
+    &--active {
+      &:after {
+        width: 49.5%;
+      }
+    }
+
+    & input {
+      border-right: none;
+    }
+
     @include mq('tablet-wide') {
       & input {
         border-top: none;

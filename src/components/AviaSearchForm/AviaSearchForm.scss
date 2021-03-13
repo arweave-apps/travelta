@@ -25,6 +25,7 @@
 
     & input {
       border-radius: $radius 0 0 $radius;
+      border-right: none;
     }
 
     @include mq('tablet-wide') {
@@ -48,6 +49,10 @@
   &__destination {
     grid-column: 2/3;
     grid-row: 1/1;
+
+    & input {
+      border-right: none;
+    }
 
     @include mq('tablet-wide') {
       grid-column: 3/6;

@@ -1,14 +1,14 @@
 import React from 'react';
 
+import useInput from '../../hooks/useInput';
+
 import SwitchButton from '../SwitchButton';
 import TextInput from '../TextInput';
 import PassangerSelect from '../PassangerSelect';
 import SimpleButton from '../SimpleButton';
-
-import useInput from '../../hooks/useInput';
+import Datepicker from '../Datepicker';
 
 import './AviaSearchForm.scss';
-import Datepicker from '../Datepicker';
 
 const AviaSearchForm = (): JSX.Element => {
   const origin = useInput('');

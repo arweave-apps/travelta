@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
 import { settingsReducer } from './settings';
+import { aviaParamsReducer } from './aviaParams';
 
 export const rootReducer = combineReducers({
   settings: settingsReducer,
-  // users: userReducer,
-  // here you can add the rest of the reducers
+  aviaParams: aviaParamsReducer,
 });
 
 export type RootStateType = ReturnType<typeof rootReducer>;
