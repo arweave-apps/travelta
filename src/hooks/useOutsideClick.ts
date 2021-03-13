@@ -6,7 +6,11 @@ export default function useOutsideClick(
   isOpen: boolean
 ): void {
   useEffect(() => {
-    function clickOutsideHandler(e: MouseEvent) {
+    const handleClick = (e: MouseEvent) => {
+      if (!isOpen) {
+        return;
+      }
+
       if (
         isOpen &&
         e.target instanceof Node &&
@@ -15,12 +19,12 @@ export default function useOutsideClick(
       ) {
         func();
       }
-    }
+    };
 
-    document.addEventListener('click', clickOutsideHandler);
+    document.addEventListener('click', handleClick);
 
     return () => {
-      document.removeEventListener('click', clickOutsideHandler);
+      document.removeEventListener('click', handleClick);
     };
   }, [func, isOpen, ref]);
 }
