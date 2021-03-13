@@ -25,6 +25,7 @@
 
     & input {
       border-radius: $radius 0 0 $radius;
+      border-right: none;
     }
 
     @include mq('tablet-wide') {
@@ -49,6 +50,10 @@
     grid-column: 2/3;
     grid-row: 1/1;
 
+    & input {
+      border-right: none;
+    }
+
     @include mq('tablet-wide') {
       grid-column: 3/6;
 
@@ -66,54 +71,6 @@
         border-radius: 0;
         border-right: 2px solid $border-color;
         border-top: none;
-      }
-    }
-  }
-
-  &__date-picker {
-    @include display(flex, flex-start, center);
-    position: relative;
-    grid-column: 3/5;
-    grid-row: 1/1;
-
-    @include mq('tablet-wide') {
-      grid-column: 1/3;
-      grid-row: 2/2;
-    }
-
-    @include mq('phablet') {
-      grid-column: 1/3;
-      grid-row: 3/3;
-    }
-  }
-
-  &__depart {
-    @include mq('tablet-wide') {
-      & input {
-        border-radius: 0 0 0 $radius;
-        border-top: none;
-      }
-    }
-
-    @include mq('phablet') {
-      & input {
-        border-radius: 0;
-        border-top: none;
-      }
-    }
-  }
-
-  &__return {
-    @include mq('tablet-wide') {
-      & input {
-        border-top: none;
-      }
-    }
-
-    @include mq('phablet') {
-      & input {
-        border-top: none;
-        border-right: 2px solid $border-color;
       }
     }
   }

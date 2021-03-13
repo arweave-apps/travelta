@@ -7,7 +7,7 @@ import './TextInput.scss';
 type TextInputProps = {
   placeholder: string;
   id: string;
-  value?: string;
+  value: string | undefined;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   readonly?: boolean;
 };
@@ -15,9 +15,9 @@ type TextInputProps = {
 const TextInput = ({
   placeholder,
   id,
-  value,
+  value = '',
   onChange,
-  readonly,
+  readonly = false,
 }: TextInputProps): JSX.Element => {
   return (
     <label htmlFor={id} className={`label ${id}`}>

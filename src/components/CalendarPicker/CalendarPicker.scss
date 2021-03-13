@@ -24,7 +24,7 @@
     @include font-roboto(rem(16), $primary-text-color, normal, normal, rem(16));
   }
 
-  &__reset {
+  &__no-return-btn {
     @include font-roboto(
       rem(16),
       $alternative-text-color,
@@ -41,6 +41,11 @@
     &:hover {
       cursor: pointer;
       color: $active-color;
+    }
+
+    &[disabled] {
+      pointer-events: none;
+      color: rgba($secondary-text-color, 0.3);
     }
   }
 

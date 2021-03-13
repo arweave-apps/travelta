@@ -6,6 +6,7 @@
   @include font-roboto(rem(18), $primary-text-color, normal, normal, rem(16));
   width: 100%;
   height: inherit;
+  position: relative;
 
   background: $panel-color;
   border: 2px solid $border-color;
@@ -13,7 +14,7 @@
   border-radius: 0;
   padding: 0 rem(16);
 
-  border-right: none;
+  transition: border-bottom 0.2s linear;
 
   &::placeholder {
     @include font-roboto(rem(16), $secondary-text-color, normal, normal, (19));
