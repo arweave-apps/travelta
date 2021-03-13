@@ -54,7 +54,7 @@ const isFilledRightHalfCell = (
     return true;
   }
 
-  // карсит вправо активный день когда есть обе даты
+  // красит вправо активный день когда есть обе даты
   if (
     startDate &&
     endDate &&
@@ -147,22 +147,8 @@ const CalendarMonth = ({
   onMouseEnterDay,
   onMouseLeaveMonth,
 }: CalendarMonthProps): JSX.Element => {
-  const getYear = (date: Date | null): number => {
-    if (date) {
-      return date.getFullYear();
-    }
-    return 0;
-  };
-
-  const getMonth = (date: Date | null): number => {
-    if (date) {
-      return date.getMonth();
-    }
-    return 0;
-  };
-
-  const year = getYear(calendarDate);
-  const month = getMonth(calendarDate);
+  const year = calendarDate?.getFullYear() || 0;
+  const month = calendarDate?.getMonth() || 0;
 
   return (
     <div className="month">
