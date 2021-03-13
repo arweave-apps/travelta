@@ -4,11 +4,11 @@ import SwitchButton from '../SwitchButton';
 import TextInput from '../TextInput';
 import PassangerSelect from '../PassangerSelect';
 import SimpleButton from '../SimpleButton';
-import CalendarPicker from '../CalendarPicker';
 
 import useInput from '../../hooks/useInput';
 
 import './AviaSearchForm.scss';
+import Datepicker from '../Datepicker';
 
 const AviaSearchForm = (): JSX.Element => {
   const origin = useInput('');
@@ -35,17 +35,7 @@ const AviaSearchForm = (): JSX.Element => {
         />
       </div>
 
-      <div className="search-form__date-picker">
-        <div className="search-form__depart">
-          <TextInput placeholder="Когда" id="depart" readonly />
-        </div>
-
-        <div className="search-form__return">
-          <TextInput placeholder="Обратно" id="return" readonly />
-        </div>
-
-        <CalendarPicker />
-      </div>
+      <Datepicker />
 
       <div className="search-form__select">
         <PassangerSelect />
