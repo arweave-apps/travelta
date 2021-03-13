@@ -10,7 +10,11 @@ import CalendarMonth from './CalendarMonth';
 import getMonthDates from '../../utils/getMonthDate';
 
 import './CalendarPicker.scss';
-import { setActiveInputDate } from '../../redux/actions/aviaParams/aviaParams';
+import {
+  setActiveInputDate,
+  setDepartureDate,
+  setReturnDate,
+} from '../../redux/actions/aviaParams/aviaParams';
 
 type StateType = {
   aviaParams: InitialAviaParamsStateType;
@@ -18,8 +22,17 @@ type StateType = {
 
 const CalendarPicker = (): JSX.Element => {
   const dispatch = useDispatch();
+
   const activeInputDate = useSelector(
     (state: StateType) => state.aviaParams.activeInputDate
+  );
+
+  const departureDate = useSelector(
+    (state: StateType) => state.aviaParams.departureDate
+  );
+
+  const returnDate = useSelector(
+    (state: StateType) => state.aviaParams.returnDate
   );
 
   const [prevMonthData, setPrevMonthData] = useState<Array<
@@ -33,8 +46,6 @@ const CalendarPicker = (): JSX.Element => {
   const [prevMonthDate, setDateOfPrevMonth] = useState<Date | null>(null);
   const [nextMonthDate, setDateOfNextMonth] = useState<Date | null>(null);
 
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
   const [hoverDate, setHoverDate] = useState<Date | null>(null);
 
   useEffect(() => {
@@ -81,28 +92,31 @@ const CalendarPicker = (): JSX.Element => {
   const handleClickDay = useCallback(
     (date: Date | null) => {
       if (activeInputDate === 'start') {
-        if ((hoverDate && endDate && hoverDate < endDate) || !startDate) {
-          setStartDate(date);
+        if (
+          (hoverDate && returnDate && hoverDate < returnDate) ||
+          !departureDate
+        ) {
+          dispatch(setDepartureDate(date));
           dispatch(setActiveInputDate('end'));
-        } else if (hoverDate && endDate && hoverDate > endDate) {
-          const tempEnd = endDate;
-          setStartDate(tempEnd);
-          setEndDate(hoverDate);
+        } else if (hoverDate && returnDate && hoverDate > returnDate) {
+          const tempEnd = returnDate;
+          dispatch(setDepartureDate(tempEnd));
+          dispatch(setReturnDate(hoverDate));
         }
       }
 
       if (activeInputDate === 'end') {
-        if (hoverDate && startDate && hoverDate > startDate) {
-          setEndDate(date);
+        if (hoverDate && departureDate && hoverDate > departureDate) {
+          dispatch(setReturnDate(date));
           dispatch(setActiveInputDate('start'));
-        } else if (hoverDate && startDate && hoverDate < startDate) {
-          const tempStart = startDate;
-          setStartDate(hoverDate);
-          setEndDate(tempStart);
+        } else if (hoverDate && departureDate && hoverDate < departureDate) {
+          const tempStart = departureDate;
+          dispatch(setDepartureDate(hoverDate));
+          dispatch(setReturnDate(tempStart));
         }
       }
     },
-    [activeInputDate, dispatch, endDate, hoverDate, startDate]
+    [activeInputDate, dispatch, returnDate, hoverDate, departureDate]
   );
 
   const handleMouseEnterDay = useCallback((date: Date | null) => {
@@ -130,7 +144,7 @@ const CalendarPicker = (): JSX.Element => {
           <button
             type="button"
             className="calendar__no-return-btn"
-            disabled={!endDate}
+            disabled={!returnDate}
           >
             Без обратного билета
           </button>
@@ -143,8 +157,8 @@ const CalendarPicker = (): JSX.Element => {
             onClickDay={handleClickDay}
             onMouseEnterDay={handleMouseEnterDay}
             onMouseLeaveMonth={handleMouseLeaveMonth}
-            startDate={startDate}
-            endDate={endDate}
+            startDate={departureDate}
+            endDate={returnDate}
             hoverDate={hoverDate}
           />
 
@@ -154,8 +168,8 @@ const CalendarPicker = (): JSX.Element => {
             onClickDay={handleClickDay}
             onMouseEnterDay={handleMouseEnterDay}
             onMouseLeaveMonth={handleMouseLeaveMonth}
-            startDate={startDate}
-            endDate={endDate}
+            startDate={departureDate}
+            endDate={returnDate}
             hoverDate={hoverDate}
           />
         </div>
