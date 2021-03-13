@@ -112,8 +112,12 @@ const CalendarPicker = (): JSX.Element => {
       <div className="calendar__inner">
         <div className="calendar__header">
           <span className="calendar__title">Выберите дату отправления</span>
-          <button type="button" className="calendar__reset">
-            Сбросить
+          <button
+            type="button"
+            className="calendar__no-return-btn"
+            disabled={!endDate}
+          >
+            Без обратного билета
           </button>
         </div>
 
