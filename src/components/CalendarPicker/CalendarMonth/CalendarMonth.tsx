@@ -2,6 +2,14 @@ import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import classNames from 'classnames';
 
+import {
+  isActive,
+  isFilled,
+  isFilledLeftHalfCell,
+  isFilledRightHalfCell,
+  isPastDay,
+} from './helpers';
+
 import './CalendarMonth.scss';
 
 const shortWeekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
@@ -20,111 +28,6 @@ const monthsNames = [
   'Ноябрь',
   'Декабрь',
 ];
-
-const isPastDay = (comparisonDate: Date): boolean => {
-  const now = new Date();
-
-  if (comparisonDate < now) {
-    return true;
-  }
-  return false;
-};
-
-const isActive = (comparisonDate: Date, date: Date | null): boolean => {
-  if (date) {
-    return date.getTime() === comparisonDate.getTime();
-  }
-
-  return false;
-};
-
-const isFilledRightHalfCell = (
-  comparisonDate: Date,
-  startDate: Date | null,
-  hoverDate: Date | null,
-  endDate: Date | null
-): boolean => {
-  // красит вправо активный день при наведении
-  if (
-    startDate &&
-    hoverDate &&
-    startDate < hoverDate &&
-    comparisonDate.getTime() === startDate.getTime()
-  ) {
-    return true;
-  }
-
-  // красит вправо активный день когда есть обе даты
-  if (
-    startDate &&
-    endDate &&
-    startDate < endDate &&
-    comparisonDate.getTime() === startDate.getTime()
-  ) {
-    return true;
-  }
-
-  return false;
-};
-
-const isFilledLeftHalfCell = (
-  comparisonDate: Date,
-  startDate: Date | null,
-  hoverDate: Date | null,
-  endDate: Date | null
-): boolean => {
-  // красит влево активный день при наведении на даты
-  if (
-    startDate &&
-    hoverDate &&
-    startDate > hoverDate &&
-    comparisonDate.getTime() === startDate.getTime()
-  ) {
-    return true;
-  }
-
-  // красит влево активный день когда есть даты начала и конца
-  if (
-    startDate &&
-    endDate &&
-    startDate < endDate &&
-    comparisonDate.getTime() === endDate.getTime()
-  ) {
-    return true;
-  }
-
-  return false;
-};
-
-const isFilled = (
-  comparisonDate: Date,
-  startDate: Date | null,
-  hoverDate: Date | null,
-  endDate: Date | null
-): boolean => {
-  // красит когда есть обе даты
-  if (
-    startDate &&
-    endDate &&
-    startDate < comparisonDate &&
-    comparisonDate < endDate
-  ) {
-    return true;
-  }
-
-  // красит при наведении
-  if (startDate && hoverDate) {
-    if (comparisonDate > startDate && comparisonDate < hoverDate) {
-      return true;
-    }
-
-    if (comparisonDate < startDate && comparisonDate > hoverDate) {
-      return true;
-    }
-  }
-
-  return false;
-};
 
 type CalendarMonthProps = {
   calendarDate: Date | null;
