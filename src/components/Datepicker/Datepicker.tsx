@@ -7,9 +7,9 @@ import CalendarPicker from '../CalendarPicker';
 import TextInput from '../TextInput';
 
 import { setActiveInputDate } from '../../redux/actions/aviaParams/aviaParams';
+import { InitialAviaParamsStateType } from '../../redux/reducers/aviaParams';
 
 import './Datepicker.scss';
-import { InitialAviaParamsStateType } from '../../redux/reducers/aviaParams';
 
 type StateType = {
   aviaParams: InitialAviaParamsStateType;
@@ -17,6 +17,7 @@ type StateType = {
 
 const Datepicker = (): JSX.Element => {
   const dispatch = useDispatch();
+
   const activeInputDate = useSelector(
     (state: StateType) => state.aviaParams.activeInputDate
   );
@@ -24,6 +25,14 @@ const Datepicker = (): JSX.Element => {
   const handleClickInputDate = (inputType: string) => {
     dispatch(setActiveInputDate(inputType));
   };
+
+  const departureDate = useSelector(
+    (state: StateType) => state.aviaParams.departureDate
+  );
+
+  const returnDate = useSelector(
+    (state: StateType) => state.aviaParams.returnDate
+  );
 
   return (
     <div className="datepicker">
@@ -34,7 +43,12 @@ const Datepicker = (): JSX.Element => {
         role="presentation"
         onClick={() => handleClickInputDate('start')}
       >
-        <TextInput placeholder="Когда" id="depart" readonly />
+        <TextInput
+          placeholder="Когда"
+          id="depart"
+          value={departureDate?.toLocaleDateString()}
+          readonly
+        />
       </div>
 
       <div
@@ -44,7 +58,12 @@ const Datepicker = (): JSX.Element => {
         role="presentation"
         onClick={() => handleClickInputDate('end')}
       >
-        <TextInput placeholder="Обратно" id="return" readonly />
+        <TextInput
+          placeholder="Обратно"
+          id="return"
+          value={returnDate?.toLocaleDateString()}
+          readonly
+        />
       </div>
 
       <CalendarPicker />
