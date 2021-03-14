@@ -21,10 +21,10 @@ export default function useOutsideClick(
       }
     };
 
-    document.addEventListener('click', handleClick);
+    document.addEventListener('click', handleClick, { capture: true });
 
     return () => {
-      document.removeEventListener('click', handleClick);
+      document.removeEventListener('click', handleClick, { capture: true });
     };
   }, [func, isOpen, ref]);
 }

@@ -113,6 +113,8 @@ const CalendarPicker = (): JSX.Element => {
           const tempStart = departureDate;
           dispatch(setDepartureDate(hoverDate));
           dispatch(setReturnDate(tempStart));
+        } else if (hoverDate && !departureDate) {
+          dispatch(setReturnDate(hoverDate));
         }
       }
     },
