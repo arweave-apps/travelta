@@ -21,26 +21,29 @@ export const isFilledRightHalfCell = (
   hoverDate: Date | null,
   endDate: Date | null
 ): boolean => {
-  // красит вправо активный день при наведении
+  // красит правую половину у startDate
   if (
     startDate &&
     hoverDate &&
+    !endDate &&
     startDate < hoverDate &&
     comparisonDate.getTime() === startDate.getTime()
   ) {
     return true;
   }
 
+  // красит правую половину у endDate
   if (
     endDate &&
     hoverDate &&
+    !startDate &&
     endDate < hoverDate &&
     comparisonDate.getTime() === endDate.getTime()
   ) {
     return true;
   }
 
-  // красит вправо активный день когда есть обе даты
+  // красит правую половину у startDate, если выбранны обе даты
   if (
     startDate &&
     endDate &&
@@ -59,26 +62,29 @@ export const isFilledLeftHalfCell = (
   hoverDate: Date | null,
   endDate: Date | null
 ): boolean => {
-  // красит влево активный день при наведении на даты
+  // красит левую половину у startDate
   if (
     startDate &&
     hoverDate &&
+    !endDate &&
     startDate > hoverDate &&
     comparisonDate.getTime() === startDate.getTime()
   ) {
     return true;
   }
 
+  // красит левую половину у endDate
   if (
     endDate &&
     hoverDate &&
+    !startDate &&
     endDate > hoverDate &&
     comparisonDate.getTime() === endDate.getTime()
   ) {
     return true;
   }
 
-  // красит влево активный день когда есть даты начала и конца
+  // красит правую половину у endDate, если выбранны обе даты
   if (
     startDate &&
     endDate &&
@@ -97,7 +103,7 @@ export const isFilled = (
   hoverDate: Date | null,
   endDate: Date | null
 ): boolean => {
-  // красит когда есть обе даты
+  // красит промежуток между датами
   if (
     startDate &&
     endDate &&
@@ -107,13 +113,20 @@ export const isFilled = (
     return true;
   }
 
-  // красит при наведении
+  // красит ячейки при наведении
   if (startDate && hoverDate) {
     if (comparisonDate > startDate && comparisonDate < hoverDate) {
       return true;
     }
 
     if (comparisonDate < startDate && comparisonDate > hoverDate) {
+      return true;
+    }
+
+    if (
+      comparisonDate.getTime() === startDate.getTime() &&
+      comparisonDate > hoverDate
+    ) {
       return true;
     }
   }

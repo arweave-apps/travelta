@@ -68,7 +68,7 @@
     }
 
     &--filled {
-      background: $hover-accent-color;
+      background: $hover-accent-color !important;
     }
 
     &--past {
