@@ -31,6 +31,15 @@ export const isFilledRightHalfCell = (
     return true;
   }
 
+  if (
+    endDate &&
+    hoverDate &&
+    endDate < hoverDate &&
+    comparisonDate.getTime() === endDate.getTime()
+  ) {
+    return true;
+  }
+
   // красит вправо активный день когда есть обе даты
   if (
     startDate &&
@@ -56,6 +65,15 @@ export const isFilledLeftHalfCell = (
     hoverDate &&
     startDate > hoverDate &&
     comparisonDate.getTime() === startDate.getTime()
+  ) {
+    return true;
+  }
+
+  if (
+    endDate &&
+    hoverDate &&
+    endDate > hoverDate &&
+    comparisonDate.getTime() === endDate.getTime()
   ) {
     return true;
   }
@@ -96,6 +114,16 @@ export const isFilled = (
     }
 
     if (comparisonDate < startDate && comparisonDate > hoverDate) {
+      return true;
+    }
+  }
+
+  if (endDate && hoverDate) {
+    if (comparisonDate > endDate && comparisonDate < hoverDate) {
+      return true;
+    }
+
+    if (comparisonDate < endDate && comparisonDate > hoverDate) {
       return true;
     }
   }
