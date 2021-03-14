@@ -5,9 +5,8 @@ import {
   SET_RETURN_DATE,
 } from './types';
 
-// eslint-disable-next-line import/prefer-default-export
 export const setActiveInputDate = (
-  inputType: string
+  inputType: string | null
 ): ActionAviaParamsTypes => ({
   type: SET_ACTIVE_INPUT_DATE,
   payload: inputType,

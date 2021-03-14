@@ -4,7 +4,7 @@ export const SET_RETURN_DATE = 'SET_RETURN_DATE';
 
 type ActionSetActiveInputDateType = {
   type: typeof SET_ACTIVE_INPUT_DATE;
-  payload: string;
+  payload: string | null;
 };
 
 type ActionSetDepartureDateType = {

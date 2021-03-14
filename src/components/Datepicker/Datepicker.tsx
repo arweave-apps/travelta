@@ -20,7 +20,14 @@ const Datepicker = (): JSX.Element => {
   const dispatch = useDispatch();
   const [isOpen, setOpen] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  useOutsideClick(wrapperRef, () => setOpen(false), isOpen);
+  useOutsideClick(
+    wrapperRef,
+    () => {
+      setOpen(false);
+      dispatch(setActiveInputDate(null));
+    },
+    isOpen
+  );
 
   const handleClickCalendarOpen = () => {
     if (isOpen) {
