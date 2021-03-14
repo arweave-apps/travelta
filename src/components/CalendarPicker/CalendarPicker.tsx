@@ -92,17 +92,14 @@ const CalendarPicker = (): JSX.Element => {
   const handleClickDay = useCallback(
     (date: Date | null) => {
       if (activeInputDate === 'start') {
-        if (
-          (hoverDate && returnDate && hoverDate < returnDate) ||
-          !departureDate
-        ) {
+        if (hoverDate && returnDate && hoverDate < returnDate) {
           dispatch(setDepartureDate(date));
           dispatch(setActiveInputDate('end'));
         } else if (hoverDate && returnDate && hoverDate > returnDate) {
           const tempEnd = returnDate;
           dispatch(setDepartureDate(tempEnd));
           dispatch(setReturnDate(hoverDate));
-        } else if (hoverDate && departureDate) {
+        } else if (hoverDate && (departureDate || !departureDate)) {
           dispatch(setDepartureDate(hoverDate));
           dispatch(setActiveInputDate('end'));
         }

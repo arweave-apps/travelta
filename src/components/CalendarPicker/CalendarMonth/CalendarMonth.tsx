@@ -5,8 +5,8 @@ import classNames from 'classnames';
 import {
   isActive,
   isFilled,
-  isFilledLeftHalfCell,
   isFilledRightHalfCell,
+  isFilledLeftHalfCell,
   isPastDay,
 } from './helpers';
 
