@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 
 import { InitialAviaParamsStateType } from '../../redux/reducers/aviaParams';
@@ -130,11 +131,8 @@ const CalendarPicker = (): JSX.Element => {
     setHoverDate(null);
   }, []);
 
-  const isDisabledPrevBtn = (): boolean =>
-    prevMonthDate ? prevMonthDate.getMonth() === new Date().getMonth() : false;
-
-  const isDisabledNextBtn = (): boolean =>
-    nextMonthDate ? nextMonthDate.getMonth() === new Date().getMonth() : false;
+  const isDisabledBtn = (date: Date | null): boolean =>
+    date ? date.getMonth() === new Date().getMonth() : false;
 
   return (
     <div className="calendar">
@@ -181,15 +179,16 @@ const CalendarPicker = (): JSX.Element => {
           type="button"
           className="calendar__btn calendar__btn--prev"
           onClick={() => handleClickBtn(-1)}
-          disabled={isDisabledPrevBtn()}
+          disabled={isDisabledBtn(prevMonthDate)}
         >
           <PrevIcon />
         </button>
+
         <button
           type="button"
           className="calendar__btn calendar__btn--next"
           onClick={() => handleClickBtn(1)}
-          disabled={isDisabledNextBtn()}
+          disabled={isDisabledBtn(nextMonthDate)}
         >
           <NextIcon />
         </button>
