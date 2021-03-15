@@ -62,10 +62,10 @@ const Datepicker = (): JSX.Element => {
     >
       <div
         className={classNames('datepicker__depart', {
-          'datepicker__depart--active': activeInputDate === 'start',
+          'datepicker__depart--active': activeInputDate === 'departure',
         })}
         role="presentation"
-        onClick={() => handleClickInputDate('start')}
+        onClick={() => handleClickInputDate('departure')}
       >
         <TextInput
           placeholder="Когда"
@@ -77,10 +77,10 @@ const Datepicker = (): JSX.Element => {
 
       <div
         className={classNames('datepicker__return', {
-          'datepicker__return--active': activeInputDate === 'end',
+          'datepicker__return--active': activeInputDate === 'return',
         })}
         role="presentation"
-        onClick={() => handleClickInputDate('end')}
+        onClick={() => handleClickInputDate('return')}
       >
         <TextInput
           placeholder="Обратно"
