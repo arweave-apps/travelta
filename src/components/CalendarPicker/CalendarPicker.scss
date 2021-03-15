@@ -69,10 +69,17 @@
 
     &[disabled] {
       background: darken($panel-color, 5%);
-      pointer-events: none;
 
       & > svg {
         color: #a7a7a7;
+      }
+
+      &:hover {
+        cursor: default;
+
+        & > svg {
+          color: #a7a7a7;
+        }
       }
     }
 
