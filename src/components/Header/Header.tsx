@@ -1,7 +1,7 @@
 import React from 'react';
 
 import LogoImg from '../../assets/images/logo.svg';
-import CurrencySelector from './CurrencySelector';
+import CurrencySelector from '../CurrencySelector';
 import HeaderNav from './HeaderNav';
 
 import './Header.scss';

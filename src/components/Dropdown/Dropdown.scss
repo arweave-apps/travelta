@@ -10,11 +10,11 @@
   background: $panel-color;
   box-shadow: $panel-shadow;
 
-  &__lists {
+  &__list {
     padding: rem(20) 0;
   }
 
-  &__list {
+  &__item {
     @include font-roboto(rem(16), $primary-text-color, normal, normal, rem(19));
     position: relative;
 
