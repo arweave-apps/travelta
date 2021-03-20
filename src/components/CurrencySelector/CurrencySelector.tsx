@@ -1,12 +1,13 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setCurrency } from '../../../redux/actions/settings/settings';
-import { InitialSettingsStateType } from '../../../redux/reducers/settings';
+import { InitialSettingsStateType } from '../../redux/reducers/settings';
+import { setCurrency } from '../../redux/actions/settings/settings';
 
-import useOutsideClick from '../../../hooks/useOutsideClick';
+import useOutsideClick from '../../hooks/useOutsideClick';
 
-import Dropdown from './Dropdown';
+import Dropdown from '../Dropdown';
+import DropdownList from '../Dropdown/DropdownList';
 
 import './CurrencySelector.scss';
 
@@ -24,7 +25,9 @@ const CurrencySelector = (): JSX.Element => {
   const dispatch = useDispatch();
   const currency = useSelector(({ settings }: StateType) => settings.currency);
   const [isOpen, setOpen] = useState<boolean>(false);
+
   const wrapperRef = useRef<HTMLDivElement>(null);
+
   useOutsideClick(wrapperRef, () => setOpen(false), isOpen);
 
   const toggleDropdownMenu = () => {
@@ -49,11 +52,13 @@ const CurrencySelector = (): JSX.Element => {
       </button>
 
       {isOpen && (
-        <Dropdown
-          items={currencyList}
-          onClick={handleClickDropdownList}
-          currentCurrency={currency}
-        />
+        <Dropdown>
+          <DropdownList
+            items={currencyList}
+            onClick={handleClickDropdownList}
+            currentValue={currency}
+          />
+        </Dropdown>
       )}
     </div>
   );
