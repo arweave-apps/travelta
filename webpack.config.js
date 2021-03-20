@@ -168,7 +168,7 @@ module.exports = {
   output: {
     filename: `${getFilename('js')}`,
     path: path.resolve(__dirname, 'dist'),
-    publicPath: isProd ? './' : '/',
+    publicPath: '/',
   },
 
   // Говорит Webpack какие типы файлов и в каком порядке искать при разрешении модуля
