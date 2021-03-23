@@ -2,5 +2,5 @@
   @include display(flex, space-between, center);
   @include font-roboto(rem(16), $primary-text-color, normal, normal, rem(19));
 
-  max-width: rem(70);
+  min-width: rem(70);
 }

@@ -6,7 +6,7 @@ type RadioButtonProps = {
   id: string;
   title: string;
   name: string;
-  option: string;
+  checked: boolean;
   onChange: (e: React.FormEvent<HTMLInputElement>) => void;
 };
 
@@ -14,7 +14,7 @@ const RadioButton = ({
   id,
   title,
   name,
-  option,
+  checked,
   onChange,
 }: RadioButtonProps): JSX.Element => {
   return (
@@ -23,7 +23,7 @@ const RadioButton = ({
         id={id}
         name={name}
         type="radio"
-        checked={id === option}
+        checked={checked}
         className="radio__input"
         onChange={onChange}
       />
