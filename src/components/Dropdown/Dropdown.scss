@@ -1,6 +1,6 @@
 .dropdown {
   position: absolute;
-  top: rem(40);
+  top: 120%;
   right: 0;
 
   min-width: rem(200);
@@ -11,60 +11,6 @@
   box-shadow: $panel-shadow;
 
   &__list {
-    padding: rem(20) 0;
-  }
-
-  &__item {
-    @include font-roboto(rem(16), $primary-text-color, normal, normal, rem(19));
-    position: relative;
-
-    width: 100%;
-    height: rem(40);
-
-    padding: rem(10);
-
-    transition: background 0.2s ease-in;
-
-    &--active {
-      background: $active-item-color;
-
-      &:before {
-        @include pseudo();
-        width: 2px;
-        height: 100%;
-
-        top: 0;
-        left: 0;
-        bottom: 0;
-        background: $accent-color;
-
-        transition: background 0.2s ease-in;
-      }
-    }
-
-    & :first-child {
-      margin-right: rem(20);
-    }
-
-    &:hover {
-      cursor: pointer;
-      background: $active-item-color;
-    }
-
-    &:hover:before {
-      background: $accent-color;
-    }
-
-    &:before {
-      @include pseudo();
-      width: 2px;
-      height: 100%;
-
-      top: 0;
-      left: 0;
-      bottom: 0;
-
-      transition: background 0.2s ease-in;
-    }
+    padding: rem(16) 0;
   }
 }

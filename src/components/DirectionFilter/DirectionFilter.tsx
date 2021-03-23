@@ -3,36 +3,42 @@ import RadioButton from '../RadioButton';
 
 import './DirectionFilter.scss';
 
+export const filterItems = [
+  {
+    id: 'roundtrip',
+    text: 'Туда-обратно',
+  },
+  {
+    id: 'oneWay',
+    text: 'В одну сторону',
+  },
+  {
+    id: 'multiCity',
+    text: 'Сложный маршрут',
+  },
+];
+
 const DirectionFilter = (): JSX.Element => {
   const [option, setOption] = useState('roundtrip');
 
-  const optionHandler = (e: React.FormEvent<HTMLInputElement>) => {
-    setOption(e.currentTarget.id);
+  const handleChangeRadioButton = (id: string) => {
+    setOption(id);
   };
 
   return (
     <div className="direction-filter">
-      <RadioButton
-        id="roundtrip"
-        title="Туда-обратно"
-        name="direction"
-        option={option}
-        onChange={optionHandler}
-      />
-      <RadioButton
-        id="oneWay"
-        title="В одну сторону"
-        name="direction"
-        option={option}
-        onChange={optionHandler}
-      />
-      <RadioButton
-        id="multiCity"
-        title="Сложный маршрут"
-        name="direction"
-        option={option}
-        onChange={optionHandler}
-      />
+      {filterItems.map(({ id, text }) => {
+        return (
+          <RadioButton
+            key={id}
+            id={id}
+            title={text}
+            name="direction"
+            checked={id === option}
+            onChange={() => handleChangeRadioButton(id)}
+          />
+        );
+      })}
     </div>
   );
 };

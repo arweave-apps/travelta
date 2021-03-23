@@ -9,7 +9,7 @@
     display: inline-block;
     position: relative;
 
-    @include font-roboto(rem(18), $primary-text-color, normal, normal, rem(16));
+    @include font-roboto(rem(16), $primary-text-color, normal, normal, rem(16));
 
     cursor: pointer;
     padding-left: rem(30);

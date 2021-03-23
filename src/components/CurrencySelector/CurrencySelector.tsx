@@ -6,15 +6,16 @@ import { setCurrency } from '../../redux/actions/settings/settings';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 
-import Dropdown from '../Dropdown';
-import DropdownList from '../Dropdown/DropdownList';
-
 import './CurrencySelector.scss';
+import Dropdown from '../Dropdown';
+import DropdownItem from '../Dropdown/DropdownItem/DropdownItem';
+import TextBlock from '../TextBlock';
+import TriggerButton from '../TriggerButton';
 
 const currencyList = [
-  { label: 'RUB', name: 'Рубли' },
-  { label: 'EUR', name: 'Евро' },
-  { label: 'USD', name: 'Доллары' },
+  { label: 'RUB', text: 'Рубли' },
+  { label: 'EUR', text: 'Евро' },
+  { label: 'USD', text: 'Доллары' },
 ];
 
 type StateType = {
@@ -23,18 +24,17 @@ type StateType = {
 
 const CurrencySelector = (): JSX.Element => {
   const dispatch = useDispatch();
-  const currency = useSelector(({ settings }: StateType) => settings.currency);
+  const { currency } = useSelector(({ settings }: StateType) => settings);
+
   const [isOpen, setOpen] = useState<boolean>(false);
-
   const wrapperRef = useRef<HTMLDivElement>(null);
-
   useOutsideClick(wrapperRef, () => setOpen(false), isOpen);
 
   const toggleDropdownMenu = () => {
     setOpen(!isOpen);
   };
 
-  const handleClickDropdownList = useCallback(
+  const handleClickDropdownItem = useCallback(
     (value: string) => {
       dispatch(setCurrency(value));
     },
@@ -42,22 +42,27 @@ const CurrencySelector = (): JSX.Element => {
   );
 
   return (
-    <div ref={wrapperRef} className="currency-selector">
-      <button
-        type="button"
-        className="currency-selector__btn"
-        onClick={toggleDropdownMenu}
-      >
-        <span>{currency}</span>
-      </button>
+    <div className="currency-selector" ref={wrapperRef}>
+      <TriggerButton onClick={toggleDropdownMenu} />
+
+      <span>{currency}</span>
 
       {isOpen && (
         <Dropdown>
-          <DropdownList
-            items={currencyList}
-            onClick={handleClickDropdownList}
-            currentValue={currency}
-          />
+          {currencyList.map((row) => {
+            const { label, text } = row;
+
+            return (
+              <DropdownItem
+                key={label}
+                isActive={currency === label}
+                hasHover
+                onClickItem={() => handleClickDropdownItem(label)}
+              >
+                <TextBlock label={label} text={text} />
+              </DropdownItem>
+            );
+          })}
         </Dropdown>
       )}
     </div>
