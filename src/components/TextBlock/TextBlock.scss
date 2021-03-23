@@ -1,0 +1,32 @@
+.text-block {
+  @include display(flex, center, flex-start);
+
+  &--column {
+    flex-direction: column;
+
+    width: rem(118);
+    margin-right: rem(37);
+  }
+
+  &__label,
+  &__text {
+    @include font-roboto(rem(16), $primary-text-color, normal, normal, rem(19));
+  }
+
+  &__label {
+    text-transform: uppercase;
+    margin-right: rem(20);
+  }
+
+  &__subtext {
+    @include font-roboto(
+      rem(13),
+      $secondary-text-color,
+      normal,
+      normal,
+      rem(15)
+    );
+
+    text-transform: lowercase;
+  }
+}

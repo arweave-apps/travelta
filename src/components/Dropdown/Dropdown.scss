@@ -1,0 +1,16 @@
+.dropdown {
+  position: absolute;
+  top: 120%;
+  right: 0;
+
+  min-width: rem(200);
+
+  border-radius: $radius;
+
+  background: $panel-color;
+  box-shadow: $panel-shadow;
+
+  &__list {
+    padding: rem(16) 0;
+  }
+}

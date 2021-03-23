@@ -1,0 +1,51 @@
+.dropdown__item {
+  @include display(flex, flex-start, center);
+  position: relative;
+
+  width: 100%;
+  height: rem(40);
+
+  padding: 0 rem(16);
+
+  transition: background 0.2s ease-in;
+
+  &--active {
+    background: $active-item-color;
+
+    &:before {
+      @include pseudo();
+      width: 2px;
+      height: 100%;
+
+      top: 0;
+      left: 0;
+      bottom: 0;
+      background: $accent-color;
+
+      transition: background 0.2s ease-in;
+    }
+  }
+
+  &-hover {
+    &:hover {
+      cursor: pointer;
+      background: $active-item-color;
+    }
+
+    &:hover:before {
+      background: $accent-color;
+    }
+
+    &:before {
+      @include pseudo();
+      width: 2px;
+      height: 100%;
+
+      top: 0;
+      left: 0;
+      bottom: 0;
+
+      transition: background 0.2s ease-in;
+    }
+  }
+}

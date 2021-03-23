@@ -2,29 +2,24 @@ import { useEffect } from 'react';
 
 export default function useOutsideClick(
   ref: React.RefObject<HTMLDivElement>,
-  func: () => void,
-  isOpen: boolean
+  handler: () => void,
+  isActive: boolean
 ): void {
   useEffect(() => {
+    if (!isActive) {
+      return undefined;
+    }
+
     const handleClick = (e: MouseEvent) => {
-      if (!isOpen) {
-        return;
-      }
+      const target = e.target as Node;
 
-      if (
-        isOpen &&
-        e.target instanceof Node &&
-        ref.current &&
-        !ref.current.contains(e.target)
-      ) {
-        func();
+      if (ref.current && !ref.current.contains(target)) {
+        handler();
       }
     };
 
-    document.addEventListener('click', handleClick, { capture: true });
+    document.addEventListener('mousedown', handleClick);
 
-    return () => {
-      document.removeEventListener('click', handleClick, { capture: true });
-    };
-  }, [func, isOpen, ref]);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [handler, isActive, ref]);
 }

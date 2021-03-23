@@ -1,0 +1,30 @@
+.counter__btn {
+  width: rem(20);
+  height: rem(20);
+
+  border-radius: 100%;
+  border: none;
+
+  background: $accent-color;
+
+  transition: background 0.2s linear;
+
+  &:hover {
+    cursor: pointer;
+    background: lighten($accent-color, 6%);
+  }
+
+  &[disabled] {
+    background: $disabled-color;
+
+    &:hover {
+      cursor: default;
+    }
+  }
+
+  & > svg {
+    width: rem(10);
+    height: rem(10);
+    color: $main-font-color;
+  }
+}
