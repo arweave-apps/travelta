@@ -7,7 +7,7 @@
     height: calc(100vh - #{$header-hight});
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: 1.5fr 1fr 1fr;
+    grid-template-rows: repeat(3, 1fr);
     grid-template-areas: '. info-titles .' 'search-panel search-panel search-panel';
 
     @include mq('desktop') {
