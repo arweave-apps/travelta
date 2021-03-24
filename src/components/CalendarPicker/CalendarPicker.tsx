@@ -134,6 +134,10 @@ const CalendarPicker = (): JSX.Element => {
   const isDisabledBtn = (date: Date | null): boolean =>
     date ? date.getMonth() === new Date().getMonth() : false;
 
+  const handleClickNoReturnButton = () => {
+    dispatch(setReturnDate(null));
+  };
+
   return (
     <div className="calendar">
       <div className="calendar__inner">
@@ -146,6 +150,7 @@ const CalendarPicker = (): JSX.Element => {
             type="button"
             className="calendar__no-return-btn"
             disabled={!returnDate}
+            onClick={handleClickNoReturnButton}
           >
             Без обратного билета
           </button>
