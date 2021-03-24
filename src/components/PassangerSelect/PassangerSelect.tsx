@@ -62,6 +62,10 @@ const PassangerSelect = (): JSX.Element => {
   };
 
   const handleClickCounter = (changedValue: number, passangerType: string) => {
+    if (passangerType === 'infants' && changedValue > passangers.adults) {
+      return;
+    }
+
     dispatch(setPassangers(changedValue, passangerType));
   };
 
@@ -106,7 +110,11 @@ const PassangerSelect = (): JSX.Element => {
                   passangerType={name}
                   number={currentNumber}
                   minDisabled={currentNumber === min}
-                  maxDisabled={totalPassangers === max}
+                  maxDisabled={
+                    totalPassangers === max ||
+                    (name === 'infants' &&
+                      passangers.infants === passangers.adults)
+                  }
                   onClickCounter={handleClickCounter}
                 />
               </DropdownItem>
