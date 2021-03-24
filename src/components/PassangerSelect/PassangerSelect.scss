@@ -35,6 +35,10 @@
 
   &:hover {
     cursor: pointer;
+
+    & .down-arrow {
+      color: $active-color;
+    }
   }
 
   &:after {
