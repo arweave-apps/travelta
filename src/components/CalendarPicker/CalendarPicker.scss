@@ -4,6 +4,11 @@
   left: 50%;
   transform: translateX(-50%);
 
+  @include mq('tablet-wide') {
+    top: rem(-540);
+    left: 100%;
+  }
+
   &__inner {
     position: relative;
     width: rem(700);
