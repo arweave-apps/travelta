@@ -70,7 +70,7 @@
     border: none;
 
     background: $panel-color;
-    box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.12);
+    box-shadow: $panel-shadow;
 
     &[disabled] {
       background: darken($panel-color, 5%);

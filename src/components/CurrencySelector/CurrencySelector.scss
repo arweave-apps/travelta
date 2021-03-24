@@ -1,6 +1,6 @@
 .currency-selector {
   @include display(flex, center, center);
-  @include font-roboto(rem(14), $main-font-color, 400, normal, rem(21));
+  @include font-roboto(rem(14), $main-text-color, 400, normal, rem(21));
 
   position: relative;
 

@@ -1,20 +1,24 @@
 .search-form {
   display: grid;
   grid-template-columns: repeat(5, 0.9fr) 1fr;
-  grid-template-rows: rem(60);
+  grid-template-rows: $search-form-row-height;
 
   @include mq('tablet-wide') {
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: rem(60) rem(60);
+    grid-template-rows: repeat(2, $search-form-row-height);
   }
 
   @include mq('tablet') {
-    grid-template-rows: rem(60) rem(60) rem(65);
+    grid-template-rows:
+      repeat(2, $search-form-row-height)
+      #{$search-form-row-height + 5};
   }
 
   @include mq('phablet') {
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: rem(60) rem(60) rem(60) rem(60) rem(65);
+    grid-template-rows:
+      repeat(4, $search-form-row-height)
+      #{$search-form-row-height + 5};
   }
 
   &__origin {
@@ -41,7 +45,7 @@
 
       & input {
         border-radius: $radius $radius 0 0;
-        border-right: 2px solid $border-color;
+        border-right: $border-width solid $border-color;
       }
     }
   }
@@ -59,7 +63,7 @@
 
       & input {
         border-radius: 0 $radius 0 0;
-        border-right: 2px solid $border-color;
+        border-right: $border-width solid $border-color;
       }
     }
 
@@ -69,7 +73,7 @@
 
       & input {
         border-radius: 0;
-        border-right: 2px solid $border-color;
+        border-right: $border-width solid $border-color;
         border-top: none;
       }
     }
@@ -123,7 +127,7 @@
       grid-column: 1/6;
       grid-row: 3/3;
       margin-left: 0;
-      margin-top: 5px;
+      margin-top: rem(5);
     }
 
     @include mq('phablet') {

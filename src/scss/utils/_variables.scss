@@ -1,28 +1,29 @@
 $panel-color: #fff;
+$pages-bg-color: #f5f7fa;
 
 $border-color: #d5dce7;
 
 $active-color: #03a3df;
 
 $home-header-color: #184f88;
-$bg-color: #03a3df;
+
+$search-page-info-bg-color: #03a3df;
 $alternative-bg-color: #296aae;
 
 $accent-color: #ff6200;
-$hover-accent-color: rgba(255, 98, 0, 0.1);
+$active-item-color: rgba(255, 131, 54, 0.1);
 $disabled-color: #b8b8b8;
 
-$main-font-color: #f0f5f8;
-
+$main-text-color: #f0f5f8;
 $primary-text-color: #474747;
 $secondary-text-color: #b8b8b8;
 $alternative-text-color: #5f87ab;
 
 $warning-color: #ef312f;
 
-$active-item-color: rgba(255, 131, 54, 0.09);
-
 $radius: 10px;
 $header-hight: 60px;
 $panel-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 $calendar-ceil-size: 34px;
+$border-width: 2px;
+$search-form-row-height: 60px;

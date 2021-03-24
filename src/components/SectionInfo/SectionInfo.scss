@@ -30,7 +30,7 @@
   }
 
   &__title {
-    @include font-roboto(rem(52), $main-font-color, 500, normal, rem(42));
+    @include font-roboto(rem(52), $main-text-color, 500, normal, rem(42));
     margin-bottom: rem(16);
     text-align: center;
 
@@ -53,7 +53,7 @@
   }
 
   &__subtitle {
-    @include font-roboto(rem(18), $main-font-color, normal, normal, rem(21));
+    @include font-roboto(rem(18), $main-text-color, normal, normal, rem(21));
     text-align: center;
 
     @include mq('phablet') {

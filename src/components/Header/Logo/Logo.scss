@@ -10,7 +10,7 @@
   }
 
   &__title {
-    @include font-roboto(rem(18), $main-font-color, 400, normal, rem(28));
+    @include font-roboto(rem(18), $main-text-color, 400, normal, rem(28));
   }
 
   @include mq('tablet') {
