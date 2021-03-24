@@ -1,5 +1,5 @@
 .button {
-  @include font-roboto(rem(16), $main-font-color, normal, normal, rem(19));
+  @include font-roboto(rem(16), $main-text-color, normal, normal, rem(19));
 
   width: 100%;
   height: 100%;

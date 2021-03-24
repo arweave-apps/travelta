@@ -31,7 +31,7 @@
       height: rem(20);
 
       background: $panel-color;
-      border: 2px solid rgba($primary-text-color, 0.5);
+      border: $border-width solid rgba($primary-text-color, 0.5);
 
       transition: box-shadow 0.2s linear, border 0.2s linear;
 
@@ -66,7 +66,7 @@
 
     &:checked + label:before {
       animation: pulse 0.2s linear forwards;
-      border: 2px solid $active-color;
+      border: $border-width solid $active-color;
     }
 
     &:checked + label:after {
