@@ -3,21 +3,29 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import classNames from 'classnames';
 
-import CalendarPicker from '../CalendarPicker';
-import TextInput from '../TextInput';
+import useOutsideClick from '../../hooks/useOutsideClick';
 
+import { InitialPageSettingsStateType } from '../../redux/reducers/pageSettings';
 import { setActiveInputDate } from '../../redux/actions/aviaParams/aviaParams';
 import { InitialAviaParamsStateType } from '../../redux/reducers/aviaParams';
 
+import CalendarPicker from '../CalendarPicker';
+import TextInput from '../TextInput';
+
 import './Datepicker.scss';
-import useOutsideClick from '../../hooks/useOutsideClick';
 
 type StateType = {
   aviaParams: InitialAviaParamsStateType;
+  pageSettings: InitialPageSettingsStateType;
 };
 
 const Datepicker = (): JSX.Element => {
   const dispatch = useDispatch();
+
+  const activeForm = useSelector(
+    (state: StateType) => state.pageSettings.activeForm
+  );
+
   const [isOpen, setOpen] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   useOutsideClick(
@@ -75,20 +83,22 @@ const Datepicker = (): JSX.Element => {
         />
       </div>
 
-      <div
-        className={classNames('datepicker__return', {
-          'datepicker__return--active': activeInputDate === 'return',
-        })}
-        role="presentation"
-        onClick={() => handleClickInputDate('return')}
-      >
-        <TextInput
-          placeholder="Обратно"
-          id="return"
-          value={returnDate?.toLocaleDateString()}
-          readonly
-        />
-      </div>
+      {activeForm === 'standart' && (
+        <div
+          className={classNames('datepicker__return', {
+            'datepicker__return--active': activeInputDate === 'return',
+          })}
+          role="presentation"
+          onClick={() => handleClickInputDate('return')}
+        >
+          <TextInput
+            placeholder="Обратно"
+            id="return"
+            value={returnDate?.toLocaleDateString()}
+            readonly
+          />
+        </div>
+      )}
 
       {isOpen && <CalendarPicker />}
     </div>

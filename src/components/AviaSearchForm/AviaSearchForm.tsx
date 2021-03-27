@@ -1,51 +1,19 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
-import useInput from '../../hooks/useInput';
+import { RootStateType } from '../../redux/reducers';
 
-import SwitchButton from '../SwitchButton';
-import TextInput from '../TextInput';
-import PassangerSelect from '../PassangerSelect';
-import SimpleButton from '../SimpleButton';
-import Datepicker from '../Datepicker';
+import AviaStandartForm from './StandartForm/AviaStandartForm';
+import AviaMultiForm from './AviaMultiForm';
 
 import './AviaSearchForm.scss';
 
 const AviaSearchForm = (): JSX.Element => {
-  const origin = useInput('');
-  const destination = useInput('');
-
-  return (
-    <form className="search-form">
-      <div className="search-form__origin">
-        <TextInput
-          placeholder="Откуда"
-          id="origin"
-          value={origin.value}
-          onChange={origin.onChange}
-        />
-        <SwitchButton />
-      </div>
-
-      <div className="search-form__destination">
-        <TextInput
-          placeholder="Куда"
-          id="destination"
-          value={destination.value}
-          onChange={destination.onChange}
-        />
-      </div>
-
-      <Datepicker />
-
-      <div className="search-form__select">
-        <PassangerSelect />
-      </div>
-
-      <div className="search-form__button">
-        <SimpleButton submit title="Найти" />
-      </div>
-    </form>
+  const activeForm = useSelector(
+    (state: RootStateType) => state.pageSettings.activeForm
   );
+
+  return activeForm === 'standart' ? <AviaStandartForm /> : <AviaMultiForm />;
 };
 
 export default AviaSearchForm;
