@@ -6,13 +6,15 @@ import classNames from 'classnames';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import getNounDeclension from '../../utils/getNounDeclension';
 
-import { InitialAviaParamsStateType } from '../../redux/reducers/aviaParams';
+import { RootStateType } from '../../redux/reducers';
 import {
   setCabinClass,
   setPassangers,
 } from '../../redux/actions/aviaParams/aviaParams';
 
 import { cabinClassItems, getCabinClassName, passangerItems } from './helpers';
+
+import DownArrowicon from '../../assets/images/icons/down-arrow.svg';
 
 import Counter from '../Counter';
 import RadioButton from '../RadioButton';
@@ -21,20 +23,18 @@ import TextBlock from '../TextBlock';
 import DropdownItem from '../Dropdown/DropdownItem/DropdownItem';
 import Divider from '../Divider';
 
-import './PassangerSelect.scss';
+import './PassangerSelector.scss';
 import TriggerButton from '../TriggerButton';
 
-type StateType = { aviaParams: InitialAviaParamsStateType };
-
-const PassangerSelect = (): JSX.Element => {
+const PassangerSelector = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const passangers = useSelector(
-    ({ aviaParams }: StateType) => aviaParams.passangers
+    ({ aviaParams }: RootStateType) => aviaParams.passangers
   );
 
   const { selectedCabins } = useSelector(
-    ({ aviaParams }: StateType) => aviaParams
+    ({ aviaParams }: RootStateType) => aviaParams
   );
 
   const [totalPassangers, setTotalPassangers] = useState<number>(1);
@@ -60,6 +60,10 @@ const PassangerSelect = (): JSX.Element => {
   };
 
   const handleClickCounter = (changedValue: number, passangerType: string) => {
+    if (passangerType === 'infants' && changedValue > passangers.adults) {
+      return;
+    }
+
     dispatch(setPassangers(changedValue, passangerType));
   };
 
@@ -86,6 +90,10 @@ const PassangerSelect = (): JSX.Element => {
         </span>
       </div>
 
+      <DownArrowicon
+        className={classNames('down-arrow', { 'down-arrow--active': isOpen })}
+      />
+
       {isOpen && (
         <Dropdown>
           {passangerItems.map(({ text, subtext, count }) => {
@@ -99,8 +107,16 @@ const PassangerSelect = (): JSX.Element => {
                 <Counter
                   passangerType={name}
                   number={currentNumber}
-                  minDisabled={currentNumber === min}
-                  maxDisabled={totalPassangers === max}
+                  minDisabled={
+                    currentNumber === min ||
+                    (name === 'adults' &&
+                      passangers.adults === passangers.infants)
+                  }
+                  maxDisabled={
+                    totalPassangers === max ||
+                    (name === 'infants' &&
+                      passangers.infants === passangers.adults)
+                  }
                   onClickCounter={handleClickCounter}
                 />
               </DropdownItem>
@@ -128,4 +144,4 @@ const PassangerSelect = (): JSX.Element => {
   );
 };
 
-export default PassangerSelect;
+export default PassangerSelector;

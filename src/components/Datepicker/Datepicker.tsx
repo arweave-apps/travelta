@@ -3,21 +3,23 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import classNames from 'classnames';
 
+import useOutsideClick from '../../hooks/useOutsideClick';
+
+import { setActiveInputDate } from '../../redux/actions/aviaParams/aviaParams';
+import { RootStateType } from '../../redux/reducers';
+
 import CalendarPicker from '../CalendarPicker';
 import TextInput from '../TextInput';
 
-import { setActiveInputDate } from '../../redux/actions/aviaParams/aviaParams';
-import { InitialAviaParamsStateType } from '../../redux/reducers/aviaParams';
-
 import './Datepicker.scss';
-import useOutsideClick from '../../hooks/useOutsideClick';
-
-type StateType = {
-  aviaParams: InitialAviaParamsStateType;
-};
 
 const Datepicker = (): JSX.Element => {
   const dispatch = useDispatch();
+
+  const activeForm = useSelector(
+    (state: RootStateType) => state.pageSettings.activeForm
+  );
+
   const [isOpen, setOpen] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   useOutsideClick(
@@ -38,7 +40,7 @@ const Datepicker = (): JSX.Element => {
   };
 
   const activeInputDate = useSelector(
-    (state: StateType) => state.aviaParams.activeInputDate
+    (state: RootStateType) => state.aviaParams.activeInputDate
   );
 
   const handleClickInputDate = (inputType: string) => {
@@ -46,11 +48,11 @@ const Datepicker = (): JSX.Element => {
   };
 
   const departureDate = useSelector(
-    (state: StateType) => state.aviaParams.departureDate
+    (state: RootStateType) => state.aviaParams.departureDate
   );
 
   const returnDate = useSelector(
-    (state: StateType) => state.aviaParams.returnDate
+    (state: RootStateType) => state.aviaParams.returnDate
   );
 
   return (
@@ -75,20 +77,22 @@ const Datepicker = (): JSX.Element => {
         />
       </div>
 
-      <div
-        className={classNames('datepicker__return', {
-          'datepicker__return--active': activeInputDate === 'return',
-        })}
-        role="presentation"
-        onClick={() => handleClickInputDate('return')}
-      >
-        <TextInput
-          placeholder="Обратно"
-          id="return"
-          value={returnDate?.toLocaleDateString()}
-          readonly
-        />
-      </div>
+      {activeForm === 'standart' && (
+        <div
+          className={classNames('datepicker__return', {
+            'datepicker__return--active': activeInputDate === 'return',
+          })}
+          role="presentation"
+          onClick={() => handleClickInputDate('return')}
+        >
+          <TextInput
+            placeholder="Обратно"
+            id="return"
+            value={returnDate?.toLocaleDateString()}
+            readonly
+          />
+        </div>
+      )}
 
       {isOpen && <CalendarPicker />}
     </div>

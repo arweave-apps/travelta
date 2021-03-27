@@ -13,7 +13,7 @@ import Home from '../Home';
 
 type GetRouteProps = {
   path: string;
-  exact: boolean;
+  exact?: boolean;
   children: React.ReactNode;
 };
 
@@ -33,20 +33,20 @@ const routes = (
       <DirectionFilter />
       <AviaSearchForm />
     </GetRoute>
-    <GetRoute path="/avia" exact>
+    <GetRoute path="/avia">
       <DirectionFilter />
       <AviaSearchForm />
     </GetRoute>
-    <GetRoute path="/train" exact>
+    <GetRoute path="/train">
       <TrainSearchForm />
     </GetRoute>
-    <GetRoute path="/auto" exact>
+    <GetRoute path="/auto">
       <AutoSearchForm />
     </GetRoute>
-    <GetRoute path="/hotels" exact>
+    <GetRoute path="/hotels">
       <HotelSearchForm />
     </GetRoute>
-    <GetRoute path="/tour" exact>
+    <GetRoute path="/tour">
       <TourSearchForm />
     </GetRoute>
   </Switch>

@@ -63,12 +63,12 @@
       cursor: pointer;
 
       &:hover {
-        background: $hover-accent-color;
+        background: $active-item-color;
       }
     }
 
     &--filled {
-      background: $hover-accent-color !important;
+      background: $active-item-color !important;
     }
 
     &--past {
@@ -78,14 +78,14 @@
     &--filled-right {
       background: linear-gradient(
         270deg,
-        $hover-accent-color 43%,
+        $active-item-color 43%,
         rgba(255, 255, 255, 0) 90%
       );
 
       &:hover {
         background: linear-gradient(
           270deg,
-          $hover-accent-color 43%,
+          $active-item-color 43%,
           rgba(255, 255, 255, 0) 90%
         );
       }
@@ -94,14 +94,14 @@
     &--filled-left {
       background: linear-gradient(
         90deg,
-        $hover-accent-color 43%,
+        $active-item-color 43%,
         rgba(255, 255, 255, 0) 90%
       );
 
       &:hover {
         background: linear-gradient(
           90deg,
-          $hover-accent-color 43%,
+          $active-item-color 43%,
           rgba(255, 255, 255, 0) 90%
         );
       }
@@ -110,7 +110,7 @@
     &--active {
       & > div {
         background: $accent-color;
-        color: $main-font-color;
+        color: $main-text-color;
         font-weight: 500;
       }
     }

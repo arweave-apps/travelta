@@ -2,7 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { InitialAviaParamsStateType } from '../../redux/reducers/aviaParams';
+import {
+  setActiveInputDate,
+  setDepartureDate,
+  setReturnDate,
+} from '../../redux/actions/aviaParams/aviaParams';
+import { RootStateType } from '../../redux/reducers';
 
 import NextIcon from '../../assets/images/icons/right-arrow.svg';
 import PrevIcon from '../../assets/images/icons/left-arrow.svg';
@@ -11,29 +16,21 @@ import CalendarMonth from './CalendarMonth';
 import getMonthDates from '../../utils/getMonthDate';
 
 import './CalendarPicker.scss';
-import {
-  setActiveInputDate,
-  setDepartureDate,
-  setReturnDate,
-} from '../../redux/actions/aviaParams/aviaParams';
-
-type StateType = {
-  aviaParams: InitialAviaParamsStateType;
-};
+import SlideButton from '../SlideButton';
 
 const CalendarPicker = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const activeInputDate = useSelector(
-    (state: StateType) => state.aviaParams.activeInputDate
+    (state: RootStateType) => state.aviaParams.activeInputDate
   );
 
   const departureDate = useSelector(
-    (state: StateType) => state.aviaParams.departureDate
+    (state: RootStateType) => state.aviaParams.departureDate
   );
 
   const returnDate = useSelector(
-    (state: StateType) => state.aviaParams.returnDate
+    (state: RootStateType) => state.aviaParams.returnDate
   );
 
   const [prevMonthData, setPrevMonthData] = useState<Array<
@@ -134,6 +131,10 @@ const CalendarPicker = (): JSX.Element => {
   const isDisabledBtn = (date: Date | null): boolean =>
     date ? date.getMonth() === new Date().getMonth() : false;
 
+  const handleClickNoReturnButton = () => {
+    dispatch(setReturnDate(null));
+  };
+
   return (
     <div className="calendar">
       <div className="calendar__inner">
@@ -146,6 +147,7 @@ const CalendarPicker = (): JSX.Element => {
             type="button"
             className="calendar__no-return-btn"
             disabled={!returnDate}
+            onClick={handleClickNoReturnButton}
           >
             Без обратного билета
           </button>
@@ -175,23 +177,19 @@ const CalendarPicker = (): JSX.Element => {
           />
         </div>
 
-        <button
-          type="button"
-          className="calendar__btn calendar__btn--prev"
+        <SlideButton
+          icon={<PrevIcon />}
           onClick={() => handleClickBtn(-1)}
           disabled={isDisabledBtn(prevMonthDate)}
-        >
-          <PrevIcon />
-        </button>
+          direction="prev"
+        />
 
-        <button
-          type="button"
-          className="calendar__btn calendar__btn--next"
+        <SlideButton
+          icon={<NextIcon />}
           onClick={() => handleClickBtn(1)}
           disabled={isDisabledBtn(nextMonthDate)}
-        >
-          <NextIcon />
-        </button>
+          direction="next"
+        />
       </div>
     </div>
   );

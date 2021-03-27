@@ -1,10 +1,7 @@
 .button {
-  @include font-roboto(rem(16), $main-font-color, normal, normal, rem(19));
-
   width: 100%;
   height: 100%;
 
-  background: $accent-color;
   border: none;
   border-radius: $radius;
   padding: 0;
@@ -13,6 +10,41 @@
 
   &:hover {
     cursor: pointer;
-    background: lighten($accent-color, 6%);
+  }
+
+  &[disabled] {
+    @include font-roboto(rem(16), $main-text-color, normal, normal, rem(19));
+    background: $accent-color;
+
+    &:hover {
+      cursor: default;
+      background: $disabled-color;
+    }
+  }
+
+  &--accent {
+    @include font-roboto(rem(16), $main-text-color, normal, normal, rem(19));
+    background: $accent-color;
+
+    &[disabled] {
+      background: $disabled-color;
+    }
+
+    &:hover {
+      background: lighten($accent-color, 6%);
+    }
+  }
+
+  &--second {
+    @include font-roboto(rem(16), $primary-text-color, normal, normal, rem(19));
+    background: $border-color;
+
+    &[disabled] {
+      background: $disabled-color;
+    }
+
+    &:hover {
+      background: lighten($border-color, 6%);
+    }
   }
 }

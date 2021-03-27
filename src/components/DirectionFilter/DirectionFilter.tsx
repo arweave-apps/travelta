@@ -1,4 +1,9 @@
 import React, { useState } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { setActiveForm } from '../../redux/actions/pageSettings/pageSettings';
+import { RootStateType } from '../../redux/reducers';
+
 import RadioButton from '../RadioButton';
 
 import './DirectionFilter.scss';
@@ -19,9 +24,18 @@ export const filterItems = [
 ];
 
 const DirectionFilter = (): JSX.Element => {
+  const dispatch = useDispatch();
+  const activeForm = useSelector(
+    (state: RootStateType) => state.pageSettings.activeForm
+  );
   const [option, setOption] = useState('roundtrip');
 
   const handleChangeRadioButton = (id: string) => {
+    if (id === 'multiCity') {
+      dispatch(setActiveForm(id));
+    } else if (activeForm !== 'standart') {
+      dispatch(setActiveForm('standart'));
+    }
     setOption(id);
   };
 
