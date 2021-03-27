@@ -9,8 +9,6 @@ import Datepicker from '../../Datepicker';
 
 import './AviaMultiForm.scss';
 
-// const segments = [{ id: 'segment 1' }, { id: 'segment 2' }];
-
 const AviaMultiForm = (): JSX.Element => {
   const origin = useInput('');
   const destination = useInput('');
