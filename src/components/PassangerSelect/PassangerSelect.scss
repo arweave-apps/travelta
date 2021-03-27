@@ -9,7 +9,7 @@
   padding: 0 rem(16);
 
   border: $border-width solid $border-color;
-  border-radius: 0 $radius $radius 0;
+  border-radius: inherit;
 
   &__info {
     @include display(flex, center, flex-start);
