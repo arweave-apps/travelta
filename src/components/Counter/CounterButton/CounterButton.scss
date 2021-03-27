@@ -1,4 +1,5 @@
 .counter__btn {
+  @include display(flex, center, center);
   width: rem(20);
   height: rem(20);
 
