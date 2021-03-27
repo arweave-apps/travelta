@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import useInput from '../../../hooks/useInput';
 
 import TextInput from '../../TextInput';
-import PassangerSelect from '../../PassangerSelect';
+import PassangerSelector from '../../PassangerSelector';
 import SimpleButton from '../../SimpleButton';
 import Datepicker from '../../Datepicker';
 
@@ -62,7 +62,7 @@ const AviaMultiForm = (): JSX.Element => {
 
       <div className="multicity-form__action">
         <div className="multicity-form__select">
-          <PassangerSelect />
+          <PassangerSelector />
         </div>
 
         <div className="multicity-form__add-btn">
