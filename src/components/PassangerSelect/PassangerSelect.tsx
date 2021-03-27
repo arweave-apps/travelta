@@ -109,7 +109,11 @@ const PassangerSelect = (): JSX.Element => {
                 <Counter
                   passangerType={name}
                   number={currentNumber}
-                  minDisabled={currentNumber === min}
+                  minDisabled={
+                    currentNumber === min ||
+                    (name === 'adults' &&
+                      passangers.adults === passangers.infants)
+                  }
                   maxDisabled={
                     totalPassangers === max ||
                     (name === 'infants' &&
