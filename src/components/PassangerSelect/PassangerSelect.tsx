@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import getNounDeclension from '../../utils/getNounDeclension';
 
-import { InitialAviaParamsStateType } from '../../redux/reducers/aviaParams';
+import { RootStateType } from '../../redux/reducers';
 import {
   setCabinClass,
   setPassangers,
@@ -26,17 +26,15 @@ import Divider from '../Divider';
 import './PassangerSelect.scss';
 import TriggerButton from '../TriggerButton';
 
-type StateType = { aviaParams: InitialAviaParamsStateType };
-
 const PassangerSelect = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const passangers = useSelector(
-    ({ aviaParams }: StateType) => aviaParams.passangers
+    ({ aviaParams }: RootStateType) => aviaParams.passangers
   );
 
   const { selectedCabins } = useSelector(
-    ({ aviaParams }: StateType) => aviaParams
+    ({ aviaParams }: RootStateType) => aviaParams
   );
 
   const [totalPassangers, setTotalPassangers] = useState<number>(1);

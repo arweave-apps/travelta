@@ -5,25 +5,19 @@ import classNames from 'classnames';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 
-import { InitialPageSettingsStateType } from '../../redux/reducers/pageSettings';
 import { setActiveInputDate } from '../../redux/actions/aviaParams/aviaParams';
-import { InitialAviaParamsStateType } from '../../redux/reducers/aviaParams';
+import { RootStateType } from '../../redux/reducers';
 
 import CalendarPicker from '../CalendarPicker';
 import TextInput from '../TextInput';
 
 import './Datepicker.scss';
 
-type StateType = {
-  aviaParams: InitialAviaParamsStateType;
-  pageSettings: InitialPageSettingsStateType;
-};
-
 const Datepicker = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const activeForm = useSelector(
-    (state: StateType) => state.pageSettings.activeForm
+    (state: RootStateType) => state.pageSettings.activeForm
   );
 
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -46,7 +40,7 @@ const Datepicker = (): JSX.Element => {
   };
 
   const activeInputDate = useSelector(
-    (state: StateType) => state.aviaParams.activeInputDate
+    (state: RootStateType) => state.aviaParams.activeInputDate
   );
 
   const handleClickInputDate = (inputType: string) => {
@@ -54,11 +48,11 @@ const Datepicker = (): JSX.Element => {
   };
 
   const departureDate = useSelector(
-    (state: StateType) => state.aviaParams.departureDate
+    (state: RootStateType) => state.aviaParams.departureDate
   );
 
   const returnDate = useSelector(
-    (state: StateType) => state.aviaParams.returnDate
+    (state: RootStateType) => state.aviaParams.returnDate
   );
 
   return (

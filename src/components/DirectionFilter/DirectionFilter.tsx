@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveForm } from '../../redux/actions/pageSettings/pageSettings';
-import { InitialPageSettingsStateType } from '../../redux/reducers/pageSettings';
+import { RootStateType } from '../../redux/reducers';
 
 import RadioButton from '../RadioButton';
 
@@ -23,14 +23,10 @@ export const filterItems = [
   },
 ];
 
-type StateType = {
-  pageSettings: InitialPageSettingsStateType;
-};
-
 const DirectionFilter = (): JSX.Element => {
   const dispatch = useDispatch();
   const activeForm = useSelector(
-    (state: StateType) => state.pageSettings.activeForm
+    (state: RootStateType) => state.pageSettings.activeForm
   );
   const [option, setOption] = useState('roundtrip');
 
