@@ -23,10 +23,10 @@ import TextBlock from '../TextBlock';
 import DropdownItem from '../Dropdown/DropdownItem/DropdownItem';
 import Divider from '../Divider';
 
-import './PassangerSelect.scss';
+import './PassangerSelector.scss';
 import TriggerButton from '../TriggerButton';
 
-const PassangerSelect = (): JSX.Element => {
+const PassangerSelector = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const passangers = useSelector(
@@ -144,4 +144,4 @@ const PassangerSelect = (): JSX.Element => {
   );
 };
 
-export default PassangerSelect;
+export default PassangerSelector;

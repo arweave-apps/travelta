@@ -4,7 +4,7 @@ import useInput from '../../../hooks/useInput';
 
 import SwitchButton from '../../SwitchButton';
 import TextInput from '../../TextInput';
-import PassangerSelect from '../../PassangerSelect';
+import PassangerSelector from '../../PassangerSelector';
 import SimpleButton from '../../SimpleButton';
 import Datepicker from '../../Datepicker';
 
@@ -40,7 +40,7 @@ const AviaStandartForm = (): JSX.Element => {
       </div>
 
       <div className="search-form__select">
-        <PassangerSelect />
+        <PassangerSelector />
       </div>
 
       <div className="search-form__search-btn">
