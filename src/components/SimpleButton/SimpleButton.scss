@@ -1,18 +1,30 @@
 .button {
-  @include font-roboto(rem(16), $main-text-color, normal, normal, rem(19));
-
   width: 100%;
   height: 100%;
 
-  background: $accent-color;
   border: none;
   border-radius: $radius;
   padding: 0;
 
   transition: background 0.2s linear;
 
-  &:hover {
-    cursor: pointer;
-    background: lighten($accent-color, 6%);
+  &--accent {
+    @include font-roboto(rem(16), $main-text-color, normal, normal, rem(19));
+    background: $accent-color;
+
+    &:hover {
+      cursor: pointer;
+      background: lighten($accent-color, 6%);
+    }
+  }
+
+  &--second {
+    @include font-roboto(rem(16), $primary-text-color, normal, normal, rem(19));
+    background: $border-color;
+
+    &:hover {
+      cursor: pointer;
+      background: lighten($border-color, 6%);
+    }
   }
 }
