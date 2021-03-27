@@ -5,7 +5,7 @@ import {
 } from '../actions/pageSettings/types';
 
 const initialState = {
-  activeForm: 'multiCity',
+  activeForm: 'standart',
 };
 
 export type InitialPageSettingsStateType = typeof initialState;
