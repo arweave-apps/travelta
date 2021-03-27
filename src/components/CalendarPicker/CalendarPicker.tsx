@@ -16,6 +16,7 @@ import CalendarMonth from './CalendarMonth';
 import getMonthDates from '../../utils/getMonthDate';
 
 import './CalendarPicker.scss';
+import SlideButton from '../SlideButton';
 
 const CalendarPicker = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -176,23 +177,19 @@ const CalendarPicker = (): JSX.Element => {
           />
         </div>
 
-        <button
-          type="button"
-          className="calendar__btn calendar__btn--prev"
+        <SlideButton
+          icon={<PrevIcon />}
           onClick={() => handleClickBtn(-1)}
           disabled={isDisabledBtn(prevMonthDate)}
-        >
-          <PrevIcon />
-        </button>
+          direction="prev"
+        />
 
-        <button
-          type="button"
-          className="calendar__btn calendar__btn--next"
+        <SlideButton
+          icon={<NextIcon />}
           onClick={() => handleClickBtn(1)}
           disabled={isDisabledBtn(nextMonthDate)}
-        >
-          <NextIcon />
-        </button>
+          direction="next"
+        />
       </div>
     </div>
   );
