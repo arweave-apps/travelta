@@ -9,6 +9,8 @@ type SimpleButtonProps = {
   submit?: boolean;
   accent?: boolean;
   second?: boolean;
+  disabled?: boolean;
+  onClick?: () => void;
 };
 
 const SimpleButton = ({
@@ -16,6 +18,8 @@ const SimpleButton = ({
   submit,
   accent,
   second,
+  disabled,
+  onClick,
 }: SimpleButtonProps): JSX.Element => {
   return (
     <button
@@ -24,6 +28,8 @@ const SimpleButton = ({
         'button--accent': accent,
         'button--second': second,
       })}
+      onClick={onClick}
+      disabled={disabled}
     >
       {title}
     </button>

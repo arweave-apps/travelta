@@ -8,12 +8,29 @@
 
   transition: background 0.2s linear;
 
-  &--accent {
+  &:hover {
+    cursor: pointer;
+  }
+
+  &[disabled] {
     @include font-roboto(rem(16), $main-text-color, normal, normal, rem(19));
     background: $accent-color;
 
     &:hover {
-      cursor: pointer;
+      cursor: default;
+      background: $disabled-color;
+    }
+  }
+
+  &--accent {
+    @include font-roboto(rem(16), $main-text-color, normal, normal, rem(19));
+    background: $accent-color;
+
+    &[disabled] {
+      background: $disabled-color;
+    }
+
+    &:hover {
       background: lighten($accent-color, 6%);
     }
   }
@@ -22,8 +39,11 @@
     @include font-roboto(rem(16), $primary-text-color, normal, normal, rem(19));
     background: $border-color;
 
+    &[disabled] {
+      background: $disabled-color;
+    }
+
     &:hover {
-      cursor: pointer;
       background: lighten($border-color, 6%);
     }
   }
