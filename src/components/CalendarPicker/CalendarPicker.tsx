@@ -2,7 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { InitialAviaParamsStateType } from '../../redux/reducers/aviaParams';
+import {
+  setActiveInputDate,
+  setDepartureDate,
+  setReturnDate,
+} from '../../redux/actions/aviaParams/aviaParams';
+import { RootStateType } from '../../redux/reducers';
 
 import NextIcon from '../../assets/images/icons/right-arrow.svg';
 import PrevIcon from '../../assets/images/icons/left-arrow.svg';
@@ -11,29 +16,20 @@ import CalendarMonth from './CalendarMonth';
 import getMonthDates from '../../utils/getMonthDate';
 
 import './CalendarPicker.scss';
-import {
-  setActiveInputDate,
-  setDepartureDate,
-  setReturnDate,
-} from '../../redux/actions/aviaParams/aviaParams';
-
-type StateType = {
-  aviaParams: InitialAviaParamsStateType;
-};
 
 const CalendarPicker = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const activeInputDate = useSelector(
-    (state: StateType) => state.aviaParams.activeInputDate
+    (state: RootStateType) => state.aviaParams.activeInputDate
   );
 
   const departureDate = useSelector(
-    (state: StateType) => state.aviaParams.departureDate
+    (state: RootStateType) => state.aviaParams.departureDate
   );
 
   const returnDate = useSelector(
-    (state: StateType) => state.aviaParams.returnDate
+    (state: RootStateType) => state.aviaParams.returnDate
   );
 
   const [prevMonthData, setPrevMonthData] = useState<Array<

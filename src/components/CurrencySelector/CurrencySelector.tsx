@@ -1,8 +1,8 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { InitialSettingsStateType } from '../../redux/reducers/settings';
 import { setCurrency } from '../../redux/actions/settings/settings';
+import { RootStateType } from '../../redux/reducers';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 
@@ -18,13 +18,9 @@ const currencyList = [
   { label: 'USD', text: 'Доллары' },
 ];
 
-type StateType = {
-  settings: InitialSettingsStateType;
-};
-
 const CurrencySelector = (): JSX.Element => {
   const dispatch = useDispatch();
-  const { currency } = useSelector(({ settings }: StateType) => settings);
+  const { currency } = useSelector(({ settings }: RootStateType) => settings);
 
   const [isOpen, setOpen] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
