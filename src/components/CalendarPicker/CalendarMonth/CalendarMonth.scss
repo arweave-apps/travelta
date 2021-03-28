@@ -1,5 +1,6 @@
 .month {
   width: rem(300);
+  padding: 0 25px;
 
   &__caption {
     @include font-roboto(

@@ -33,6 +33,10 @@ const CalendarPicker = (): JSX.Element => {
     (state: RootStateType) => state.aviaParams.returnDate
   );
 
+  const activeForm = useSelector(
+    (state: RootStateType) => state.pageSettings.activeForm
+  );
+
   const [prevMonthData, setPrevMonthData] = useState<Array<
     number | undefined
   > | null>(null);
@@ -138,20 +142,24 @@ const CalendarPicker = (): JSX.Element => {
   return (
     <div className="calendar">
       <div className="calendar__inner">
-        <div className="calendar__header">
-          <span className="calendar__title">
-            Выберите дату
-            {activeInputDate === 'departure' ? ' отправления' : ' возвращения'}
-          </span>
-          <button
-            type="button"
-            className="calendar__no-return-btn"
-            disabled={!returnDate}
-            onClick={handleClickNoReturnButton}
-          >
-            Без обратного билета
-          </button>
-        </div>
+        {activeForm === 'standart' && (
+          <div className="calendar__header">
+            <span className="calendar__title">
+              Выберите дату
+              {activeInputDate === 'departure'
+                ? ' отправления'
+                : ' возвращения'}
+            </span>
+            <button
+              type="button"
+              className="calendar__no-return-btn"
+              disabled={!returnDate}
+              onClick={handleClickNoReturnButton}
+            >
+              Без обратного билета
+            </button>
+          </div>
+        )}
 
         <div className="calendar__months">
           <CalendarMonth
@@ -165,16 +173,18 @@ const CalendarPicker = (): JSX.Element => {
             hoverDate={hoverDate}
           />
 
-          <CalendarMonth
-            calendarDate={nextMonthDate}
-            monthDates={nextMonthData}
-            onClickDay={handleClickDay}
-            onMouseEnterDay={handleMouseEnterDay}
-            onMouseLeaveMonth={handleMouseLeaveMonth}
-            startDate={departureDate}
-            endDate={returnDate}
-            hoverDate={hoverDate}
-          />
+          {activeForm === 'standart' && (
+            <CalendarMonth
+              calendarDate={nextMonthDate}
+              monthDates={nextMonthData}
+              onClickDay={handleClickDay}
+              onMouseEnterDay={handleMouseEnterDay}
+              onMouseLeaveMonth={handleMouseLeaveMonth}
+              startDate={departureDate}
+              endDate={returnDate}
+              hoverDate={hoverDate}
+            />
+          )}
         </div>
 
         <SlideButton
