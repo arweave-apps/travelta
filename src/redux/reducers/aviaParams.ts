@@ -1,6 +1,5 @@
 import {
   ActionAviaParamsTypes,
-  SET_ACTIVE_INPUT_DATE,
   SET_CABIN_CLASS,
   SET_DEPARTURE_DATE,
   SET_PASSANGERS,
@@ -8,7 +7,6 @@ import {
 } from '../actions/aviaParams/types';
 
 const initialState = {
-  activeInputDate: null,
   departureDate: null,
   returnDate: null,
   passangers: {
@@ -28,7 +26,6 @@ export type PassangersType = {
 };
 
 export type InitialAviaParamsStateType = {
-  activeInputDate: null | string;
   departureDate: Date | null;
   returnDate: Date | null;
   passangers: PassangersType;
@@ -40,8 +37,6 @@ export const aviaParamsReducer = (
   action: ActionAviaParamsTypes
 ): InitialAviaParamsStateType => {
   switch (action.type) {
-    case SET_ACTIVE_INPUT_DATE:
-      return { ...state, activeInputDate: action.payload };
     case SET_DEPARTURE_DATE:
       return { ...state, departureDate: action.payload };
     case SET_RETURN_DATE:

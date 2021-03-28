@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 
-import { setActiveInputDate } from '../../redux/actions/aviaParams/aviaParams';
+import { setActiveInputDate } from '../../redux/actions/pageSettings/pageSettings';
 import { RootStateType } from '../../redux/reducers';
 
 import CalendarPicker from '../CalendarPicker';
@@ -40,7 +40,7 @@ const Datepicker = (): JSX.Element => {
   };
 
   const activeInputDate = useSelector(
-    (state: RootStateType) => state.aviaParams.activeInputDate
+    (state: RootStateType) => state.pageSettings.activeInputDate
   );
 
   const handleClickInputDate = (inputType: string) => {
