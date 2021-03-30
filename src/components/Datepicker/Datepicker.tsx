@@ -7,13 +7,18 @@ import useOutsideClick from '../../hooks/useOutsideClick';
 
 import { setActiveInputDate } from '../../redux/actions/pageSettings/pageSettings';
 import { RootStateType } from '../../redux/reducers';
+import { SegmentType } from '../../redux/reducers/aviaParams';
 
-import CalendarPicker from '../CalendarPicker';
+import DatepickerCalendar from './DatepickerCalendar';
 import TextInput from '../TextInput';
 
 import './Datepicker.scss';
 
-const Datepicker = (): JSX.Element => {
+type DatepickerPropsType = {
+  segment: SegmentType;
+};
+
+const Datepicker = ({ segment }: DatepickerPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
   const activeForm = useSelector(
@@ -47,14 +52,6 @@ const Datepicker = (): JSX.Element => {
     dispatch(setActiveInputDate(inputType));
   };
 
-  const departureDate = useSelector(
-    (state: RootStateType) => state.aviaParams.departureDate
-  );
-
-  const returnDate = useSelector(
-    (state: RootStateType) => state.aviaParams.returnDate
-  );
-
   return (
     <div
       className="datepicker"
@@ -72,7 +69,7 @@ const Datepicker = (): JSX.Element => {
         <TextInput
           placeholder="Когда"
           id="depart"
-          value={departureDate?.toLocaleDateString()}
+          value={segment.departureDate?.toLocaleDateString()}
           readonly
         />
       </div>
@@ -88,13 +85,13 @@ const Datepicker = (): JSX.Element => {
           <TextInput
             placeholder="Обратно"
             id="return"
-            value={returnDate?.toLocaleDateString()}
+            value={segment.returnDate?.toLocaleDateString()}
             readonly
           />
         </div>
       )}
 
-      {isOpen && <CalendarPicker />}
+      {isOpen && <DatepickerCalendar segment={segment} />}
     </div>
   );
 };

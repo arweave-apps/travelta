@@ -1,5 +1,7 @@
 import {
   ActionAviaParamsTypes,
+  ADD_SEGMENT,
+  CLEAR_SEGMENTS,
   SET_CABIN_CLASS,
   SET_DEPARTURE_DATE,
   SET_PASSANGERS,
@@ -7,8 +9,15 @@ import {
 } from '../actions/aviaParams/types';
 
 const initialState = {
-  departureDate: null,
-  returnDate: null,
+  segments: [
+    {
+      id: 'segment-0',
+      origin: '',
+      destination: '',
+      departureDate: null,
+      returnDate: null,
+    },
+  ],
   passangers: {
     adults: 1,
     children: 0,
@@ -25,9 +34,16 @@ export type PassangersType = {
   infants: number;
 };
 
-export type InitialAviaParamsStateType = {
+export type SegmentType = {
+  id: string;
+  origin: string;
+  destination: string;
   departureDate: Date | null;
   returnDate: Date | null;
+};
+
+export type InitialAviaParamsStateType = {
+  segments: Array<SegmentType>;
   passangers: PassangersType;
   selectedCabins: string;
 };
@@ -37,15 +53,55 @@ export const aviaParamsReducer = (
   action: ActionAviaParamsTypes
 ): InitialAviaParamsStateType => {
   switch (action.type) {
-    case SET_DEPARTURE_DATE:
-      return { ...state, departureDate: action.payload };
-    case SET_RETURN_DATE:
-      return { ...state, returnDate: action.payload };
+    case SET_DEPARTURE_DATE: {
+      const { date, segmentId } = action.payload;
+      const newSegments = state.segments.map((segment) => {
+        if (segment.id === segmentId) {
+          return {
+            ...segment,
+            departureDate: date,
+          };
+        }
+        return segment;
+      });
+
+      return { ...state, segments: newSegments };
+    }
+    case SET_RETURN_DATE: {
+      const { date, segmentId } = action.payload;
+      const newSegments = state.segments.map((segment) => {
+        if (segment.id === segmentId) {
+          return {
+            ...segment,
+            returnDate: date,
+          };
+        }
+        return segment;
+      });
+
+      return { ...state, segments: newSegments };
+    }
     case SET_CABIN_CLASS:
       return { ...state, selectedCabins: action.payload };
     case SET_PASSANGERS: {
       const { name, value } = action.payload;
       return { ...state, passangers: { ...state.passangers, [name]: value } };
+    }
+    case ADD_SEGMENT: {
+      const newSegments = [
+        ...state.segments,
+        {
+          id: `segment-${state.segments.length + 1}`,
+          origin: '',
+          destination: '',
+          departureDate: null,
+          returnDate: null,
+        },
+      ];
+      return { ...state, segments: newSegments };
+    }
+    case CLEAR_SEGMENTS: {
+      return { ...initialState };
     }
 
     default:

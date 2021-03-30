@@ -11,7 +11,7 @@ import {
   isPastDay,
 } from './helpers';
 
-import './CalendarMonth.scss';
+import './DatepickerCalendarMonth.scss';
 
 const shortWeekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
