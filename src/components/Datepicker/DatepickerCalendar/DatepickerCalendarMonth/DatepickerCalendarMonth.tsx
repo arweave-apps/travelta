@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import classNames from 'classnames';
 
 import {
-  isActive,
+  isSelectedDay,
   isFilled,
   isFilledRightHalfCell,
   isFilledLeftHalfCell,
@@ -33,12 +33,13 @@ const monthsNames = [
 type CalendarMonthProps = {
   calendarDate: Date | null;
   monthDates: Array<number | undefined> | null;
-  onClickDay: (date: Date | null) => void;
+  onClickDay: (date: Date) => void;
   startDate: Date | null;
   endDate: Date | null;
   hoverDate: Date | null;
   onMouseEnterDay: (date: Date | null) => void;
   onMouseLeaveMonth: () => void;
+  activeForm: string;
 };
 
 const CalendarMonth = ({
@@ -50,6 +51,7 @@ const CalendarMonth = ({
   hoverDate,
   onMouseEnterDay,
   onMouseLeaveMonth,
+  activeForm,
 }: CalendarMonthProps): JSX.Element => {
   const year = calendarDate?.getFullYear() || 0;
   const month = calendarDate?.getMonth() || 0;
@@ -100,26 +102,28 @@ const CalendarMonth = ({
               <div
                 className={classNames('month__day month__day--clickable', {
                   'month__day--active':
-                    isActive(comparisonDate, startDate) ||
-                    isActive(comparisonDate, endDate),
-                  'month__day--filled-right': isFilledRightHalfCell(
-                    comparisonDate,
-                    startDate,
-                    hoverDate,
-                    endDate
-                  ),
-                  'month__day--filled-left': isFilledLeftHalfCell(
-                    comparisonDate,
-                    startDate,
-                    hoverDate,
-                    endDate
-                  ),
-                  'month__day--filled': isFilled(
-                    comparisonDate,
-                    startDate,
-                    hoverDate,
-                    endDate
-                  ),
+                    isSelectedDay(comparisonDate, startDate) ||
+                    (activeForm === 'standart' &&
+                      isSelectedDay(comparisonDate, endDate)),
+                  'month__day--filled-right':
+                    activeForm === 'standart' &&
+                    isFilledRightHalfCell(
+                      comparisonDate,
+                      startDate,
+                      hoverDate,
+                      endDate
+                    ),
+                  'month__day--filled-left':
+                    activeForm === 'standart' &&
+                    isFilledLeftHalfCell(
+                      comparisonDate,
+                      startDate,
+                      hoverDate,
+                      endDate
+                    ),
+                  'month__day--filled':
+                    activeForm === 'standart' &&
+                    isFilled(comparisonDate, startDate, hoverDate, endDate),
                 })}
                 role="presentation"
                 key={uuidv4()}

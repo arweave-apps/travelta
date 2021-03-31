@@ -7,22 +7,23 @@ import {
   setReturnDate,
 } from '../../../redux/actions/aviaParams/aviaParams';
 import { setActiveInputDate } from '../../../redux/actions/pageSettings/pageSettings';
-import { RootStateType } from '../../../redux/reducers';
 
 import NextIcon from '../../../assets/images/icons/right-arrow.svg';
 import PrevIcon from '../../../assets/images/icons/left-arrow.svg';
-import CalendarMonth from './DatepickerCalendarMonth';
+import DatepickerCalendarMonth from './DatepickerCalendarMonth';
 import SlideButton from '../../SlideButton';
 
 import getMonthDates from '../../../utils/getMonthDate';
 
 import './DatepickerCalendar.scss';
+import { RootStateType } from '../../../redux/reducers';
 
 type DatepickerCalendarPropsType = {
   segmentId: string;
   returnDate: Date | null;
   departureDate: Date | null;
   activeInputDate: string | null;
+  activeForm: string;
 };
 
 const DatepickerCalendar = ({
@@ -30,6 +31,7 @@ const DatepickerCalendar = ({
   departureDate,
   returnDate,
   activeInputDate,
+  activeForm,
 }: DatepickerCalendarPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -41,18 +43,23 @@ const DatepickerCalendar = ({
     number | undefined
   > | null>(null);
 
-  const [prevMonthDate, setDateOfPrevMonth] = useState<Date | null>(null);
-  const [nextMonthDate, setDateOfNextMonth] = useState<Date | null>(null);
+  const [prevMonthDate, setPrevMonthDate] = useState<Date | null>(null);
+  const [nextMonthDate, setNextMonthDate] = useState<Date | null>(null);
 
   const [hoverDate, setHoverDate] = useState<Date | null>(null);
+
+  const selectedDates = useSelector((state: RootStateType) =>
+    state.aviaParams.segments.map((segment) => segment.departureDate)
+  );
+  console.log('~ selectedDates', selectedDates);
 
   useEffect(() => {
     const now = new Date();
     const month = now.getMonth();
     const year = now.getFullYear();
 
-    setDateOfPrevMonth(new Date(year, month));
-    setDateOfNextMonth(new Date(year, month + 1));
+    setPrevMonthDate(new Date(year, month));
+    setNextMonthDate(new Date(year, month + 1));
   }, []);
 
   useEffect(() => {
@@ -82,14 +89,16 @@ const DatepickerCalendar = ({
         nextMonthDate.getMonth() + value
       );
 
-      setDateOfPrevMonth(prevDate);
-      setDateOfNextMonth(nextDate);
+      setPrevMonthDate(prevDate);
+      setNextMonthDate(nextDate);
     }
   };
 
   const handleClickDay = useCallback(
-    (date: Date | null) => {
-      if (activeInputDate === 'departure') {
+    (date: Date) => {
+      if (activeForm === 'multiCity' && activeInputDate === 'departure') {
+        dispatch(setDepartureDate(date, segmentId));
+      } else if (activeInputDate === 'departure') {
         if (hoverDate && returnDate && hoverDate < returnDate) {
           dispatch(setDepartureDate(date, segmentId));
           dispatch(setActiveInputDate('return'));
@@ -101,9 +110,7 @@ const DatepickerCalendar = ({
           dispatch(setDepartureDate(hoverDate, segmentId));
           dispatch(setActiveInputDate('return'));
         }
-      }
-
-      if (activeInputDate === 'return') {
+      } else if (activeInputDate === 'return') {
         if (hoverDate && departureDate && hoverDate > departureDate) {
           dispatch(setReturnDate(date, segmentId));
           dispatch(setActiveInputDate('departure'));
@@ -117,7 +124,15 @@ const DatepickerCalendar = ({
         }
       }
     },
-    [activeInputDate, hoverDate, returnDate, departureDate, dispatch, segmentId]
+    [
+      activeForm,
+      activeInputDate,
+      dispatch,
+      segmentId,
+      hoverDate,
+      returnDate,
+      departureDate,
+    ]
   );
 
   const handleMouseEnterDay = useCallback((date: Date | null) => {
@@ -138,23 +153,27 @@ const DatepickerCalendar = ({
   return (
     <div className="calendar">
       <div className="calendar__inner">
-        <div className="calendar__header">
-          <span className="calendar__title">
-            Выберите дату
-            {activeInputDate === 'departure' ? ' отправления' : ' возвращения'}
-          </span>
-          <button
-            type="button"
-            className="calendar__no-return-btn"
-            disabled={!returnDate}
-            onClick={handleClickNoReturnButton}
-          >
-            Без обратного билета
-          </button>
-        </div>
+        {activeForm === 'standart' && (
+          <div className="calendar__header">
+            <span className="calendar__title">
+              Выберите дату
+              {activeInputDate === 'departure'
+                ? ' отправления'
+                : ' возвращения'}
+            </span>
+            <button
+              type="button"
+              className="calendar__no-return-btn"
+              disabled={!returnDate}
+              onClick={handleClickNoReturnButton}
+            >
+              Без обратного билета
+            </button>
+          </div>
+        )}
 
         <div className="calendar__months">
-          <CalendarMonth
+          <DatepickerCalendarMonth
             calendarDate={prevMonthDate}
             monthDates={prevMonthData}
             onClickDay={handleClickDay}
@@ -163,18 +182,22 @@ const DatepickerCalendar = ({
             startDate={departureDate}
             endDate={returnDate}
             hoverDate={hoverDate}
+            activeForm={activeForm}
           />
 
-          <CalendarMonth
-            calendarDate={nextMonthDate}
-            monthDates={nextMonthData}
-            onClickDay={handleClickDay}
-            onMouseEnterDay={handleMouseEnterDay}
-            onMouseLeaveMonth={handleMouseLeaveMonth}
-            startDate={departureDate}
-            endDate={returnDate}
-            hoverDate={hoverDate}
-          />
+          {activeForm === 'standart' && (
+            <DatepickerCalendarMonth
+              calendarDate={nextMonthDate}
+              monthDates={nextMonthData}
+              onClickDay={handleClickDay}
+              onMouseEnterDay={handleMouseEnterDay}
+              onMouseLeaveMonth={handleMouseLeaveMonth}
+              startDate={departureDate}
+              endDate={returnDate}
+              hoverDate={hoverDate}
+              activeForm={activeForm}
+            />
+          )}
         </div>
 
         <SlideButton
@@ -183,7 +206,6 @@ const DatepickerCalendar = ({
           disabled={isDisabledBtn(prevMonthDate)}
           direction="prev"
         />
-
         <SlideButton
           icon={<NextIcon />}
           onClick={() => handleClickBtn(1)}

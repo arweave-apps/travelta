@@ -10,7 +10,10 @@ export const isPastDay = (comparisonDate: Date): boolean => {
   return false;
 };
 
-export const isActive = (comparisonDate: Date, date: Date | null): boolean => {
+export const isSelectedDay = (
+  comparisonDate: Date,
+  date: Date | null
+): boolean => {
   if (date) {
     return date.getTime() === comparisonDate.getTime();
   }
