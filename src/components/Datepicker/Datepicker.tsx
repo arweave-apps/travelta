@@ -5,7 +5,10 @@ import classNames from 'classnames';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 
-import { setActiveInputDate } from '../../redux/actions/pageSettings/pageSettings';
+import {
+  setActiveInputDate,
+  setActiveSegment,
+} from '../../redux/actions/pageSettings/pageSettings';
 import { RootStateType } from '../../redux/reducers';
 import { SegmentType } from '../../redux/reducers/aviaParams';
 
@@ -48,8 +51,13 @@ const Datepicker = ({ segment }: DatepickerPropsType): JSX.Element => {
     (state: RootStateType) => state.pageSettings.activeInputDate
   );
 
+  const activeSegment = useSelector(
+    (state: RootStateType) => state.pageSettings.activeSegment
+  );
+
   const handleClickInputDate = (inputType: string) => {
     dispatch(setActiveInputDate(inputType));
+    dispatch(setActiveSegment(segment.id));
   };
 
   return (
@@ -61,7 +69,8 @@ const Datepicker = ({ segment }: DatepickerPropsType): JSX.Element => {
     >
       <div
         className={classNames('datepicker__depart', {
-          'datepicker__depart--active': activeInputDate === 'departure',
+          'datepicker__depart--active':
+            activeInputDate === 'departure' && segment.id === activeSegment,
         })}
         role="presentation"
         onClick={() => handleClickInputDate('departure')}
@@ -77,7 +86,8 @@ const Datepicker = ({ segment }: DatepickerPropsType): JSX.Element => {
       {activeForm === 'standart' && (
         <div
           className={classNames('datepicker__return', {
-            'datepicker__return--active': activeInputDate === 'return',
+            'datepicker__return--active':
+              activeInputDate === 'return' && segment.id === activeSegment,
           })}
           role="presentation"
           onClick={() => handleClickInputDate('return')}
