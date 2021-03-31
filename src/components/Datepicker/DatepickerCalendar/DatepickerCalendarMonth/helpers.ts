@@ -1,7 +1,10 @@
 export const isPastDay = (comparisonDate: Date): boolean => {
   const now = new Date();
+  const month = now.getMonth();
+  const year = now.getFullYear();
+  const day = now.getDate();
 
-  if (comparisonDate < now) {
+  if (comparisonDate < new Date(year, month, day, 0, 0, 0)) {
     return true;
   }
   return false;
