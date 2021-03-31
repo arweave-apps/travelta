@@ -4,21 +4,18 @@ export const isPastDay = (comparisonDate: Date): boolean => {
   const year = now.getFullYear();
   const day = now.getDate();
 
-  if (comparisonDate < new Date(year, month, day, 0, 0, 0)) {
-    return true;
-  }
-  return false;
+  return comparisonDate < new Date(year, month, day, 0, 0, 0);
 };
 
 export const isSelectedDay = (
   comparisonDate: Date,
   date: Date | null
 ): boolean => {
-  if (date) {
-    return date.getTime() === comparisonDate.getTime();
+  if (!date) {
+    return false;
   }
 
-  return false;
+  return date.getTime() === comparisonDate.getTime();
 };
 
 export const isFilledRightHalfCell = (
@@ -28,38 +25,27 @@ export const isFilledRightHalfCell = (
   endDate: Date | null
 ): boolean => {
   // красит правую половину у startDate
-  if (
-    startDate &&
-    hoverDate &&
-    !endDate &&
-    startDate < hoverDate &&
-    comparisonDate.getTime() === startDate.getTime()
-  ) {
-    return true;
+  if (startDate && hoverDate && !endDate) {
+    return (
+      startDate < hoverDate && comparisonDate.getTime() === startDate.getTime()
+    );
   }
 
   // красит правую половину у endDate
-  if (
-    endDate &&
-    hoverDate &&
-    !startDate &&
-    endDate < hoverDate &&
-    comparisonDate.getTime() === endDate.getTime()
-  ) {
-    return true;
+  if (endDate && hoverDate && !startDate) {
+    return (
+      endDate < hoverDate && comparisonDate.getTime() === endDate.getTime()
+    );
   }
 
   // красит правую половину у startDate, если выбранны обе даты
-  if (
-    startDate &&
-    endDate &&
-    startDate < endDate &&
-    comparisonDate.getTime() === startDate.getTime()
-  ) {
-    return true;
+  if (!startDate || !endDate) {
+    return false;
   }
 
-  return false;
+  return (
+    startDate < endDate && comparisonDate.getTime() === startDate.getTime()
+  );
 };
 
 export const isFilledLeftHalfCell = (
@@ -69,38 +55,25 @@ export const isFilledLeftHalfCell = (
   endDate: Date | null
 ): boolean => {
   // красит левую половину у startDate
-  if (
-    startDate &&
-    hoverDate &&
-    !endDate &&
-    startDate > hoverDate &&
-    comparisonDate.getTime() === startDate.getTime()
-  ) {
-    return true;
+  if (startDate && hoverDate && !endDate) {
+    return (
+      startDate > hoverDate && comparisonDate.getTime() === startDate.getTime()
+    );
   }
 
   // красит левую половину у endDate
-  if (
-    endDate &&
-    hoverDate &&
-    !startDate &&
-    endDate > hoverDate &&
-    comparisonDate.getTime() === endDate.getTime()
-  ) {
-    return true;
+  if (endDate && hoverDate && !startDate) {
+    return (
+      endDate > hoverDate && comparisonDate.getTime() === endDate.getTime()
+    );
   }
 
-  // красит правую половину у endDate, если выбранны обе даты
-  if (
-    startDate &&
-    endDate &&
-    startDate < endDate &&
-    comparisonDate.getTime() === endDate.getTime()
-  ) {
-    return true;
+  // красит левую половину у endDate, если выбранны обе даты
+  if (!startDate || !endDate) {
+    return false;
   }
 
-  return false;
+  return startDate < endDate && comparisonDate.getTime() === endDate.getTime();
 };
 
 export const isFilled = (
@@ -126,13 +99,6 @@ export const isFilled = (
     }
 
     if (comparisonDate < startDate && comparisonDate > hoverDate) {
-      return true;
-    }
-
-    if (
-      comparisonDate.getTime() === startDate.getTime() &&
-      comparisonDate > hoverDate
-    ) {
       return true;
     }
   }
