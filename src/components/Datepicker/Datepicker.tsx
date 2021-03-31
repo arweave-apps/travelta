@@ -10,7 +10,6 @@ import {
   setActiveSegment,
 } from '../../redux/actions/pageSettings/pageSettings';
 import { RootStateType } from '../../redux/reducers';
-import { SegmentType } from '../../redux/reducers/aviaParams';
 
 import DatepickerCalendar from './DatepickerCalendar';
 import TextInput from '../TextInput';
@@ -18,10 +17,16 @@ import TextInput from '../TextInput';
 import './Datepicker.scss';
 
 type DatepickerPropsType = {
-  segment: SegmentType;
+  segmentId: string;
+  returnDate: Date | null;
+  departureDate: Date | null;
 };
 
-const Datepicker = ({ segment }: DatepickerPropsType): JSX.Element => {
+const Datepicker = ({
+  segmentId,
+  returnDate,
+  departureDate,
+}: DatepickerPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
   const activeForm = useSelector(
@@ -57,7 +62,7 @@ const Datepicker = ({ segment }: DatepickerPropsType): JSX.Element => {
 
   const handleClickInputDate = (inputType: string) => {
     dispatch(setActiveInputDate(inputType));
-    dispatch(setActiveSegment(segment.id));
+    dispatch(setActiveSegment(segmentId));
   };
 
   return (
@@ -70,7 +75,7 @@ const Datepicker = ({ segment }: DatepickerPropsType): JSX.Element => {
       <div
         className={classNames('datepicker__depart', {
           'datepicker__depart--active':
-            activeInputDate === 'departure' && segment.id === activeSegment,
+            activeInputDate === 'departure' && segmentId === activeSegment,
         })}
         role="presentation"
         onClick={() => handleClickInputDate('departure')}
@@ -78,7 +83,7 @@ const Datepicker = ({ segment }: DatepickerPropsType): JSX.Element => {
         <TextInput
           placeholder="Когда"
           id="depart"
-          value={segment.departureDate?.toLocaleDateString()}
+          value={departureDate?.toLocaleDateString()}
           readonly
         />
       </div>
@@ -87,7 +92,7 @@ const Datepicker = ({ segment }: DatepickerPropsType): JSX.Element => {
         <div
           className={classNames('datepicker__return', {
             'datepicker__return--active':
-              activeInputDate === 'return' && segment.id === activeSegment,
+              activeInputDate === 'return' && segmentId === activeSegment,
           })}
           role="presentation"
           onClick={() => handleClickInputDate('return')}
@@ -95,13 +100,20 @@ const Datepicker = ({ segment }: DatepickerPropsType): JSX.Element => {
           <TextInput
             placeholder="Обратно"
             id="return"
-            value={segment.returnDate?.toLocaleDateString()}
+            value={returnDate?.toLocaleDateString()}
             readonly
           />
         </div>
       )}
 
-      {isOpen && <DatepickerCalendar segment={segment} />}
+      {isOpen && (
+        <DatepickerCalendar
+          segmentId={segmentId}
+          returnDate={returnDate}
+          departureDate={departureDate}
+          activeInputDate={activeInputDate}
+        />
+      )}
     </div>
   );
 };

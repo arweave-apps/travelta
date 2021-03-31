@@ -16,42 +16,39 @@ const AviaStandartForm = (): JSX.Element => {
   const origin = useInput('');
   const destination = useInput('');
 
-  const segments = useSelector(
-    (state: RootStateType) => state.aviaParams.segments
+  const segment = useSelector(
+    (state: RootStateType) => state.aviaParams.segments[0]
   );
 
+  const { id, returnDate, departureDate } = segment;
   return (
     <form className="search-form">
-      {segments.map((segment) => {
-        const { id } = segment;
+      <div className="search-form__origin">
+        <TextInput
+          placeholder="Откуда"
+          id={`origin-${id}`}
+          value={origin.value}
+          onChange={origin.onChange}
+        />
+        <SwitchButton />
+      </div>
 
-        return (
-          <>
-            <div className="search-form__origin">
-              <TextInput
-                placeholder="Откуда"
-                id={`origin-${id}`}
-                value={origin.value}
-                onChange={origin.onChange}
-              />
-              <SwitchButton />
-            </div>
+      <div className="search-form__destination">
+        <TextInput
+          placeholder="Куда"
+          id={`destination=${id}`}
+          value={destination.value}
+          onChange={destination.onChange}
+        />
+      </div>
 
-            <div className="search-form__destination">
-              <TextInput
-                placeholder="Куда"
-                id={`destination=${id}`}
-                value={destination.value}
-                onChange={destination.onChange}
-              />
-            </div>
-
-            <div className="search-form__datepicker">
-              <Datepicker segment={segment} />
-            </div>
-          </>
-        );
-      })}
+      <div className="search-form__datepicker">
+        <Datepicker
+          segmentId={id}
+          returnDate={returnDate}
+          departureDate={departureDate}
+        />
+      </div>
 
       <div className="search-form__select">
         <PassangerSelector />

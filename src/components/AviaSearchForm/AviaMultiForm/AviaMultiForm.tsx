@@ -32,7 +32,7 @@ const AviaMultiForm = (): JSX.Element => {
   return (
     <form className="multicity-form">
       {segments.map((segment) => {
-        const { id } = segment;
+        const { id, returnDate, departureDate } = segment;
 
         return (
           <div className="multicity-form__segment" key={id}>
@@ -55,7 +55,11 @@ const AviaMultiForm = (): JSX.Element => {
             </div>
 
             <div className="multicity-form__datepicker">
-              <Datepicker segment={segment} />
+              <Datepicker
+                segmentId={id}
+                returnDate={returnDate}
+                departureDate={departureDate}
+              />
             </div>
           </div>
         );

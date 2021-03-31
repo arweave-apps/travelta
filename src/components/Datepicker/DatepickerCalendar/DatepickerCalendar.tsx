@@ -8,7 +8,6 @@ import {
 } from '../../../redux/actions/aviaParams/aviaParams';
 import { setActiveInputDate } from '../../../redux/actions/pageSettings/pageSettings';
 import { RootStateType } from '../../../redux/reducers';
-import { SegmentType } from '../../../redux/reducers/aviaParams';
 
 import NextIcon from '../../../assets/images/icons/right-arrow.svg';
 import PrevIcon from '../../../assets/images/icons/left-arrow.svg';
@@ -20,18 +19,19 @@ import getMonthDates from '../../../utils/getMonthDate';
 import './DatepickerCalendar.scss';
 
 type DatepickerCalendarPropsType = {
-  segment: SegmentType;
+  segmentId: string;
+  returnDate: Date | null;
+  departureDate: Date | null;
+  activeInputDate: string | null;
 };
 
 const DatepickerCalendar = ({
-  segment,
+  segmentId,
+  departureDate,
+  returnDate,
+  activeInputDate,
 }: DatepickerCalendarPropsType): JSX.Element => {
   const dispatch = useDispatch();
-  const { id: segmentId, departureDate, returnDate } = segment;
-
-  const activeInputDate = useSelector(
-    (state: RootStateType) => state.pageSettings.activeInputDate
-  );
 
   const [prevMonthData, setPrevMonthData] = useState<Array<
     number | undefined
