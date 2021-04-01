@@ -1,3 +1,38 @@
+export const shortWeekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+
+export const monthsNames = [
+  'Январь',
+  'Февраль',
+  'Март',
+  'Апрель',
+  'Май',
+  'Июнь',
+  'Июль',
+  'Август',
+  'Сентябрь',
+  'Октябрь',
+  'Ноябрь',
+  'Декабрь',
+];
+
+export const getMonthDates = (
+  year: number,
+  month: number
+): Array<number | undefined> => {
+  const monthStartsOn = new Date(`${year}-0${month + 1}-01`).getDay();
+  const numberOfMonthDays = new Date(year, month + 1, 0).getDate();
+
+  const missedDays: Array<undefined> = Array.from({
+    length: monthStartsOn - 1,
+  });
+
+  const datesOfMonth = Array.from({
+    length: numberOfMonthDays,
+  }).map((_, i) => i + 1);
+
+  return [...missedDays, ...datesOfMonth];
+};
+
 export const isPastDay = (comparisonDate: Date): boolean => {
   const now = new Date();
   const month = now.getMonth();
