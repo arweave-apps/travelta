@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { RootStateType } from '../../redux/reducers';
 
-import AviaStandartForm from './StandartForm/AviaStandartForm';
+import AviaStandartForm from './AviaStandartForm/AviaStandartForm';
 import AviaMultiForm from './AviaMultiForm';
 
 import './AviaSearchForm.scss';

@@ -1,6 +1,10 @@
 import React, { useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import useInput from '../../../hooks/useInput';
+
+import { addSegment } from '../../../redux/actions/aviaParams/aviaParams';
+import { RootStateType } from '../../../redux/reducers';
 
 import TextInput from '../../TextInput';
 import PassangerSelector from '../../PassangerSelector';
@@ -10,29 +14,26 @@ import Datepicker from '../../Datepicker';
 import './AviaMultiForm.scss';
 
 const AviaMultiForm = (): JSX.Element => {
+  const dispatch = useDispatch();
   const origin = useInput('');
   const destination = useInput('');
 
-  const [segments, setSegments] = useState([
-    { id: 'segment-1' },
-    { id: 'segment-2' },
-  ]);
-
-  const [segmentsCount, setSegmentsCount] = useState(segments.length);
+  const segments = useSelector(
+    (state: RootStateType) => state.aviaParams.segments
+  );
 
   const handleClickAddSegment = useCallback(() => {
-    if (segmentsCount > 5) {
+    if (segments.length > 5) {
       return;
     }
-
-    const newSegments = [...segments, { id: `segment-${segmentsCount + 1}` }];
-    setSegments(newSegments);
-    setSegmentsCount((prevState) => prevState + 1);
-  }, [segments, segmentsCount]);
+    dispatch(addSegment());
+  }, [dispatch, segments.length]);
 
   return (
     <form className="multicity-form">
-      {segments.map(({ id }) => {
+      {segments.map((segment) => {
+        const { id, returnDate, departureDate } = segment;
+
         return (
           <div className="multicity-form__segment" key={id}>
             <div className="multicity-form__origin">
@@ -54,7 +55,11 @@ const AviaMultiForm = (): JSX.Element => {
             </div>
 
             <div className="multicity-form__datepicker">
-              <Datepicker />
+              <Datepicker
+                segmentId={id}
+                returnDate={returnDate}
+                departureDate={departureDate}
+              />
             </div>
           </div>
         );
@@ -70,7 +75,7 @@ const AviaMultiForm = (): JSX.Element => {
             second
             title="+ добавить перелёт"
             onClick={handleClickAddSegment}
-            disabled={segmentsCount > 5}
+            disabled={segments.length > 5}
           />
         </div>
 

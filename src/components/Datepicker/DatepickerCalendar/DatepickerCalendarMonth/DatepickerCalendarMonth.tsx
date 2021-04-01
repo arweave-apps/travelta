@@ -1,46 +1,35 @@
 import React from 'react';
+
 import { v4 as uuidv4 } from 'uuid';
 import classNames from 'classnames';
 
 import {
-  isActive,
+  isSelectedDay,
   isFilled,
   isFilledRightHalfCell,
   isFilledLeftHalfCell,
   isPastDay,
-} from './helpers';
+  monthsNames,
+  shortWeekDays,
+} from '../helpers';
+import { DisabledDatesType } from '../../../../redux/reducers/pageSettings';
 
-import './CalendarMonth.scss';
+import './DatepickerCalendarMonth.scss';
 
-const shortWeekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-
-const monthsNames = [
-  'Январь',
-  'Февраль',
-  'Март',
-  'Апрель',
-  'Май',
-  'Июнь',
-  'Июль',
-  'Август',
-  'Сентябрь',
-  'Октябрь',
-  'Ноябрь',
-  'Декабрь',
-];
-
-type CalendarMonthProps = {
+type DatePickerCalendarMonthProps = {
   calendarDate: Date | null;
   monthDates: Array<number | undefined> | null;
-  onClickDay: (date: Date | null) => void;
+  onClickDay: (date: Date) => void;
   startDate: Date | null;
   endDate: Date | null;
   hoverDate: Date | null;
   onMouseEnterDay: (date: Date | null) => void;
   onMouseLeaveMonth: () => void;
+  activeForm: string;
+  disabledDates: DisabledDatesType;
 };
 
-const CalendarMonth = ({
+const DatePickerCalendarMonth = ({
   calendarDate,
   monthDates,
   onClickDay,
@@ -49,7 +38,9 @@ const CalendarMonth = ({
   hoverDate,
   onMouseEnterDay,
   onMouseLeaveMonth,
-}: CalendarMonthProps): JSX.Element => {
+  activeForm,
+  disabledDates,
+}: DatePickerCalendarMonthProps): JSX.Element => {
   const year = calendarDate?.getFullYear() || 0;
   const month = calendarDate?.getMonth() || 0;
 
@@ -87,7 +78,7 @@ const CalendarMonth = ({
               );
             }
 
-            if (isPastDay(comparisonDate)) {
+            if (isPastDay(comparisonDate, disabledDates)) {
               return (
                 <div className="month__day month__day--past" key={uuidv4()}>
                   {monthDay}
@@ -99,26 +90,28 @@ const CalendarMonth = ({
               <div
                 className={classNames('month__day month__day--clickable', {
                   'month__day--active':
-                    isActive(comparisonDate, startDate) ||
-                    isActive(comparisonDate, endDate),
-                  'month__day--filled-right': isFilledRightHalfCell(
-                    comparisonDate,
-                    startDate,
-                    hoverDate,
-                    endDate
-                  ),
-                  'month__day--filled-left': isFilledLeftHalfCell(
-                    comparisonDate,
-                    startDate,
-                    hoverDate,
-                    endDate
-                  ),
-                  'month__day--filled': isFilled(
-                    comparisonDate,
-                    startDate,
-                    hoverDate,
-                    endDate
-                  ),
+                    isSelectedDay(comparisonDate, startDate) ||
+                    (activeForm === 'standart' &&
+                      isSelectedDay(comparisonDate, endDate)),
+                  'month__day--filled-right':
+                    activeForm === 'standart' &&
+                    isFilledRightHalfCell(
+                      comparisonDate,
+                      startDate,
+                      hoverDate,
+                      endDate
+                    ),
+                  'month__day--filled-left':
+                    activeForm === 'standart' &&
+                    isFilledLeftHalfCell(
+                      comparisonDate,
+                      startDate,
+                      hoverDate,
+                      endDate
+                    ),
+                  'month__day--filled':
+                    activeForm === 'standart' &&
+                    isFilled(comparisonDate, startDate, hoverDate, endDate),
                 })}
                 role="presentation"
                 key={uuidv4()}
@@ -136,4 +129,4 @@ const CalendarMonth = ({
   );
 };
 
-export default CalendarMonth;
+export default DatePickerCalendarMonth;
