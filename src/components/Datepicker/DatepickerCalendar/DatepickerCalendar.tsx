@@ -6,14 +6,19 @@ import {
   setDepartureDate,
   setReturnDate,
 } from '../../../redux/actions/aviaParams/aviaParams';
-import { setActiveInputDate } from '../../../redux/actions/pageSettings/pageSettings';
+import {
+  setActiveInputDate,
+  setAfterDisabledDates,
+  setBeforeDisabledDates,
+} from '../../../redux/actions/pageSettings/pageSettings';
+import { DisabledDatesType } from '../../../redux/reducers/pageSettings';
 
 import NextIcon from '../../../assets/images/icons/right-arrow.svg';
 import PrevIcon from '../../../assets/images/icons/left-arrow.svg';
 import DatepickerCalendarMonth from './DatepickerCalendarMonth';
 import SlideButton from '../../SlideButton';
 
-import getMonthDates from '../../../utils/getMonthDate';
+import { getMonthDates } from './helpers';
 
 import './DatepickerCalendar.scss';
 import { RootStateType } from '../../../redux/reducers';
@@ -24,6 +29,7 @@ type DatepickerCalendarPropsType = {
   departureDate: Date | null;
   activeInputDate: string | null;
   activeForm: string;
+  disabledDates: DisabledDatesType;
 };
 
 const DatepickerCalendar = ({
@@ -32,6 +38,7 @@ const DatepickerCalendar = ({
   returnDate,
   activeInputDate,
   activeForm,
+  disabledDates,
 }: DatepickerCalendarPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -48,19 +55,29 @@ const DatepickerCalendar = ({
 
   const [hoverDate, setHoverDate] = useState<Date | null>(null);
 
-  const selectedDates = useSelector((state: RootStateType) =>
-    state.aviaParams.segments.map((segment) => segment.departureDate)
+  const segments = useSelector(
+    (state: RootStateType) => state.aviaParams.segments
   );
-  console.log('~ selectedDates', selectedDates);
 
   useEffect(() => {
     const now = new Date();
+    const day = now.getDate();
     const month = now.getMonth();
     const year = now.getFullYear();
 
+    if (segments.length > 1) {
+      const prevSegment = segments[segments.length - 2];
+      const prevDepartureDate = prevSegment.departureDate;
+      dispatch(setBeforeDisabledDates(prevDepartureDate));
+    } else {
+      dispatch(setBeforeDisabledDates(new Date(year, month, day)));
+    }
+
+    dispatch(setAfterDisabledDates(new Date(year + 1, month + 1, day)));
+
     setPrevMonthDate(new Date(year, month));
     setNextMonthDate(new Date(year, month + 1));
-  }, []);
+  }, [dispatch, segments]);
 
   useEffect(() => {
     if (nextMonthDate && prevMonthDate) {
@@ -68,6 +85,7 @@ const DatepickerCalendar = ({
         prevMonthDate.getFullYear(),
         prevMonthDate.getMonth()
       );
+
       const nextMonth = getMonthDates(
         nextMonthDate.getFullYear(),
         nextMonthDate.getMonth()
@@ -78,12 +96,13 @@ const DatepickerCalendar = ({
     }
   }, [prevMonthDate, nextMonthDate]);
 
-  const handleClickBtn = (value: number) => {
+  const handleClickSlideBtn = (value: number) => {
     if (nextMonthDate && prevMonthDate) {
       const prevDate = new Date(
         prevMonthDate.getFullYear(),
         prevMonthDate.getMonth() + value
       );
+
       const nextDate = new Date(
         nextMonthDate.getFullYear(),
         nextMonthDate.getMonth() + value
@@ -98,40 +117,44 @@ const DatepickerCalendar = ({
     (date: Date) => {
       if (activeForm === 'multiCity' && activeInputDate === 'departure') {
         dispatch(setDepartureDate(date, segmentId));
-      } else if (activeInputDate === 'departure') {
-        if (hoverDate && returnDate && hoverDate < returnDate) {
-          dispatch(setDepartureDate(date, segmentId));
-          dispatch(setActiveInputDate('return'));
-        } else if (hoverDate && returnDate && hoverDate > returnDate) {
-          const tempEnd = returnDate;
-          dispatch(setDepartureDate(tempEnd, segmentId));
-          dispatch(setReturnDate(hoverDate, segmentId));
-        } else if (hoverDate && (departureDate || !departureDate)) {
-          dispatch(setDepartureDate(hoverDate, segmentId));
-          dispatch(setActiveInputDate('return'));
-        }
-      } else if (activeInputDate === 'return') {
-        if (hoverDate && departureDate && hoverDate > departureDate) {
-          dispatch(setReturnDate(date, segmentId));
-          dispatch(setActiveInputDate('departure'));
-        } else if (hoverDate && departureDate && hoverDate < departureDate) {
-          const tempStart = departureDate;
-          dispatch(setDepartureDate(hoverDate, segmentId));
-          dispatch(setReturnDate(tempStart, segmentId));
-        } else if (hoverDate && !departureDate) {
-          dispatch(setReturnDate(hoverDate, segmentId));
-          dispatch(setActiveInputDate('departure'));
-        }
+        return;
+      }
+
+      if (!hoverDate) {
+        return;
+      }
+
+      if (departureDate && hoverDate < departureDate) {
+        dispatch(setDepartureDate(date, segmentId));
+        dispatch(setActiveInputDate('return'));
+        return;
+      }
+
+      if (returnDate && hoverDate > returnDate) {
+        dispatch(setReturnDate(date, segmentId));
+        dispatch(setActiveInputDate('departure'));
+        return;
+      }
+
+      if (activeInputDate === 'departure') {
+        dispatch(setDepartureDate(date, segmentId));
+        dispatch(setActiveInputDate('return'));
+        return;
+      }
+
+      if (activeInputDate === 'return') {
+        dispatch(setReturnDate(date, segmentId));
+        dispatch(setActiveInputDate('departure'));
       }
     },
     [
       activeForm,
       activeInputDate,
+      hoverDate,
+      departureDate,
+      returnDate,
       dispatch,
       segmentId,
-      hoverDate,
-      returnDate,
-      departureDate,
     ]
   );
 
@@ -144,7 +167,7 @@ const DatepickerCalendar = ({
   }, []);
 
   const isDisabledBtn = (date: Date | null): boolean =>
-    date ? date.getMonth() === new Date().getMonth() : false;
+    date ? date.getMonth() === disabledDates.after?.getMonth() : false;
 
   const handleClickNoReturnButton = () => {
     dispatch(setReturnDate(null, segmentId));
@@ -183,6 +206,7 @@ const DatepickerCalendar = ({
             endDate={returnDate}
             hoverDate={hoverDate}
             activeForm={activeForm}
+            disabledDates={disabledDates}
           />
 
           {activeForm === 'standart' && (
@@ -196,19 +220,20 @@ const DatepickerCalendar = ({
               endDate={returnDate}
               hoverDate={hoverDate}
               activeForm={activeForm}
+              disabledDates={disabledDates}
             />
           )}
         </div>
 
         <SlideButton
           icon={<PrevIcon />}
-          onClick={() => handleClickBtn(-1)}
+          onClick={() => handleClickSlideBtn(-1)}
           disabled={isDisabledBtn(prevMonthDate)}
           direction="prev"
         />
         <SlideButton
           icon={<NextIcon />}
-          onClick={() => handleClickBtn(1)}
+          onClick={() => handleClickSlideBtn(1)}
           disabled={isDisabledBtn(nextMonthDate)}
           direction="next"
         />

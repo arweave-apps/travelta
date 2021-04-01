@@ -9,28 +9,14 @@ import {
   isFilledRightHalfCell,
   isFilledLeftHalfCell,
   isPastDay,
-} from './helpers';
+  monthsNames,
+  shortWeekDays,
+} from '../helpers';
+import { DisabledDatesType } from '../../../../redux/reducers/pageSettings';
 
 import './DatepickerCalendarMonth.scss';
 
-const shortWeekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-
-const monthsNames = [
-  'Январь',
-  'Февраль',
-  'Март',
-  'Апрель',
-  'Май',
-  'Июнь',
-  'Июль',
-  'Август',
-  'Сентябрь',
-  'Октябрь',
-  'Ноябрь',
-  'Декабрь',
-];
-
-type CalendarMonthProps = {
+type DatePickerCalendarMonthProps = {
   calendarDate: Date | null;
   monthDates: Array<number | undefined> | null;
   onClickDay: (date: Date) => void;
@@ -40,9 +26,10 @@ type CalendarMonthProps = {
   onMouseEnterDay: (date: Date | null) => void;
   onMouseLeaveMonth: () => void;
   activeForm: string;
+  disabledDates: DisabledDatesType;
 };
 
-const CalendarMonth = ({
+const DatePickerCalendarMonth = ({
   calendarDate,
   monthDates,
   onClickDay,
@@ -52,7 +39,8 @@ const CalendarMonth = ({
   onMouseEnterDay,
   onMouseLeaveMonth,
   activeForm,
-}: CalendarMonthProps): JSX.Element => {
+  disabledDates,
+}: DatePickerCalendarMonthProps): JSX.Element => {
   const year = calendarDate?.getFullYear() || 0;
   const month = calendarDate?.getMonth() || 0;
 
@@ -90,7 +78,7 @@ const CalendarMonth = ({
               );
             }
 
-            if (isPastDay(comparisonDate)) {
+            if (isPastDay(comparisonDate, disabledDates)) {
               return (
                 <div className="month__day month__day--past" key={uuidv4()}>
                   {monthDay}
@@ -141,4 +129,4 @@ const CalendarMonth = ({
   );
 };
 
-export default CalendarMonth;
+export default DatePickerCalendarMonth;

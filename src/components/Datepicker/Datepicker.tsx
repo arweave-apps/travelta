@@ -60,6 +60,10 @@ const Datepicker = ({
     (state: RootStateType) => state.pageSettings.activeSegment
   );
 
+  const disabledDates = useSelector(
+    (state: RootStateType) => state.pageSettings.disabledDates
+  );
+
   const handleClickInputDate = (inputType: string) => {
     dispatch(setActiveInputDate(inputType));
     dispatch(setActiveSegment(segmentId));
@@ -113,6 +117,7 @@ const Datepicker = ({
           departureDate={departureDate}
           activeInputDate={activeInputDate}
           activeForm={activeForm}
+          disabledDates={disabledDates}
         />
       )}
     </div>

@@ -3,18 +3,30 @@ import {
   SET_ACTIVE_FORM,
   SET_ACTIVE_INPUT_DATE,
   SET_ACTIVE_SEGMENT,
+  SET_AFTER_DISABLED_DATES,
+  SET_BEFORE_DISABLED_DATES,
 } from '../actions/pageSettings/types';
 
 const initialState = {
   activeForm: 'standart',
   activeInputDate: null,
   activeSegment: null,
+  disabledDates: {
+    after: null,
+    before: null,
+  },
+};
+
+export type DisabledDatesType = {
+  after: Date | null;
+  before: Date | null;
 };
 
 export type InitialPageSettingsStateType = {
   activeForm: string;
   activeInputDate: null | string;
   activeSegment: null | string;
+  disabledDates: DisabledDatesType;
 };
 
 export const pageSettingsReducer = (
@@ -28,6 +40,16 @@ export const pageSettingsReducer = (
       return { ...state, activeInputDate: action.payload };
     case SET_ACTIVE_SEGMENT:
       return { ...state, activeSegment: action.payload };
+    case SET_BEFORE_DISABLED_DATES:
+      return {
+        ...state,
+        disabledDates: { ...state.disabledDates, before: action.payload },
+      };
+    case SET_AFTER_DISABLED_DATES:
+      return {
+        ...state,
+        disabledDates: { ...state.disabledDates, after: action.payload },
+      };
 
     default:
       return state;
