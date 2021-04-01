@@ -1,3 +1,5 @@
+import { DisabledDatesType } from '../../../redux/reducers/pageSettings';
+
 export const shortWeekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
 export const monthsNames = [
@@ -33,13 +35,18 @@ export const getMonthDates = (
   return [...missedDays, ...datesOfMonth];
 };
 
-export const isPastDay = (comparisonDate: Date): boolean => {
-  const now = new Date();
-  const month = now.getMonth();
-  const year = now.getFullYear();
-  const day = now.getDate();
+export const isPastDay = (
+  comparisonDate: Date,
+  disabledDates: DisabledDatesType
+): boolean => {
+  if (!disabledDates.before || !disabledDates.after) {
+    return false;
+  }
 
-  return comparisonDate < new Date(year, month, day, 0, 0, 0);
+  return (
+    comparisonDate < disabledDates.before ||
+    comparisonDate > disabledDates.after
+  );
 };
 
 export const isSelectedDay = (
