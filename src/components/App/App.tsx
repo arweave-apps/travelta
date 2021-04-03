@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Header from '../Header';
-import HomeLayout from '../HomeLayout';
+import Routes from '../Routes';
 
 import './App.scss';
 
@@ -9,7 +9,7 @@ const App = (): JSX.Element => {
   return (
     <div className="app">
       <Header />
-      <HomeLayout />
+      <Routes />
     </div>
   );
 };
