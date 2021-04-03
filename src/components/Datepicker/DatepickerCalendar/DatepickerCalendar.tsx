@@ -167,7 +167,7 @@ const DatepickerCalendar = ({
   }, []);
 
   const isDisabledBtn = (date: Date | null): boolean =>
-    date ? date.getMonth() === disabledDates.after?.getMonth() : false;
+    date ? date.getMonth() === disabledDates.before?.getMonth() : false;
 
   const handleClickNoReturnButton = () => {
     dispatch(setReturnDate(null, segmentId));
