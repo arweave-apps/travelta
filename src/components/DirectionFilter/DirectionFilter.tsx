@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { clearSegments } from '../../redux/actions/aviaParams/aviaParams';
 import { setActiveForm } from '../../redux/actions/pageSettings/pageSettings';
 import { RootStateType } from '../../redux/reducers';
 
@@ -32,9 +33,11 @@ const DirectionFilter = (): JSX.Element => {
 
   const handleChangeRadioButton = (id: string) => {
     if (id === 'multiCity') {
-      dispatch(setActiveForm(id));
+      dispatch(setActiveForm('multiCity'));
+      dispatch(clearSegments());
     } else if (activeForm !== 'standart') {
       dispatch(setActiveForm('standart'));
+      dispatch(clearSegments());
     }
     setOption(id);
   };

@@ -5,15 +5,28 @@ import classNames from 'classnames';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 
-import { setActiveInputDate } from '../../redux/actions/aviaParams/aviaParams';
+import {
+  setActiveInputDate,
+  setActiveSegment,
+} from '../../redux/actions/pageSettings/pageSettings';
 import { RootStateType } from '../../redux/reducers';
 
-import CalendarPicker from '../CalendarPicker';
+import DatepickerCalendar from './DatepickerCalendar';
 import TextInput from '../TextInput';
 
 import './Datepicker.scss';
 
-const Datepicker = (): JSX.Element => {
+type DatepickerPropsType = {
+  segmentId: string;
+  returnDate: Date | null;
+  departureDate: Date | null;
+};
+
+const Datepicker = ({
+  segmentId,
+  returnDate,
+  departureDate,
+}: DatepickerPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
   const activeForm = useSelector(
@@ -40,20 +53,21 @@ const Datepicker = (): JSX.Element => {
   };
 
   const activeInputDate = useSelector(
-    (state: RootStateType) => state.aviaParams.activeInputDate
+    (state: RootStateType) => state.pageSettings.activeInputDate
+  );
+
+  const activeSegment = useSelector(
+    (state: RootStateType) => state.pageSettings.activeSegment
+  );
+
+  const disabledDates = useSelector(
+    (state: RootStateType) => state.pageSettings.disabledDates
   );
 
   const handleClickInputDate = (inputType: string) => {
     dispatch(setActiveInputDate(inputType));
+    dispatch(setActiveSegment(segmentId));
   };
-
-  const departureDate = useSelector(
-    (state: RootStateType) => state.aviaParams.departureDate
-  );
-
-  const returnDate = useSelector(
-    (state: RootStateType) => state.aviaParams.returnDate
-  );
 
   return (
     <div
@@ -64,7 +78,8 @@ const Datepicker = (): JSX.Element => {
     >
       <div
         className={classNames('datepicker__depart', {
-          'datepicker__depart--active': activeInputDate === 'departure',
+          'datepicker__depart--active':
+            activeInputDate === 'departure' && segmentId === activeSegment,
         })}
         role="presentation"
         onClick={() => handleClickInputDate('departure')}
@@ -80,7 +95,8 @@ const Datepicker = (): JSX.Element => {
       {activeForm === 'standart' && (
         <div
           className={classNames('datepicker__return', {
-            'datepicker__return--active': activeInputDate === 'return',
+            'datepicker__return--active':
+              activeInputDate === 'return' && segmentId === activeSegment,
           })}
           role="presentation"
           onClick={() => handleClickInputDate('return')}
@@ -94,7 +110,16 @@ const Datepicker = (): JSX.Element => {
         </div>
       )}
 
-      {isOpen && <CalendarPicker />}
+      {isOpen && (
+        <DatepickerCalendar
+          segmentId={segmentId}
+          returnDate={returnDate}
+          departureDate={departureDate}
+          activeInputDate={activeInputDate}
+          activeForm={activeForm}
+          disabledDates={disabledDates}
+        />
+      )}
     </div>
   );
 };
