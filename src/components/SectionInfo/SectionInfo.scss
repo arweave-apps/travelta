@@ -3,30 +3,34 @@
 
   background-color: $alternative-bg-color;
 
+  &--search {
+    background-color: $search-page-info-bg-color;
+  }
+
   &__inner {
-    height: calc(100vh - #{$header-hight});
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: repeat(3, 1fr);
-    grid-template-areas: '. info-titles .' 'search-panel search-panel search-panel';
+    grid-template-columns: 1fr;
+    grid-template-rows: 0fr 0fr 2fr 1.5fr;
+    grid-template-areas:
+      "."
+      "info-titles"
+      "search-panel"
+      ".";
+    grid-row-gap: 114px;
 
-    @include mq('desktop') {
-      grid-template-areas: 'info-titles info-titles info-titles' 'search-panel search-panel search-panel';
-    }
-
-    @include mq('phone-wide') {
-      height: calc(100vh + #{$header-hight});
+    &--search {
+      grid-row-gap: 70px;
+      grid-template-columns: 1fr;
+      grid-template-rows: 0fr 1fr 0fr;
+      grid-template-areas:
+        '.'
+        'search-panel'
+        '.';
     }
   }
 
   &__titles {
     grid-area: info-titles;
-    align-self: flex-end;
-    margin-bottom: rem(70);
-
-    @include mq('phablet') {
-      margin-bottom: rem(30);
-    }
   }
 
   &__title {

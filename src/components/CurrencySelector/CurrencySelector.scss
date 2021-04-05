@@ -20,6 +20,15 @@
     background: lighten($home-header-color, 10%);
   }
 
+  &--search {
+    color: $primary-text-color;
+
+    &:hover {
+      cursor: pointer;
+      background: lighten($accent-color, 40%);
+    }
+  }
+
   @include mq('tablet') {
     grid-column: 3/4;
     grid-row: 1/1;

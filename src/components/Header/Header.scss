@@ -4,6 +4,10 @@
 
   background: $home-header-color;
 
+  &--search {
+    background: $search-header-color;
+  }
+
   &__inner {
     @include display(grid, space-between, center);
     grid-template-columns: auto auto auto;
