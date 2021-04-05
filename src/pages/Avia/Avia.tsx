@@ -3,8 +3,8 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 
 import AviaSearchForm from '../../components/AviaSearchForm';
 import DirectionFilter from '../../components/DirectionFilter';
-import SearchPanel from '../../components/SearchPanel';
-import SectionInfo from '../../components/SectionInfo';
+import InfoWrapper from '../../components/InfoWrapper';
+
 import Home from '../Home';
 import Search from '../Search';
 
@@ -14,13 +14,11 @@ const Avia = (): JSX.Element => {
   const match = useRouteMatch();
 
   return (
-    <div>
-      <SectionInfo>
-        <SearchPanel>
-          <DirectionFilter />
-          <AviaSearchForm />
-        </SearchPanel>
-      </SectionInfo>
+    <>
+      <InfoWrapper>
+        <DirectionFilter />
+        <AviaSearchForm />
+      </InfoWrapper>
       <Switch>
         <Route path={`${match.path}`} exact>
           <Home />
@@ -29,7 +27,7 @@ const Avia = (): JSX.Element => {
           <Search />
         </Route>
       </Switch>
-    </div>
+    </>
   );
 };
 

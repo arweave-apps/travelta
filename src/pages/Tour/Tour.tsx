@@ -1,8 +1,7 @@
 import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import InfoWrapper from '../../components/InfoWrapper';
 
-import SearchPanel from '../../components/SearchPanel';
-import SectionInfo from '../../components/SectionInfo';
 import TourSearchForm from '../../components/TourSearchForm';
 import Home from '../Home';
 import Search from '../Search';
@@ -11,12 +10,10 @@ const Tour = (): JSX.Element => {
   const match = useRouteMatch();
 
   return (
-    <div>
-      <SectionInfo>
-        <SearchPanel>
-          <TourSearchForm />
-        </SearchPanel>
-      </SectionInfo>
+    <>
+      <InfoWrapper>
+        <TourSearchForm />
+      </InfoWrapper>
       <Switch>
         <Route path={`${match.path}`} exact>
           <Home />
@@ -25,7 +22,7 @@ const Tour = (): JSX.Element => {
           <Search />
         </Route>
       </Switch>
-    </div>
+    </>
   );
 };
 
