@@ -9,6 +9,7 @@
 
   background: $panel-color;
   box-shadow: $panel-shadow;
+  z-index: z('dropdown');
 
   &__list {
     padding: rem(16) 0;

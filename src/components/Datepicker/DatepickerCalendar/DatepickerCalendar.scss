@@ -3,6 +3,7 @@
   bottom: 109%;
   left: 50%;
   transform: translateX(-50%);
+  z-index: z('calendar');
 
   @include mq('tablet-wide') {
     top: rem(-540);
