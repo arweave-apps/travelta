@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import useInput from '../../../hooks/useInput';
 import { RootStateType } from '../../../redux/reducers';
@@ -13,6 +14,7 @@ import Datepicker from '../../Datepicker';
 import './AviaStandartForm.scss';
 
 const AviaStandartForm = (): JSX.Element => {
+  const history = useHistory();
   const origin = useInput('');
   const destination = useInput('');
 
@@ -21,8 +23,18 @@ const AviaStandartForm = (): JSX.Element => {
   );
 
   const { id, returnDate, departureDate } = segment;
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (history.location.pathname.includes('search')) {
+      return;
+    }
+    history.push(`${history.location.pathname}/search`);
+  };
+
   return (
-    <form className="search-form">
+    <form className="search-form" onSubmit={handleFormSubmit}>
       <div className="search-form__origin">
         <TextInput
           placeholder="Откуда"
