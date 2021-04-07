@@ -4,6 +4,7 @@ import './Prediction.scss';
 import PredictionItem from './PredictionItem/PredictionItem';
 
 const items = [
+  // eslint-disable-next-line sonarjs/no-duplicate-string
   { id: 1, price: '12 000 ₽', date: '01 мар, ср' },
   { id: 2, price: '12 000 ₽', date: '01 мар, ср' },
   { id: 3, price: '12 000 ₽', date: '01 мар, ср' },
