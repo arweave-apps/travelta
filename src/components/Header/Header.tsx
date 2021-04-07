@@ -28,7 +28,7 @@ const Header = (): JSX.Element => {
         <div className="header__inner">
           <Logo img={<LogoImg />} isSearchPage={isSearchPage} />
           <HeaderNav items={paths} isSearchPage={isSearchPage} />
-          <CurrencySelector isSearchPage={isSearchPage}/>
+          <CurrencySelector isSearchPage={isSearchPage} />
           <NavToggle />
         </div>
       </div>
