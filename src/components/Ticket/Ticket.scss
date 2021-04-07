@@ -1,0 +1,194 @@
+.ticket {
+  @include display(flex, space-between, center);
+  min-height: 262px;
+  padding: 0 20px;
+
+  &__left {
+    width: 73.19%;
+    margin-right: 24px;
+  }
+
+  &__airlines {
+    margin-bottom: 37px;
+
+    & > img {
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+    }
+  }
+
+  &__body {
+    @include display(flex, flex-start, flex-start);
+    flex-direction: column;
+    padding-top: 15px;
+    margin-bottom: 45px;
+  }
+
+  &__route {
+    @include display(flex, center, center);
+  }
+
+  &__time {
+    @include font-roboto(rem(36), $primary-text-color, normal, normal, rem(42));
+  }
+
+  &__city {
+    @include font-roboto(
+      rem(16),
+      $secondary-text-color,
+      normal,
+      normal,
+      rem(16)
+    );
+  }
+
+  &__date {
+    @include font-roboto(
+      rem(14),
+      $secondary-text-color,
+      normal,
+      normal,
+      rem(16)
+    );
+  }
+
+  &__plane {
+    @include display(flex, center, center);
+    flex-direction: column;
+    width: 200px;
+    margin-left: 32px;
+    margin-right: 32px;
+  }
+
+  &__duration {
+    @include font-roboto(rem(12), $primary-text-color, 500, normal, rem(14));
+    margin-bottom: 12px;
+  }
+
+  &__timeline {
+    position: relative;
+    width: 100%;
+    height: 2px;
+
+    background-color: $secondary-text-color;
+    border-radius: 10px;
+
+    margin-bottom: 12px;
+  }
+
+  &__point-wrapepr {
+    position: absolute;
+    @include center-pos();
+    @include display(flex, space-between, center);
+  }
+
+  &__point {
+    width: 16px;
+    height: 16px;
+
+    background: $warning-color;
+    border: 3px solid $panel-color;
+    border-radius: 50%;
+    margin-right: 6px;
+  }
+
+  &__citycode {
+    width: 100%;
+    @include display(flex, space-between, center);
+
+    &-departure,
+    &-arrival {
+      @include font-roboto(
+        rem(12),
+        $alternative-text-color,
+        normal,
+        normal,
+        rem(14)
+      );
+    }
+  }
+
+  &__right {
+    @include display(flex, center, center);
+    flex-direction: column;
+    width: 26.81%;
+    border-left: $border-width solid $ticket-devider-color;
+    padding-top: 20px;
+    padding-left: 20px;
+  }
+
+  &__social {
+    width: 100%;
+    text-align: right;
+    margin-bottom: 15px;
+  }
+
+  &__share,
+  &__like {
+    width: 16px;
+    height: 16px;
+    color: $secondary-text-color;
+    margin-left: 15px;
+
+    transition: color 0.2s linear, opacity 0.2s linear;
+  }
+
+  &__share {
+    &:hover {
+      cursor: pointer;
+      color: $active-color;
+    }
+  }
+
+  &__like {
+    & > path + path {
+      opacity: 0;
+    }
+
+    &:hover {
+      cursor: pointer;
+      color: $warning-color;
+
+      & > path + path {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__handbag {
+    @include font-roboto(
+      rem(12),
+      $secondary-text-color,
+      normal,
+      normal,
+      rem(14)
+    );
+
+    margin-bottom: 5px;
+  }
+
+  &__suitcase {
+    @include font-roboto(rem(12), $warning-color, 400, normal, rem(14));
+    margin-bottom: 30px;
+  }
+
+  &__handbag-icon {
+    width: 16px;
+    height: 16px;
+    color: $secondary-text-color;
+    margin-right: 7px;
+  }
+
+  &__suitcase-icon {
+    width: 12px;
+    height: 16px;
+    color: $warning-color;
+    margin-right: 7px;
+  }
+
+  &__buy-btn {
+    width: 100%;
+    height: 50px;
+  }
+}
