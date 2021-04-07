@@ -1,11 +1,16 @@
 .ticket {
-  @include display(flex, space-between, center);
+  display: grid;
+  grid-template-columns: 73.19% 26.81%;
+  grid-template-rows: calc(100% - 25px) 25px;
+  grid-template-areas:
+    'ticket-left ticket-right'
+    'ticket-expand ticket-expand';
   min-height: 262px;
-  padding: 0 20px;
 
   &__left {
-    width: 73.19%;
+    padding-left: 20px;
     margin-right: 24px;
+    grid-area: ticket-left;
   }
 
   &__airlines {
@@ -110,12 +115,14 @@
   }
 
   &__right {
-    @include display(flex, center, center);
+    @include display(flex, flex-start, center);
     flex-direction: column;
-    width: 26.81%;
     border-left: $border-width solid $ticket-devider-color;
     padding-top: 20px;
+    padding-right: 20px;
     padding-left: 20px;
+
+    grid-area: ticket-right;
   }
 
   &__social {
@@ -190,5 +197,35 @@
   &__buy-btn {
     width: 100%;
     height: 50px;
+  }
+
+  &__expand-btn {
+    width: 100%;
+    height: 25px;
+
+    background: $ticket-devider-color;
+    border: none;
+    border-radius: 0 0 $radius $radius;
+
+    grid-area: ticket-expand;
+
+    transition: background 0.2s linear;
+
+    & > svg {
+      width: 14px;
+      height: 9px;
+      color: $primary-text-color;
+
+      transition: color 0.2s linear;
+    }
+
+    &:hover {
+      cursor: pointer;
+      background: darken($ticket-devider-color, 1%);
+    }
+
+    &:hover > svg {
+      color: $active-color;
+    }
   }
 }

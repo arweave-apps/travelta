@@ -4,6 +4,7 @@ import ShareIcon from '../../assets/images/icons/share.svg';
 import LikeIcon from '../../assets/images/icons/like.svg';
 import HandbagIcon from '../../assets/images/icons/handbag.svg';
 import SuitcaseIcon from '../../assets/images/icons/suitcase.svg';
+import DownArrowIcon from '../../assets/images/icons/down-arrow.svg';
 
 import SimpleButton from '../SimpleButton';
 
@@ -70,6 +71,10 @@ const Ticket = (): JSX.Element => {
           <SimpleButton title="Купить 12 000 ₽" accent />
         </div>
       </div>
+
+      <button type="button" className="ticket__expand-btn">
+        <DownArrowIcon />
+      </button>
     </div>
   );
 };
