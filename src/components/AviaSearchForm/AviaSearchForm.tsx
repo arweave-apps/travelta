@@ -13,7 +13,7 @@ const AviaSearchForm = (): JSX.Element => {
     (state: RootStateType) => state.pageSettings.activeForm
   );
 
-  return activeForm === 'standart' ? <AviaStandartForm /> : <AviaMultiForm />;
+  return activeForm === 'multiCity' ? <AviaMultiForm /> : <AviaStandartForm />;
 };
 
 export default AviaSearchForm;

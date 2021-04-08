@@ -65,6 +65,15 @@ const DatepickerCalendar = ({
     const month = now.getMonth();
     const year = now.getFullYear();
 
+    setPrevMonthDate(new Date(year, month));
+    setNextMonthDate(new Date(year, month + 1));
+
+    if (activeForm !== 'multiCity') {
+      dispatch(setBeforeDisabledDates(null));
+      dispatch(setAfterDisabledDates(null));
+      return;
+    }
+
     if (segments.length > 1) {
       const prevSegment = segments[segments.length - 2];
       const prevDepartureDate = prevSegment.departureDate;
@@ -74,10 +83,7 @@ const DatepickerCalendar = ({
     }
 
     dispatch(setAfterDisabledDates(new Date(year + 1, month + 1, day)));
-
-    setPrevMonthDate(new Date(year, month));
-    setNextMonthDate(new Date(year, month + 1));
-  }, [dispatch, segments]);
+  }, [activeForm, dispatch, segments]);
 
   useEffect(() => {
     if (nextMonthDate && prevMonthDate) {
@@ -115,7 +121,7 @@ const DatepickerCalendar = ({
 
   const handleClickDay = useCallback(
     (date: Date) => {
-      if (activeForm === 'multiCity' && activeInputDate === 'departure') {
+      if (activeForm !== 'roundtrip' && activeInputDate === 'departure') {
         dispatch(setDepartureDate(date, segmentId));
         return;
       }
@@ -209,7 +215,7 @@ const DatepickerCalendar = ({
             disabledDates={disabledDates}
           />
 
-          {activeForm === 'standart' && (
+          {activeForm === 'roundtrip' && (
             <DatepickerCalendarMonth
               calendarDate={nextMonthDate}
               monthDates={nextMonthData}

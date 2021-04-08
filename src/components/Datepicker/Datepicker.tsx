@@ -92,7 +92,7 @@ const Datepicker = ({
         />
       </div>
 
-      {activeForm === 'standart' && (
+      {activeForm === 'roundtrip' && (
         <div
           className={classNames('datepicker__return', {
             'datepicker__return--active':
