@@ -80,6 +80,7 @@
     "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "core-js": "^3.9.0",
+    "formik": "^2.2.6",
     "imagemin-gifsicle": "^7.0.0",
     "imagemin-mozjpeg": "^9.0.0",
     "imagemin-optipng": "^8.0.0",
