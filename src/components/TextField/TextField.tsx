@@ -2,9 +2,9 @@ import React from 'react';
 
 import classNames from 'classnames';
 
-import './TextInput.scss';
+import './TextField.scss';
 
-type TextInputProps = {
+type TextFieldProps = {
   placeholder: string;
   id: string;
   value: string | undefined;
@@ -12,17 +12,18 @@ type TextInputProps = {
   readonly?: boolean;
 };
 
-const TextInput = ({
+const TextField = ({
   placeholder,
   id,
   value = '',
   onChange,
   readonly = false,
-}: TextInputProps): JSX.Element => {
+}: TextFieldProps): JSX.Element => {
   return (
     <label htmlFor={id} className={`label ${id}`}>
       <input
         id={id}
+        name={id}
         type="text"
         placeholder={placeholder}
         className={classNames('input', {
@@ -36,4 +37,4 @@ const TextInput = ({
   );
 };
 
-export default TextInput;
+export default TextField;
