@@ -1,26 +1,30 @@
 import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import useInput from '../../../hooks/useInput';
-
+import { SegmentType } from '../../../redux/reducers/aviaParams';
 import { addSegment } from '../../../redux/actions/aviaParams/aviaParams';
-import { RootStateType } from '../../../redux/reducers';
 
-import TextInput from '../../TextInput';
+import TextField from '../../TextField';
 import PassangerSelector from '../../PassangerSelector';
 import SimpleButton from '../../SimpleButton';
 import Datepicker from '../../Datepicker';
 
 import './AviaMultiForm.scss';
 
-const AviaMultiForm = (): JSX.Element => {
-  const dispatch = useDispatch();
-  const origin = useInput('');
-  const destination = useInput('');
+type AviaMultiFormProps = {
+  segments: SegmentType[];
+  onChange: (
+    e: React.FormEvent<HTMLInputElement>,
+    segmentId: string,
+    fieldType: string
+  ) => void;
+};
 
-  const segments = useSelector(
-    (state: RootStateType) => state.aviaParams.segments
-  );
+const AviaMultiForm = ({
+  segments,
+  onChange,
+}: AviaMultiFormProps): JSX.Element => {
+  const dispatch = useDispatch();
 
   const handleClickAddSegment = useCallback(() => {
     if (segments.length > 5) {
@@ -30,27 +34,27 @@ const AviaMultiForm = (): JSX.Element => {
   }, [dispatch, segments.length]);
 
   return (
-    <form className="multicity-form">
+    <div className="multicity-form">
       {segments.map((segment) => {
-        const { id, returnDate, departureDate } = segment;
+        const { id, origin, destination, returnDate, departureDate } = segment;
 
         return (
           <div className="multicity-form__segment" key={id}>
             <div className="multicity-form__origin">
-              <TextInput
+              <TextField
                 placeholder="Откуда"
                 id={`origin-${id}`}
-                value={origin.value}
-                onChange={origin.onChange}
+                value={origin}
+                onChange={(e) => onChange(e, id, 'origin')}
               />
             </div>
 
             <div className="multicity-form__destination">
-              <TextInput
+              <TextField
                 placeholder="Куда"
                 id={`destination-${id}`}
-                value={destination.value}
-                onChange={destination.onChange}
+                value={destination}
+                onChange={(e) => onChange(e, id, 'destination')}
               />
             </div>
 
@@ -83,7 +87,7 @@ const AviaMultiForm = (): JSX.Element => {
           <SimpleButton submit accent title="Найти" />
         </div>
       </div>
-    </form>
+    </div>
   );
 };
 

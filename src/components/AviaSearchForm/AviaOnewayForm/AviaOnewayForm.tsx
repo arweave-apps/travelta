@@ -1,56 +1,48 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 
-import useInput from '../../../hooks/useInput';
-import { RootStateType } from '../../../redux/reducers';
+import { SegmentType } from '../../../redux/reducers/aviaParams';
 
 import SwitchButton from '../../SwitchButton';
-import TextInput from '../../TextInput';
+import TextField from '../../TextField';
 import PassangerSelector from '../../PassangerSelector';
 import SimpleButton from '../../SimpleButton';
 import Datepicker from '../../Datepicker';
 
 import './AviaOnewayForm.scss';
 
-const AviaOnewayForm = (): JSX.Element => {
-  const history = useHistory();
-  const origin = useInput('');
-  const destination = useInput('');
+type AviaOnewayFormProps = {
+  segments: SegmentType[];
+  onChange: (
+    e: React.FormEvent<HTMLInputElement>,
+    segmentId: string,
+    fieldType: string
+  ) => void;
+};
 
-  const segment = useSelector(
-    (state: RootStateType) => state.aviaParams.segments[0]
-  );
-
-  const { id, returnDate, departureDate } = segment;
-
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (history.location.pathname.includes('search')) {
-      return;
-    }
-    history.push(`${history.location.pathname}/search`);
-  };
+const AviaOnewayForm = ({
+  segments,
+  onChange,
+}: AviaOnewayFormProps): JSX.Element => {
+  const { id, origin, destination, returnDate, departureDate } = segments[0];
 
   return (
-    <form className="oneway-form" onSubmit={handleFormSubmit}>
+    <div className="oneway-form">
       <div className="oneway-form__origin">
-        <TextInput
+        <TextField
           placeholder="Откуда"
           id={`origin-${id}`}
-          value={origin.value}
-          onChange={origin.onChange}
+          value={origin}
+          onChange={(e) => onChange(e, id, 'origin')}
         />
         <SwitchButton />
       </div>
 
       <div className="oneway-form__destination">
-        <TextInput
+        <TextField
           placeholder="Куда"
           id={`destination=${id}`}
-          value={destination.value}
-          onChange={destination.onChange}
+          value={destination}
+          onChange={(e) => onChange(e, id, 'destination')}
         />
       </div>
 
@@ -69,7 +61,7 @@ const AviaOnewayForm = (): JSX.Element => {
       <div className="oneway-form__search-btn">
         <SimpleButton submit accent title="Найти" />
       </div>
-    </form>
+    </div>
   );
 };
 

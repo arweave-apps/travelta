@@ -4,6 +4,8 @@ import {
   CLEAR_SEGMENTS,
   SET_CABIN_CLASS,
   SET_DEPARTURE_DATE,
+  SET_DESTINATION,
+  SET_ORIGIN,
   SET_PASSANGERS,
   SET_RETURN_DATE,
 } from '../actions/aviaParams/types';
@@ -74,6 +76,34 @@ export const aviaParamsReducer = (
           return {
             ...segment,
             returnDate: date,
+          };
+        }
+        return segment;
+      });
+
+      return { ...state, segments: newSegments };
+    }
+    case SET_ORIGIN: {
+      const { value, segmentId } = action.payload;
+      const newSegments = state.segments.map((segment) => {
+        if (segment.id === segmentId) {
+          return {
+            ...segment,
+            origin: value,
+          };
+        }
+        return segment;
+      });
+
+      return { ...state, segments: newSegments };
+    }
+    case SET_DESTINATION: {
+      const { value, segmentId } = action.payload;
+      const newSegments = state.segments.map((segment) => {
+        if (segment.id === segmentId) {
+          return {
+            ...segment,
+            destination: value,
           };
         }
         return segment;

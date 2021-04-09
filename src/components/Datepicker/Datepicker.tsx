@@ -12,7 +12,7 @@ import {
 import { RootStateType } from '../../redux/reducers';
 
 import DatepickerCalendar from './DatepickerCalendar';
-import TextInput from '../TextInput';
+import TextField from '../TextField';
 
 import './Datepicker.scss';
 
@@ -84,7 +84,7 @@ const Datepicker = ({
         role="presentation"
         onClick={() => handleClickInputDate('departure')}
       >
-        <TextInput
+        <TextField
           placeholder="Когда"
           id="depart"
           value={departureDate?.toLocaleDateString()}
@@ -101,7 +101,7 @@ const Datepicker = ({
           role="presentation"
           onClick={() => handleClickInputDate('return')}
         >
-          <TextInput
+          <TextField
             placeholder="Обратно"
             id="return"
             value={returnDate?.toLocaleDateString()}
