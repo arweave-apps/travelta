@@ -22,9 +22,9 @@ import Dropdown from '../Dropdown';
 import TextBlock from '../TextBlock';
 import DropdownItem from '../Dropdown/DropdownItem/DropdownItem';
 import Divider from '../Divider';
+import TriggerButton from '../TriggerButton';
 
 import './PassangerSelector.scss';
-import TriggerButton from '../TriggerButton';
 
 const PassangerSelector = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -70,7 +70,7 @@ const PassangerSelector = (): JSX.Element => {
   return (
     <div
       className={classNames('passanger-select', {
-        'passanger-select--active': isOpen,
+        'passanger-select--opened': isOpen,
       })}
       ref={wrapperRef}
     >
@@ -91,7 +91,7 @@ const PassangerSelector = (): JSX.Element => {
       </div>
 
       <DownArrowicon
-        className={classNames('down-arrow', { 'down-arrow--active': isOpen })}
+        className={classNames('down-arrow', { 'down-arrow--opened': isOpen })}
       />
 
       {isOpen && (
