@@ -68,12 +68,6 @@ const DatepickerCalendar = ({
     setPrevMonthDate(new Date(year, month));
     setNextMonthDate(new Date(year, month + 1));
 
-    if (activeForm !== 'multiCity') {
-      dispatch(setBeforeDisabledDates(null));
-      dispatch(setAfterDisabledDates(null));
-      return;
-    }
-
     if (segments.length > 1) {
       const prevSegment = segments[segments.length - 2];
       const prevDepartureDate = prevSegment.departureDate;
