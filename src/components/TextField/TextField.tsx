@@ -10,6 +10,7 @@ type TextFieldProps = {
   value: string | undefined;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   readonly?: boolean;
+  inputRef?: React.RefObject<HTMLInputElement>;
 };
 
 const TextField = ({
@@ -18,6 +19,7 @@ const TextField = ({
   value = '',
   onChange,
   readonly = false,
+  inputRef,
 }: TextFieldProps): JSX.Element => {
   return (
     <label htmlFor={id} className={`label ${id}`}>
@@ -32,6 +34,7 @@ const TextField = ({
         value={value}
         onChange={onChange}
         readOnly={readonly}
+        ref={inputRef}
       />
     </label>
   );

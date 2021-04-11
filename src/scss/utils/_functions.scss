@@ -13,4 +13,10 @@
 }
 
 // Выше - значение больше
-$z-indexes: ('dropdown', 'calendar', 'switch-btn', 'search-label');
+$z-indexes: (
+  'dropdown',
+  'calendar',
+  'switch-btn',
+  'input-focus',
+  'search-label'
+);

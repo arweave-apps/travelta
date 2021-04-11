@@ -1,5 +1,5 @@
 .label {
-  height: rem(60);
+  height: 100%;
 }
 
 .input {
@@ -11,7 +11,6 @@
   background: $panel-color;
   border: $border-width solid $border-color;
 
-  border-radius: 0;
   padding: 0 rem(16);
 
   transition: border-bottom 0.2s linear;
@@ -22,5 +21,11 @@
 
   &--pointer {
     cursor: pointer !important;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 $border-width $accent-color;
+    z-index: z('input-focus');
+    border-color: transparent;
   }
 }

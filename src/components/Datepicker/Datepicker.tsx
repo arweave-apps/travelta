@@ -1,7 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import classNames from 'classnames';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 
@@ -29,28 +27,15 @@ const Datepicker = ({
 }: DatepickerPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
+  const inputDepartRef = useRef<HTMLInputElement>(null);
+  const inputReturnRef = useRef<HTMLInputElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+
   const activeForm = useSelector(
     (state: RootStateType) => state.pageSettings.activeForm
   );
-
-  const [isOpen, setOpen] = useState<boolean>(false);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  useOutsideClick(
-    wrapperRef,
-    () => {
-      setOpen(false);
-      dispatch(setActiveInputDate(null));
-    },
-    isOpen
-  );
-
-  const handleClickCalendarOpen = () => {
-    if (isOpen) {
-      return;
-    }
-
-    setOpen(true);
-  };
 
   const activeInputDate = useSelector(
     (state: RootStateType) => state.pageSettings.activeInputDate
@@ -63,6 +48,34 @@ const Datepicker = ({
   const disabledDates = useSelector(
     (state: RootStateType) => state.pageSettings.disabledDates
   );
+
+  useEffect(() => {
+    if (activeInputDate === 'departure' && segmentId === activeSegment) {
+      inputDepartRef.current?.focus();
+      return;
+    }
+
+    if (activeInputDate === 'return' && segmentId === activeSegment) {
+      inputReturnRef.current?.focus();
+    }
+  }, [activeInputDate, activeSegment, segmentId]);
+
+  useOutsideClick(
+    wrapperRef,
+    () => {
+      setIsCalendarOpen(false);
+      dispatch(setActiveInputDate(null));
+    },
+    isCalendarOpen
+  );
+
+  const handleClickCalendarOpen = () => {
+    if (isCalendarOpen) {
+      return;
+    }
+
+    setIsCalendarOpen(true);
+  };
 
   const handleClickInputDate = (inputType: string) => {
     dispatch(setActiveInputDate(inputType));
@@ -77,10 +90,7 @@ const Datepicker = ({
       onClick={handleClickCalendarOpen}
     >
       <div
-        className={classNames('datepicker__depart', {
-          'datepicker__depart--active':
-            activeInputDate === 'departure' && segmentId === activeSegment,
-        })}
+        className="datepicker__depart"
         role="presentation"
         onClick={() => handleClickInputDate('departure')}
       >
@@ -89,15 +99,13 @@ const Datepicker = ({
           id="depart"
           value={departureDate?.toLocaleDateString()}
           readonly
+          inputRef={inputDepartRef}
         />
       </div>
 
       {activeForm === 'roundtrip' && (
         <div
-          className={classNames('datepicker__return', {
-            'datepicker__return--active':
-              activeInputDate === 'return' && segmentId === activeSegment,
-          })}
+          className="datepicker__return"
           role="presentation"
           onClick={() => handleClickInputDate('return')}
         >
@@ -106,11 +114,12 @@ const Datepicker = ({
             id="return"
             value={returnDate?.toLocaleDateString()}
             readonly
+            inputRef={inputReturnRef}
           />
         </div>
       )}
 
-      {isOpen && (
+      {isCalendarOpen && (
         <DatepickerCalendar
           segmentId={segmentId}
           returnDate={returnDate}
