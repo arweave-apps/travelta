@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import { SegmentType } from '../../../redux/reducers/aviaParams';
 import { addSegment } from '../../../redux/actions/aviaParams/aviaParams';
 
+import { ErrorMessagesType, ErrorsType } from '../AviaSearchForm';
+
 import TextField from '../../TextField';
 import PassangerSelector from '../../PassangerSelector';
 import SimpleButton from '../../SimpleButton';
@@ -18,11 +20,17 @@ type AviaMultiFormProps = {
     segmentId: string,
     fieldType: string
   ) => void;
+  errors: ErrorsType;
+  errorMessages: ErrorMessagesType;
+  disabledSubmit: boolean;
 };
 
 const AviaMultiForm = ({
   segments,
   onChange,
+  errors,
+  errorMessages,
+  disabledSubmit,
 }: AviaMultiFormProps): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -46,6 +54,10 @@ const AviaMultiForm = ({
                 id={`origin-${id}`}
                 value={origin}
                 onChange={(e) => onChange(e, id, 'origin')}
+                hasError={errors[id]?.includes('origin')}
+                errorText={
+                  errors[id]?.includes('origin') ? errorMessages.origin : ''
+                }
               />
             </div>
 
@@ -55,6 +67,12 @@ const AviaMultiForm = ({
                 id={`destination-${id}`}
                 value={destination}
                 onChange={(e) => onChange(e, id, 'destination')}
+                hasError={errors[id]?.includes('destination')}
+                errorText={
+                  errors[id]?.includes('destination')
+                    ? errorMessages.destination
+                    : ''
+                }
               />
             </div>
 
@@ -63,6 +81,8 @@ const AviaMultiForm = ({
                 segmentId={id}
                 returnDate={returnDate}
                 departureDate={departureDate}
+                errors={errors}
+                errorMessages={errorMessages}
               />
             </div>
           </div>
@@ -84,7 +104,7 @@ const AviaMultiForm = ({
         </div>
 
         <div className="multicity-form__search-btn">
-          <SimpleButton submit accent title="Найти" />
+          <SimpleButton submit accent title="Найти" disabled={disabledSubmit} />
         </div>
       </div>
     </div>

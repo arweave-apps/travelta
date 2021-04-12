@@ -38,9 +38,8 @@
   }
 
   &--opened {
-    box-shadow: 0 0 0 $border-width $accent-color;
+    border: $border-width solid $accent-color !important;
     z-index: z('input-focus');
-    border-color: transparent;
   }
 }
 

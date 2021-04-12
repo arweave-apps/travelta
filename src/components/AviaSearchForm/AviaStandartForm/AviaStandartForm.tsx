@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { SegmentType } from '../../../redux/reducers/aviaParams';
+import { ErrorMessagesType, ErrorsType } from '../AviaSearchForm';
 
 import SwitchButton from '../../SwitchButton';
 import TextField from '../../TextField';
@@ -17,11 +18,17 @@ type AviaStandartFormProps = {
     segmentId: string,
     fieldType: string
   ) => void;
+  errors: ErrorsType;
+  errorMessages: ErrorMessagesType;
+  disabledSubmit: boolean;
 };
 
 const AviaStandartForm = ({
   segments,
   onChange,
+  errors,
+  errorMessages,
+  disabledSubmit,
 }: AviaStandartFormProps): JSX.Element => {
   const { id, origin, destination, returnDate, departureDate } = segments[0];
 
@@ -33,6 +40,8 @@ const AviaStandartForm = ({
           id={`origin-${id}`}
           value={origin}
           onChange={(e) => onChange(e, id, 'origin')}
+          hasError={errors[id]?.includes('origin')}
+          errorText={errors[id]?.includes('origin') ? errorMessages.origin : ''}
         />
         <SwitchButton />
       </div>
@@ -40,9 +49,13 @@ const AviaStandartForm = ({
       <div className="search-form__destination">
         <TextField
           placeholder="Куда"
-          id={`destination=${id}`}
+          id={`destination-${id}`}
           value={destination}
           onChange={(e) => onChange(e, id, 'destination')}
+          hasError={errors[id]?.includes('destination')}
+          errorText={
+            errors[id]?.includes('destination') ? errorMessages.destination : ''
+          }
         />
       </div>
 
@@ -51,6 +64,8 @@ const AviaStandartForm = ({
           segmentId={id}
           returnDate={returnDate}
           departureDate={departureDate}
+          errors={errors}
+          errorMessages={errorMessages}
         />
       </div>
 
@@ -58,7 +73,7 @@ const AviaStandartForm = ({
         <PassangerSelector />
       </div>
       <div className="search-form__search-btn">
-        <SimpleButton submit accent title="Найти" />
+        <SimpleButton submit accent title="Найти" disabled={disabledSubmit} />
       </div>
     </div>
   );

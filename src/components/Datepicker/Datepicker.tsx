@@ -8,6 +8,10 @@ import {
   setActiveSegment,
 } from '../../redux/actions/pageSettings/pageSettings';
 import { RootStateType } from '../../redux/reducers';
+import {
+  ErrorMessagesType,
+  ErrorsType,
+} from '../AviaSearchForm/AviaSearchForm';
 
 import DatepickerCalendar from './DatepickerCalendar';
 import TextField from '../TextField';
@@ -18,12 +22,16 @@ type DatepickerPropsType = {
   segmentId: string;
   returnDate: Date | null;
   departureDate: Date | null;
+  errors: ErrorsType;
+  errorMessages: ErrorMessagesType;
 };
 
 const Datepicker = ({
   segmentId,
   returnDate,
   departureDate,
+  errors,
+  errorMessages,
 }: DatepickerPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -100,6 +108,12 @@ const Datepicker = ({
           value={departureDate?.toLocaleDateString()}
           readonly
           inputRef={inputDepartRef}
+          hasError={errors[segmentId]?.includes('departureDate')}
+          errorText={
+            errors[segmentId]?.includes('departureDate')
+              ? errorMessages.departureDate
+              : ''
+          }
         />
       </div>
 
@@ -115,6 +129,12 @@ const Datepicker = ({
             value={returnDate?.toLocaleDateString()}
             readonly
             inputRef={inputReturnRef}
+            hasError={errors[segmentId]?.includes('returnDate')}
+            errorText={
+              errors[segmentId]?.includes('returnDate')
+                ? errorMessages.returnDate
+                : ''
+            }
           />
         </div>
       )}

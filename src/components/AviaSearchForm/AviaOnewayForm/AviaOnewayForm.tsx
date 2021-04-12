@@ -9,6 +9,7 @@ import SimpleButton from '../../SimpleButton';
 import Datepicker from '../../Datepicker';
 
 import './AviaOnewayForm.scss';
+import { ErrorMessagesType, ErrorsType } from '../AviaSearchForm';
 
 type AviaOnewayFormProps = {
   segments: SegmentType[];
@@ -17,11 +18,17 @@ type AviaOnewayFormProps = {
     segmentId: string,
     fieldType: string
   ) => void;
+  errors: ErrorsType;
+  errorMessages: ErrorMessagesType;
+  disabledSubmit: boolean;
 };
 
 const AviaOnewayForm = ({
   segments,
   onChange,
+  errors,
+  errorMessages,
+  disabledSubmit,
 }: AviaOnewayFormProps): JSX.Element => {
   const { id, origin, destination, returnDate, departureDate } = segments[0];
 
@@ -33,6 +40,8 @@ const AviaOnewayForm = ({
           id={`origin-${id}`}
           value={origin}
           onChange={(e) => onChange(e, id, 'origin')}
+          hasError={errors[id]?.includes('origin')}
+          errorText={errors[id]?.includes('origin') ? errorMessages.origin : ''}
         />
         <SwitchButton />
       </div>
@@ -43,6 +52,10 @@ const AviaOnewayForm = ({
           id={`destination=${id}`}
           value={destination}
           onChange={(e) => onChange(e, id, 'destination')}
+          hasError={errors[id]?.includes('destination')}
+          errorText={
+            errors[id]?.includes('destination') ? errorMessages.destination : ''
+          }
         />
       </div>
 
@@ -51,6 +64,8 @@ const AviaOnewayForm = ({
           segmentId={id}
           returnDate={returnDate}
           departureDate={departureDate}
+          errors={errors}
+          errorMessages={errorMessages}
         />
       </div>
 
@@ -59,7 +74,7 @@ const AviaOnewayForm = ({
       </div>
 
       <div className="oneway-form__search-btn">
-        <SimpleButton submit accent title="Найти" />
+        <SimpleButton submit accent title="Найти" disabled={disabledSubmit} />
       </div>
     </div>
   );

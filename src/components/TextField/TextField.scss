@@ -1,19 +1,43 @@
 .label {
+  position: relative;
   height: 100%;
+
+  &:after {
+    position: absolute;
+    @include display(flex, center, center);
+    @include font-roboto(rem(9), $main-text-color, 500, normal, rem(11));
+    text-transform: uppercase;
+
+    width: 100%;
+    height: rem(15);
+
+    content: attr(data-error-message);
+    top: -117%;
+    left: 0;
+
+    background-color: $warning-color;
+    opacity: 0;
+
+    transition: opacity 0.2s linear;
+
+    z-index: z('input-focus');
+  }
+
+  &--error::after {
+    opacity: 1;
+  }
 }
 
 .input {
   @include font-roboto(rem(18), $primary-text-color, normal, normal, rem(16));
+  position: relative;
   width: 100%;
   height: inherit;
-  position: relative;
 
   background: $panel-color;
   border: $border-width solid $border-color;
 
   padding: 0 rem(16);
-
-  transition: border-bottom 0.2s linear;
 
   &::placeholder {
     @include font-roboto(rem(16), $secondary-text-color, normal, normal, (19));
@@ -23,9 +47,13 @@
     cursor: pointer !important;
   }
 
-  &:focus {
-    box-shadow: 0 0 0 $border-width $accent-color;
+  &--error {
+    border: $border-width solid $warning-color !important;
     z-index: z('input-focus');
-    border-color: transparent;
+  }
+
+  &:focus {
+    border: $border-width solid $accent-color;
+    z-index: z('input-focus');
   }
 }
