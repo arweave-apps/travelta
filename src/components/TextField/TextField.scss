@@ -53,7 +53,7 @@
   }
 
   &:focus {
-    border: $border-width solid $accent-color;
+    border: $border-width solid $accent-color !important;
     z-index: z('input-focus');
   }
 }
