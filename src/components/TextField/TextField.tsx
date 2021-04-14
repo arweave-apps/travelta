@@ -11,6 +11,8 @@ type TextFieldProps = {
   inputRef?: React.RefObject<HTMLInputElement>;
   hasError?: boolean;
   errorText: string;
+  onFocus: () => void;
+  onBlur: () => void;
 };
 
 const TextField = ({
@@ -22,6 +24,8 @@ const TextField = ({
   inputRef,
   hasError,
   errorText,
+  onFocus,
+  onBlur,
 }: TextFieldProps): JSX.Element => {
   return (
     <label
@@ -42,6 +46,8 @@ const TextField = ({
         })}
         value={value}
         onChange={onChange}
+        onFocus={onFocus}
+        onBlur={onBlur}
         readOnly={readonly}
         ref={inputRef}
       />

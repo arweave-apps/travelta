@@ -18,12 +18,6 @@ const initialState = {
       destination: '',
       departureDate: null,
       returnDate: null,
-      // errors: {
-      //   originValid: false,
-      //   destinationValid: false,
-      //   departureDateValid: false,
-      //   returnDateValid: false,
-      // },
     },
   ],
   passangers: {
@@ -35,20 +29,12 @@ const initialState = {
   selectedCabins: 'M',
 };
 
-// export type ErrorsType = {
-//   originValid: boolean;
-//   destinationValid: boolean;
-//   departureDateValid: boolean;
-//   returnDateValid: boolean;
-// };
-
 export type SegmentType = {
   id: string;
   origin: string;
   destination: string;
   departureDate: Date | null;
   returnDate: Date | null;
-  // errors: ErrorsType;
 };
 
 export type PassangersType = {

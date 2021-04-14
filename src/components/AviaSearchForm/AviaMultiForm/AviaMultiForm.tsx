@@ -15,22 +15,26 @@ import './AviaMultiForm.scss';
 
 type AviaMultiFormProps = {
   segments: SegmentType[];
+  errors: ErrorsType;
+  errorMessages: ErrorMessagesType;
+  disabledSubmit: boolean;
   onChange: (
     e: React.FormEvent<HTMLInputElement>,
     segmentId: string,
     fieldType: string
   ) => void;
-  errors: ErrorsType;
-  errorMessages: ErrorMessagesType;
-  disabledSubmit: boolean;
+  onFocus: () => void;
+  onBlur: () => void;
 };
 
 const AviaMultiForm = ({
   segments,
-  onChange,
   errors,
   errorMessages,
   disabledSubmit,
+  onChange,
+  onFocus,
+  onBlur,
 }: AviaMultiFormProps): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -54,6 +58,8 @@ const AviaMultiForm = ({
                 id={`origin-${id}`}
                 value={origin}
                 onChange={(e) => onChange(e, id, 'origin')}
+                onFocus={onFocus}
+                onBlur={onBlur}
                 hasError={errors[id]?.includes('origin')}
                 errorText={
                   errors[id]?.includes('origin') ? errorMessages.origin : ''
@@ -67,6 +73,8 @@ const AviaMultiForm = ({
                 id={`destination-${id}`}
                 value={destination}
                 onChange={(e) => onChange(e, id, 'destination')}
+                onFocus={onFocus}
+                onBlur={onBlur}
                 hasError={errors[id]?.includes('destination')}
                 errorText={
                   errors[id]?.includes('destination')
@@ -83,6 +91,8 @@ const AviaMultiForm = ({
                 departureDate={departureDate}
                 errors={errors}
                 errorMessages={errorMessages}
+                onFocus={onFocus}
+                onBlur={onBlur}
               />
             </div>
           </div>

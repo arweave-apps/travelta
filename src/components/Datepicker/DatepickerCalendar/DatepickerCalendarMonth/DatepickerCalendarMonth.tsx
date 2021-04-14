@@ -19,7 +19,7 @@ import './DatepickerCalendarMonth.scss';
 type DatePickerCalendarMonthProps = {
   calendarDate: Date | null;
   monthDates: Array<number | undefined> | null;
-  onClickDay: (date: Date) => void;
+  onClickDay: (e: React.MouseEvent<HTMLDivElement>, date: Date) => void;
   startDate: Date | null;
   endDate: Date | null;
   hoverDate: Date | null;
@@ -115,7 +115,9 @@ const DatePickerCalendarMonth = ({
                 })}
                 role="presentation"
                 key={uuidv4()}
-                onClick={() => onClickDay(new Date(year, month, monthDay))}
+                onMouseDown={(e) =>
+                  onClickDay(e, new Date(year, month, monthDay))
+                }
                 onMouseEnter={() =>
                   onMouseEnterDay(new Date(year, month, monthDay))
                 }

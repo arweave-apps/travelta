@@ -13,22 +13,26 @@ import './AviaStandartForm.scss';
 
 type AviaStandartFormProps = {
   segments: SegmentType[];
+  errors: ErrorsType;
+  errorMessages: ErrorMessagesType;
+  disabledSubmit: boolean;
   onChange: (
     e: React.FormEvent<HTMLInputElement>,
     segmentId: string,
     fieldType: string
   ) => void;
-  errors: ErrorsType;
-  errorMessages: ErrorMessagesType;
-  disabledSubmit: boolean;
+  onFocus: () => void;
+  onBlur: () => void;
 };
 
 const AviaStandartForm = ({
   segments,
-  onChange,
   errors,
   errorMessages,
   disabledSubmit,
+  onChange,
+  onFocus,
+  onBlur,
 }: AviaStandartFormProps): JSX.Element => {
   const { id, origin, destination, returnDate, departureDate } = segments[0];
 
@@ -40,6 +44,8 @@ const AviaStandartForm = ({
           id={`origin-${id}`}
           value={origin}
           onChange={(e) => onChange(e, id, 'origin')}
+          onFocus={onFocus}
+          onBlur={onBlur}
           hasError={errors[id]?.includes('origin')}
           errorText={errors[id]?.includes('origin') ? errorMessages.origin : ''}
         />
@@ -52,6 +58,8 @@ const AviaStandartForm = ({
           id={`destination-${id}`}
           value={destination}
           onChange={(e) => onChange(e, id, 'destination')}
+          onFocus={onFocus}
+          onBlur={onBlur}
           hasError={errors[id]?.includes('destination')}
           errorText={
             errors[id]?.includes('destination') ? errorMessages.destination : ''
@@ -66,6 +74,8 @@ const AviaStandartForm = ({
           departureDate={departureDate}
           errors={errors}
           errorMessages={errorMessages}
+          onFocus={onFocus}
+          onBlur={onBlur}
         />
       </div>
 

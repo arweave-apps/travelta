@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,6 +7,7 @@ import {
   setOrigin,
 } from '../../redux/actions/aviaParams/aviaParams';
 import { RootStateType } from '../../redux/reducers';
+import { SegmentType } from '../../redux/reducers/aviaParams';
 
 import AviaStandartForm from './AviaStandartForm/AviaStandartForm';
 import AviaMultiForm from './AviaMultiForm';
@@ -34,38 +34,42 @@ export type ErrorsType = {
   [key: string]: string[];
 };
 
+const checkValue = (value: string | Date | null) =>
+  value !== '' && value !== null;
+
+const validateForm = (array: SegmentType[], activeForm: string): boolean =>
+  array.every((segment) => {
+    const fieldValues = Object.values(segment);
+    const fieldKeys = Object.keys(segment);
+
+    if (activeForm === 'oneWay' || activeForm === 'multiCity') {
+      const idx = fieldKeys.findIndex((key) => key === 'returnDate');
+      const newFieldValues = [
+        ...fieldValues.slice(0, idx),
+        ...fieldValues.slice(idx + 1),
+      ];
+
+      return newFieldValues.every(checkValue);
+    }
+
+    return fieldValues.every(checkValue);
+  });
+
 const AviaSearchForm = (): JSX.Element => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const [formValid, setFormValid] = useState(true);
-  const [errors, setErrors] = useState<ErrorsType>({});
+  const [isValidForm, setIsValidForm] = useState(true);
+  const [formErrors, setFormErrors] = useState<ErrorsType>({});
 
-  const activeForm = useSelector(
-    (state: RootStateType) => state.pageSettings.activeForm
+  const { activeForm } = useSelector(
+    (state: RootStateType) => state.pageSettings
   );
 
-  const aviaParams = useSelector((state: RootStateType) => state.aviaParams);
+  const { segments } = useSelector((state: RootStateType) => state.aviaParams);
 
-  useEffect(() => {
-    setErrors({});
-
-    // const isFormValid = aviaParams.segments.every(
-    //   ({ origin, destination, returnDate, departureDate }) =>
-    //     origin && destination && returnDate && departureDate
-    // );
-
-    // setFormValid(isFormValid);
-  }, [activeForm]);
-
-  const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!history.location.pathname.includes('search')) {
-      history.push(`${history.location.pathname}/search`);
-    }
-
-    aviaParams.segments.forEach((segment) => {
+  const validateSegments = (array: SegmentType[]) => {
+    array.forEach((segment) => {
       const { id } = segment;
       const fieldValues = Object.values(segment);
       const fields = Object.keys(segment);
@@ -77,52 +81,108 @@ const AviaSearchForm = (): JSX.Element => {
         }
       });
 
-      setErrors((prevErrors) => ({
+      setFormErrors((prevErrors) => ({
         ...prevErrors,
         [id]: tempArr,
       }));
     });
   };
 
-  const handleChange = (
-    e: React.FormEvent<HTMLInputElement>,
-    segmentId: string,
-    fieldType: string
-  ) => {
-    if (fieldType === 'origin') {
-      dispatch(setOrigin(e.currentTarget.value, segmentId));
-    } else {
-      dispatch(setDestination(e.currentTarget.value, segmentId));
+  useEffect(() => {
+    // clear errors when choose another form
+    setFormErrors({});
+    setIsValidForm(true);
+  }, [activeForm]);
+
+  const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    validateSegments(segments);
+
+    if (!validateForm(segments, activeForm)) {
+      setIsValidForm(false);
+      return;
+    }
+
+    if (!history.location.pathname.includes('search')) {
+      history.push(`${history.location.pathname}/search`);
     }
   };
+
+  const handleChange = useCallback(
+    (
+      e: React.FormEvent<HTMLInputElement>,
+      segmentId: string,
+      fieldType: string
+    ) => {
+      validateSegments(segments);
+
+      if (!validateForm(segments, activeForm)) {
+        setIsValidForm(false);
+      } else {
+        setIsValidForm(true);
+      }
+
+      if (fieldType === 'origin') {
+        dispatch(setOrigin(e.currentTarget.value, segmentId));
+      } else {
+        dispatch(setDestination(e.currentTarget.value, segmentId));
+      }
+    },
+    [segments, activeForm, dispatch]
+  );
+
+  const handleFocus = useCallback(() => {
+    if (!validateForm(segments, activeForm)) {
+      setIsValidForm(false);
+    } else {
+      setIsValidForm(true);
+    }
+  }, [activeForm, segments]);
+
+  const handleBlur = useCallback(() => {
+    validateSegments(segments);
+
+    if (!validateForm(segments, activeForm)) {
+      setIsValidForm(false);
+    } else {
+      setIsValidForm(true);
+    }
+  }, [activeForm, segments]);
 
   const getForm = (type: string) => {
     const forms: FormsType = {
       multiCity: (
         <AviaMultiForm
-          segments={aviaParams.segments}
+          segments={segments}
           onChange={handleChange}
-          errors={errors}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          errors={formErrors}
           errorMessages={errorMessages}
-          disabledSubmit={!formValid}
+          disabledSubmit={!isValidForm}
         />
       ),
       oneWay: (
         <AviaOnewayForm
-          segments={aviaParams.segments}
+          segments={segments}
           onChange={handleChange}
-          errors={errors}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          errors={formErrors}
           errorMessages={errorMessages}
-          disabledSubmit={!formValid}
+          disabledSubmit={!isValidForm}
         />
       ),
       roundtrip: (
         <AviaStandartForm
-          segments={aviaParams.segments}
+          segments={segments}
           onChange={handleChange}
-          errors={errors}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          errors={formErrors}
           errorMessages={errorMessages}
-          disabledSubmit={!formValid}
+          disabledSubmit={!isValidForm}
         />
       ),
     };

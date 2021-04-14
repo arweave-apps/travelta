@@ -24,6 +24,8 @@ type DatepickerPropsType = {
   departureDate: Date | null;
   errors: ErrorsType;
   errorMessages: ErrorMessagesType;
+  onFocus: () => void;
+  onBlur: () => void;
 };
 
 const Datepicker = ({
@@ -32,6 +34,8 @@ const Datepicker = ({
   departureDate,
   errors,
   errorMessages,
+  onFocus,
+  onBlur,
 }: DatepickerPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -107,6 +111,8 @@ const Datepicker = ({
           id="depart"
           value={departureDate?.toLocaleDateString()}
           readonly
+          onFocus={onFocus}
+          onBlur={onBlur}
           inputRef={inputDepartRef}
           hasError={errors[segmentId]?.includes('departureDate')}
           errorText={
@@ -128,6 +134,8 @@ const Datepicker = ({
             id="return"
             value={returnDate?.toLocaleDateString()}
             readonly
+            onFocus={onFocus}
+            onBlur={onBlur}
             inputRef={inputReturnRef}
             hasError={errors[segmentId]?.includes('returnDate')}
             errorText={

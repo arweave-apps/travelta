@@ -114,7 +114,9 @@ const DatepickerCalendar = ({
   };
 
   const handleClickDay = useCallback(
-    (date: Date) => {
+    (e: React.MouseEvent<HTMLDivElement>, date: Date) => {
+      e.stopPropagation(); // otherwise click outside will work
+
       if (activeForm !== 'roundtrip' && activeInputDate === 'departure') {
         dispatch(setDepartureDate(date, segmentId));
         return;
