@@ -11,6 +11,7 @@ const ImageminOptipng = require('imagemin-optipng');
 const ImageminGifsicle = require('imagemin-gifsicle');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 // Режим сборки
 const isDev = process.env.NODE_ENV === 'development';
@@ -86,6 +87,10 @@ const getPlugins = () => {
   const base = [
     // Плагин для очистки/удаления папки сборки (dist)
     new CleanWebpackPlugin(),
+
+    // Заменяет текст в результирующем пакете для любых экземпляров process.env.
+    // Ваши .env файлы могут содержать конфиденциальную информацию. Из-за этого в ваш окончательный пакет dotenv-webpack будут доступны только те переменные среды, которые явно указаны в вашем коде
+    new Dotenv(),
 
     // Плагин eslint вместо устаревшего eslint-loader
     new ESLintPlugin(),
