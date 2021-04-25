@@ -11,7 +11,7 @@ type TextFieldProps = {
   inputRef?: React.RefObject<HTMLInputElement>;
   hasError?: boolean;
   errorText: string;
-  onFocus: () => void;
+  onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
   onBlur: () => void;
 };
 
