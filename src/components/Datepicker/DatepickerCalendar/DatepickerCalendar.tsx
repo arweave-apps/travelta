@@ -178,7 +178,7 @@ const DatepickerCalendar = ({
   return (
     <div className="calendar">
       <div className="calendar__inner">
-        {activeForm === 'standart' && (
+        {activeForm === 'roundtrip' && (
           <div className="calendar__header">
             <span className="calendar__title">
               Выберите дату
