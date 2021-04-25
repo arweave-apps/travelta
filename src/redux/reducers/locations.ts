@@ -1,7 +1,7 @@
 import {
-  ActionLocationsTypes,
-  SET_LOCATIONS,
+  ActionSetLocationsType,
   LocationObject,
+  SET_LOCATIONS,
 } from '../actions/locations/type';
 
 const initialState = {
@@ -20,8 +20,12 @@ export type InitialLocationsStateType = {
 
 const updateLocations = (
   state: InitialLocationsStateType,
-  payload: LocationObject[]
+  payload: LocationObject[] | null
 ) => {
+  if (!payload) {
+    return { ...state, locations: payload };
+  }
+
   const newLocations: Cities[] = payload.map((location) => {
     const { name, code, country } = location;
     return { name, code, country: country.name };
@@ -32,7 +36,7 @@ const updateLocations = (
 
 export const locationsReducer = (
   state: InitialLocationsStateType = initialState,
-  action: ActionLocationsTypes
+  action: ActionSetLocationsType
 ): InitialLocationsStateType => {
   // eslint-disable-next-line sonarjs/no-small-switch
   switch (action.type) {

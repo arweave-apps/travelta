@@ -2,20 +2,19 @@ import axios from 'axios';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { locationsConfig } from '../../../api/apiConfig';
-
 import { RootStateType } from '../../reducers';
-import { ActionLocationsTypes, LocationObject, SET_LOCATIONS } from './type';
+import { ActionSetLocationsType, LocationObject, SET_LOCATIONS } from './type';
 
 type ThunkType = ThunkAction<
   Promise<void>,
   RootStateType,
   unknown,
-  Action<ActionLocationsTypes['type']>
+  Action<ActionSetLocationsType['type']>
 >;
 
 export const setLocations = (
-  locations: LocationObject[]
-): ActionLocationsTypes => ({
+  locations: LocationObject[] | null
+): ActionSetLocationsType => ({
   type: SET_LOCATIONS,
   payload: locations,
 });
@@ -31,8 +30,6 @@ export const fetchLocations = (city: string): ThunkType => async (dispatch) => {
         headers: { apikey },
       }
     );
-
-    // console.log(response.data.locations);
 
     dispatch(setLocations(response.data.locations));
   } catch (error) {

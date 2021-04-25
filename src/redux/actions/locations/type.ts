@@ -80,9 +80,7 @@ export interface LocationObject {
   type: string;
 }
 
-type ActionSetLocationsType = {
+export type ActionSetLocationsType = {
   type: typeof SET_LOCATIONS;
-  payload: LocationObject[];
+  payload: LocationObject[] | null;
 };
-
-export type ActionLocationsTypes = ActionSetLocationsType;
