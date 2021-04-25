@@ -48,17 +48,19 @@ export const clearSegments = (): ActionAviaParamsTypes => ({
 });
 
 export const setOrigin = (
-  value: string,
+  name: string,
+  code: string,
   segmentId: string
 ): ActionAviaParamsTypes => ({
   type: SET_ORIGIN,
-  payload: { value, segmentId },
+  payload: { name, code, segmentId },
 });
 
 export const setDestination = (
-  value: string,
+  name: string,
+  code: string,
   segmentId: string
 ): ActionAviaParamsTypes => ({
   type: SET_DESTINATION,
-  payload: { value, segmentId },
+  payload: { name, code, segmentId },
 });

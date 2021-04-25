@@ -44,7 +44,8 @@ type ActionClearSegmentsType = {
 };
 
 type CityPayloadType = {
-  value: string;
+  name: string;
+  code: string;
   segmentId: string;
 };
 

@@ -15,7 +15,9 @@ const initialState = {
     {
       id: 'segment-1',
       origin: '',
+      originCode: '',
       destination: '',
+      destinationCode: '',
       departureDate: null,
       returnDate: null,
     },
@@ -84,12 +86,13 @@ export const aviaParamsReducer = (
       return { ...state, segments: newSegments };
     }
     case SET_ORIGIN: {
-      const { value, segmentId } = action.payload;
+      const { name, code, segmentId } = action.payload;
       const newSegments = state.segments.map((segment) => {
         if (segment.id === segmentId) {
           return {
             ...segment,
-            origin: value,
+            origin: name,
+            originCode: code,
           };
         }
         return segment;
@@ -98,12 +101,13 @@ export const aviaParamsReducer = (
       return { ...state, segments: newSegments };
     }
     case SET_DESTINATION: {
-      const { value, segmentId } = action.payload;
+      const { name, code, segmentId } = action.payload;
       const newSegments = state.segments.map((segment) => {
         if (segment.id === segmentId) {
           return {
             ...segment,
-            destination: value,
+            destination: name,
+            destinationCode: code,
           };
         }
         return segment;
@@ -126,6 +130,7 @@ export const aviaParamsReducer = (
           destination: '',
           departureDate: null,
           returnDate: null,
+          // locations: null,
         },
       ];
       return { ...state, segments: newSegments };
