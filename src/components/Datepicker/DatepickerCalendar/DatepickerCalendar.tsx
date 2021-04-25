@@ -65,6 +65,9 @@ const DatepickerCalendar = ({
     const month = now.getMonth();
     const year = now.getFullYear();
 
+    setPrevMonthDate(new Date(year, month));
+    setNextMonthDate(new Date(year, month + 1));
+
     if (segments.length > 1) {
       const prevSegment = segments[segments.length - 2];
       const prevDepartureDate = prevSegment.departureDate;
@@ -74,10 +77,7 @@ const DatepickerCalendar = ({
     }
 
     dispatch(setAfterDisabledDates(new Date(year + 1, month + 1, day)));
-
-    setPrevMonthDate(new Date(year, month));
-    setNextMonthDate(new Date(year, month + 1));
-  }, [dispatch, segments]);
+  }, [activeForm, dispatch, segments]);
 
   useEffect(() => {
     if (nextMonthDate && prevMonthDate) {
@@ -114,8 +114,10 @@ const DatepickerCalendar = ({
   };
 
   const handleClickDay = useCallback(
-    (date: Date) => {
-      if (activeForm === 'multiCity' && activeInputDate === 'departure') {
+    (e: React.MouseEvent<HTMLDivElement>, date: Date) => {
+      e.stopPropagation(); // otherwise click outside will work
+
+      if (activeForm !== 'roundtrip' && activeInputDate === 'departure') {
         dispatch(setDepartureDate(date, segmentId));
         return;
       }
@@ -167,7 +169,7 @@ const DatepickerCalendar = ({
   }, []);
 
   const isDisabledBtn = (date: Date | null): boolean =>
-    date ? date.getMonth() === disabledDates.after?.getMonth() : false;
+    date ? date.getMonth() === disabledDates.before?.getMonth() : false;
 
   const handleClickNoReturnButton = () => {
     dispatch(setReturnDate(null, segmentId));
@@ -176,7 +178,7 @@ const DatepickerCalendar = ({
   return (
     <div className="calendar">
       <div className="calendar__inner">
-        {activeForm === 'standart' && (
+        {activeForm === 'roundtrip' && (
           <div className="calendar__header">
             <span className="calendar__title">
               Выберите дату
@@ -209,7 +211,7 @@ const DatepickerCalendar = ({
             disabledDates={disabledDates}
           />
 
-          {activeForm === 'standart' && (
+          {activeForm === 'roundtrip' && (
             <DatepickerCalendarMonth
               calendarDate={nextMonthDate}
               monthDates={nextMonthData}

@@ -9,7 +9,7 @@ type DropdownItemProps = {
   isActive?: boolean | undefined;
   hasHover?: boolean | undefined;
   hasMargin?: boolean | undefined;
-  onClickItem?: () => void;
+  onClick?: () => void;
 };
 
 const DropdownItem = ({
@@ -17,7 +17,7 @@ const DropdownItem = ({
   isActive,
   hasHover,
   hasMargin,
-  onClickItem,
+  onClick,
 }: DropdownItemProps): JSX.Element => {
   return (
     <li
@@ -27,7 +27,7 @@ const DropdownItem = ({
         'mb-8': hasMargin,
       })}
       role="presentation"
-      onClick={onClickItem}
+      onClick={onClick}
     >
       {children}
     </li>

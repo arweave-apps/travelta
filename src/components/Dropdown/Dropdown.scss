@@ -3,12 +3,16 @@
   top: 120%;
   right: 0;
 
-  min-width: rem(200);
+  width: max-content;
+  max-height: rem(361);
 
   border-radius: $radius;
 
   background: $panel-color;
   box-shadow: $panel-shadow;
+  z-index: z('dropdown');
+
+  overflow: auto;
 
   &__list {
     padding: rem(16) 0;

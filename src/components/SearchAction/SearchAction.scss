@@ -1,0 +1,36 @@
+.action {
+  @include display(flex, space-between, center);
+  grid-area: action;
+
+  &__total-tickets {
+    @include font-roboto(rem(14), $primary-text-color, normal, normal, rem(16));
+  }
+
+  &__sort {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__label {
+    @include font-roboto(
+      rem(14),
+      $secondary-text-color,
+      normal,
+      normal,
+      rem(16)
+    );
+    margin-right: 17px;
+  }
+
+  &__selector {
+    @include font-roboto(rem(14), $primary-text-color, 500, normal, rem(16));
+    margin-right: 14px;
+  }
+
+  &__arrow {
+    width: 14px;
+    height: 9px;
+    color: $primary-text-color;
+  }
+}

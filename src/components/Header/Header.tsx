@@ -1,29 +1,34 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
+
+import classNames from 'classnames';
 
 import LogoImg from '../../assets/images/logo.svg';
+
 import CurrencySelector from '../CurrencySelector';
 import HeaderNav from './HeaderNav';
-
-import './Header.scss';
 import Logo from './Logo';
 import NavToggle from '../NavToggle';
 
-const paths = [
-  { url: '/avia', name: 'Авиа билеты' },
-  { url: '/train', name: 'Ж/д билеты' },
-  { url: '/auto', name: 'Прокат авто' },
-  { url: '/hotels', name: 'Отели' },
-  { url: '/tour', name: 'Туры' },
-];
+import paths from '../Routes/paths';
+
+import './Header.scss';
 
 const Header = (): JSX.Element => {
+  const { pathname } = useLocation();
+  const isSearchPage = pathname.includes('search');
+
   return (
-    <header className="header">
+    <header
+      className={classNames('header', {
+        'header--search': isSearchPage,
+      })}
+    >
       <div className="container-big">
         <div className="header__inner">
-          <Logo img={<LogoImg />} />
-          <HeaderNav items={paths} />
-          <CurrencySelector />
+          <Logo img={<LogoImg />} isSearchPage={isSearchPage} />
+          <HeaderNav items={paths} isSearchPage={isSearchPage} />
+          <CurrencySelector isSearchPage={isSearchPage} />
           <NavToggle />
         </div>
       </div>

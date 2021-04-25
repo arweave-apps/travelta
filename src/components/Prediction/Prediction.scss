@@ -1,0 +1,13 @@
+.prediction {
+  @include display(flex, flex-start, center);
+
+  background-color: $panel-color;
+  border-radius: $radius;
+
+  grid-area: prediction;
+
+  box-shadow: $panel-shadow-search;
+
+  padding-left: rem(20);
+  padding-right: rem(20);
+}

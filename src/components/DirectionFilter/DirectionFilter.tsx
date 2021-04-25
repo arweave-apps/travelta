@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { clearSegments } from '../../redux/actions/aviaParams/aviaParams';
@@ -29,17 +29,10 @@ const DirectionFilter = (): JSX.Element => {
   const activeForm = useSelector(
     (state: RootStateType) => state.pageSettings.activeForm
   );
-  const [option, setOption] = useState('roundtrip');
 
   const handleChangeRadioButton = (id: string) => {
-    if (id === 'multiCity') {
-      dispatch(setActiveForm('multiCity'));
-      dispatch(clearSegments());
-    } else if (activeForm !== 'standart') {
-      dispatch(setActiveForm('standart'));
-      dispatch(clearSegments());
-    }
-    setOption(id);
+    dispatch(setActiveForm(id));
+    dispatch(clearSegments());
   };
 
   return (
@@ -51,7 +44,7 @@ const DirectionFilter = (): JSX.Element => {
             id={id}
             title={text}
             name="direction"
-            checked={id === option}
+            checked={id === activeForm}
             onChange={() => handleChangeRadioButton(id)}
           />
         );

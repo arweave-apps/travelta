@@ -1,6 +1,8 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import classNames from 'classnames';
+
 import { setCurrency } from '../../redux/actions/settings/settings';
 import { RootStateType } from '../../redux/reducers';
 
@@ -18,7 +20,13 @@ const currencyList = [
   { label: 'USD', text: 'Доллары' },
 ];
 
-const CurrencySelector = (): JSX.Element => {
+type CurrencySelectorProps = {
+  isSearchPage: boolean;
+};
+
+const CurrencySelector = ({
+  isSearchPage,
+}: CurrencySelectorProps): JSX.Element => {
   const dispatch = useDispatch();
   const { currency } = useSelector(({ settings }: RootStateType) => settings);
 
@@ -38,7 +46,12 @@ const CurrencySelector = (): JSX.Element => {
   );
 
   return (
-    <div className="currency-selector" ref={wrapperRef}>
+    <div
+      className={classNames('currency-selector', {
+        'currency-selector--search': isSearchPage,
+      })}
+      ref={wrapperRef}
+    >
       <TriggerButton onClick={toggleDropdownMenu} />
 
       <span>{currency}</span>
@@ -53,7 +66,7 @@ const CurrencySelector = (): JSX.Element => {
                 key={label}
                 isActive={currency === label}
                 hasHover
-                onClickItem={() => handleClickDropdownItem(label)}
+                onClick={() => handleClickDropdownItem(label)}
               >
                 <TextBlock label={label} text={text} />
               </DropdownItem>

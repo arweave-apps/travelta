@@ -11,6 +11,10 @@
 
   &__title {
     @include font-roboto(rem(18), $main-text-color, 400, normal, rem(28));
+
+    &--search {
+      color: $primary-text-color;
+    }
   }
 
   @include mq('tablet') {

@@ -1,26 +1,60 @@
-import React, { useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 
-import useInput from '../../../hooks/useInput';
-
+import { SegmentType } from '../../../redux/reducers/aviaParams';
 import { addSegment } from '../../../redux/actions/aviaParams/aviaParams';
-import { RootStateType } from '../../../redux/reducers';
 
-import TextInput from '../../TextInput';
+import { ErrorMessagesType, ErrorsType } from '../AviaSearchForm';
+import { Cities } from '../../../redux/reducers/locations';
+
 import PassangerSelector from '../../PassangerSelector';
 import SimpleButton from '../../SimpleButton';
 import Datepicker from '../../Datepicker';
 
 import './AviaMultiForm.scss';
+import Autocomplete from '../../Autocomplete';
 
-const AviaMultiForm = (): JSX.Element => {
+type AviaMultiFormProps = {
+  segments: SegmentType[];
+  errors: ErrorsType;
+  errorMessages: ErrorMessagesType;
+  disabledSubmit: boolean;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    segmentId: string,
+    fieldType: string
+  ) => void;
+  onClickItem: (
+    name: string,
+    segmentId: string,
+    code: string,
+    fieldType: string
+  ) => void;
+  onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
+  onBlur: () => void;
+  isOpenOriginDropdown: boolean;
+  isOpenDepartureDropdown: boolean;
+  locations: Cities[] | null;
+  originRef: React.RefObject<HTMLDivElement>;
+  destinationRef: React.RefObject<HTMLDivElement>;
+};
+
+const AviaMultiForm = ({
+  segments,
+  errors,
+  errorMessages,
+  disabledSubmit,
+  onChange,
+  onFocus,
+  onBlur,
+  onClickItem,
+  isOpenOriginDropdown,
+  isOpenDepartureDropdown,
+  locations,
+  originRef,
+  destinationRef,
+}: AviaMultiFormProps): JSX.Element => {
   const dispatch = useDispatch();
-  const origin = useInput('');
-  const destination = useInput('');
-
-  const segments = useSelector(
-    (state: RootStateType) => state.aviaParams.segments
-  );
 
   const handleClickAddSegment = useCallback(() => {
     if (segments.length > 5) {
@@ -30,27 +64,43 @@ const AviaMultiForm = (): JSX.Element => {
   }, [dispatch, segments.length]);
 
   return (
-    <form className="multicity-form">
+    <div className="multicity-form">
       {segments.map((segment) => {
-        const { id, returnDate, departureDate } = segment;
+        const { id, origin, destination, returnDate, departureDate } = segment;
 
         return (
           <div className="multicity-form__segment" key={id}>
-            <div className="multicity-form__origin">
-              <TextInput
+            <div className="multicity-form__origin" ref={originRef}>
+              <Autocomplete
+                segmentId={id}
+                fieldValue={origin}
                 placeholder="Откуда"
-                id={`origin-${id}`}
-                value={origin.value}
-                onChange={origin.onChange}
+                onChange={(e) => onChange(e, id, 'origin')}
+                onFocus={(e) => onFocus(e)}
+                onClickItem={onClickItem}
+                onBlur={onBlur}
+                errors={errors}
+                errorMessages={errorMessages}
+                isOpen={isOpenOriginDropdown}
+                locations={locations}
+                fieldName="origin"
               />
             </div>
 
-            <div className="multicity-form__destination">
-              <TextInput
+            <div className="multicity-form__destination" ref={destinationRef}>
+              <Autocomplete
+                segmentId={id}
+                fieldValue={destination}
                 placeholder="Куда"
-                id={`destination-${id}`}
-                value={destination.value}
-                onChange={destination.onChange}
+                onChange={(e) => onChange(e, id, 'destination')}
+                onFocus={(e) => onFocus(e)}
+                onClickItem={onClickItem}
+                onBlur={onBlur}
+                errors={errors}
+                errorMessages={errorMessages}
+                isOpen={isOpenDepartureDropdown}
+                locations={locations}
+                fieldName="destination"
               />
             </div>
 
@@ -59,6 +109,10 @@ const AviaMultiForm = (): JSX.Element => {
                 segmentId={id}
                 returnDate={returnDate}
                 departureDate={departureDate}
+                errors={errors}
+                errorMessages={errorMessages}
+                onFocus={onFocus}
+                onBlur={onBlur}
               />
             </div>
           </div>
@@ -80,10 +134,10 @@ const AviaMultiForm = (): JSX.Element => {
         </div>
 
         <div className="multicity-form__search-btn">
-          <SimpleButton submit accent title="Найти" />
+          <SimpleButton submit accent title="Найти" disabled={disabledSubmit} />
         </div>
       </div>
-    </form>
+    </div>
   );
 };
 

@@ -30,6 +30,19 @@
       transition: width 0.2s linear;
     }
 
+    &--search {
+      color: $primary-text-color;
+
+      &:after {
+        @include pseudo();
+        width: 0;
+        height: 2px;
+        background: $primary-text-color;
+
+        transition: width 0.2s linear;
+      }
+    }
+
     &:hover:after {
       width: 100%;
     }
