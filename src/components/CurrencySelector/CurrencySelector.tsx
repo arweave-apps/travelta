@@ -66,7 +66,7 @@ const CurrencySelector = ({
                 key={label}
                 isActive={currency === label}
                 hasHover
-                onClickItem={() => handleClickDropdownItem(label)}
+                onClick={() => handleClickDropdownItem(label)}
               >
                 <TextBlock label={label} text={text} />
               </DropdownItem>
