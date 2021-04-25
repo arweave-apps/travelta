@@ -1,5 +1,5 @@
 .dropdown__item {
-  @include display(flex, flex-start, center);
+  @include display(flex, space-between, center);
   position: relative;
 
   width: 100%;
