@@ -2,12 +2,13 @@ import React from 'react';
 
 import { SegmentType } from '../../../redux/reducers/aviaParams';
 import { ErrorMessagesType, ErrorsType } from '../AviaSearchForm';
+import { Cities } from '../../../redux/reducers/locations';
 
 import SwitchButton from '../../SwitchButton';
-import TextField from '../../TextField';
 import PassangerSelector from '../../PassangerSelector';
 import SimpleButton from '../../SimpleButton';
 import Datepicker from '../../Datepicker';
+import Autocomplete from '../../Autocomplete';
 
 import './AviaStandartForm.scss';
 
@@ -17,12 +18,23 @@ type AviaStandartFormProps = {
   errorMessages: ErrorMessagesType;
   disabledSubmit: boolean;
   onChange: (
-    e: React.FormEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>,
     segmentId: string,
     fieldType: string
   ) => void;
-  onFocus: () => void;
+  onClickItem: (
+    name: string,
+    segmentId: string,
+    code: string,
+    fieldType: string
+  ) => void;
+  onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
   onBlur: () => void;
+  isOpenOriginDropdown: boolean;
+  isOpenDepartureDropdown: boolean;
+  locations: Cities[] | null;
+  originRef: React.RefObject<HTMLDivElement>;
+  destinationRef: React.RefObject<HTMLDivElement>;
 };
 
 const AviaStandartForm = ({
@@ -33,37 +45,49 @@ const AviaStandartForm = ({
   onChange,
   onFocus,
   onBlur,
+  onClickItem,
+  isOpenOriginDropdown,
+  isOpenDepartureDropdown,
+  locations,
+  originRef,
+  destinationRef,
 }: AviaStandartFormProps): JSX.Element => {
   const { id, origin, destination, returnDate, departureDate } = segments[0];
 
   return (
     <div className="search-form">
-      <div className="search-form__origin">
-        <TextField
+      <div className="search-form__origin" ref={originRef}>
+        <Autocomplete
+          segmentId={id}
+          fieldValue={origin}
           placeholder="Откуда"
-          id={`origin-${id}`}
-          value={origin}
           onChange={(e) => onChange(e, id, 'origin')}
-          onFocus={onFocus}
+          onFocus={(e) => onFocus(e)}
+          onClickItem={onClickItem}
           onBlur={onBlur}
-          hasError={errors[id]?.includes('origin')}
-          errorText={errors[id]?.includes('origin') ? errorMessages.origin : ''}
+          errors={errors}
+          errorMessages={errorMessages}
+          isOpen={isOpenOriginDropdown}
+          locations={locations}
+          fieldName="origin"
         />
         <SwitchButton />
       </div>
 
-      <div className="search-form__destination">
-        <TextField
+      <div className="search-form__destination" ref={destinationRef}>
+        <Autocomplete
+          segmentId={id}
+          fieldValue={destination}
           placeholder="Куда"
-          id={`destination-${id}`}
-          value={destination}
           onChange={(e) => onChange(e, id, 'destination')}
-          onFocus={onFocus}
+          onFocus={(e) => onFocus(e)}
+          onClickItem={onClickItem}
           onBlur={onBlur}
-          hasError={errors[id]?.includes('destination')}
-          errorText={
-            errors[id]?.includes('destination') ? errorMessages.destination : ''
-          }
+          errors={errors}
+          errorMessages={errorMessages}
+          isOpen={isOpenDepartureDropdown}
+          locations={locations}
+          fieldName="destination"
         />
       </div>
 

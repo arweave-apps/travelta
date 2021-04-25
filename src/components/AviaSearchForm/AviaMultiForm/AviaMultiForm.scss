@@ -42,6 +42,8 @@
   }
 
   &__destination {
+    position: relative;
+
     grid-column: 2/3;
     grid-row: 1/1;
 

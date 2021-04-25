@@ -1,7 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import useDebounce from '../../hooks/useDebounce';
+import useOutsideClick from '../../hooks/useOutsideClick';
+
+import {
+  fetchLocations,
+  setLocations,
+} from '../../redux/actions/locations/locations';
 import {
   setDestination,
   setOrigin,
@@ -62,11 +70,31 @@ const AviaSearchForm = (): JSX.Element => {
   const [isValidForm, setIsValidForm] = useState(true);
   const [formErrors, setFormErrors] = useState<ErrorsType>({});
 
+  const [isOpenOriginDropdown, setIsOpenOriginDropdown] = useState(false);
+  const [isOpenDestinationDropdown, setIsOpenDestinationDropdown] = useState(
+    false
+  );
+
+  const wrapperOriginRef = useRef<HTMLDivElement>(null);
+  const wrapperDestinationeRef = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(
+    wrapperOriginRef,
+    () => setIsOpenOriginDropdown(false),
+    isOpenOriginDropdown
+  );
+  useOutsideClick(
+    wrapperDestinationeRef,
+    () => setIsOpenDestinationDropdown(false),
+    isOpenDestinationDropdown
+  );
+
   const { activeForm } = useSelector(
     (state: RootStateType) => state.pageSettings
   );
 
   const { segments } = useSelector((state: RootStateType) => state.aviaParams);
+  const { locations } = useSelector((state: RootStateType) => state.locations);
 
   const validateSegments = (array: SegmentType[]) => {
     array.forEach((segment) => {
@@ -109,9 +137,15 @@ const AviaSearchForm = (): JSX.Element => {
     }
   };
 
+  const getCities = (value: string) => {
+    dispatch(fetchLocations(value));
+  };
+
+  const debounсe = useDebounce(getCities, 500);
+
   const handleChange = useCallback(
     (
-      e: React.FormEvent<HTMLInputElement>,
+      e: React.ChangeEvent<HTMLInputElement>,
       segmentId: string,
       fieldType: string
     ) => {
@@ -124,21 +158,34 @@ const AviaSearchForm = (): JSX.Element => {
       }
 
       if (fieldType === 'origin') {
-        dispatch(setOrigin(e.currentTarget.value, segmentId));
+        dispatch(setOrigin(e.currentTarget.value, '', segmentId));
       } else {
-        dispatch(setDestination(e.currentTarget.value, segmentId));
+        dispatch(setDestination(e.currentTarget.value, '', segmentId));
       }
+
+      debounсe(e.currentTarget.value);
     },
-    [segments, activeForm, dispatch]
+    [segments, activeForm, debounсe, dispatch]
   );
 
-  const handleFocus = useCallback(() => {
-    if (!validateForm(segments, activeForm)) {
-      setIsValidForm(false);
-    } else {
-      setIsValidForm(true);
-    }
-  }, [activeForm, segments]);
+  const handleFocus = useCallback(
+    (e: React.FormEvent<HTMLInputElement>) => {
+      if (!validateForm(segments, activeForm)) {
+        setIsValidForm(false);
+      } else {
+        setIsValidForm(true);
+      }
+
+      if (e.currentTarget.name.includes('origin')) {
+        setIsOpenOriginDropdown(true);
+      }
+
+      if (e.currentTarget.name.includes('destination')) {
+        setIsOpenDestinationDropdown(true);
+      }
+    },
+    [activeForm, segments]
+  );
 
   const handleBlur = useCallback(() => {
     validateSegments(segments);
@@ -150,39 +197,74 @@ const AviaSearchForm = (): JSX.Element => {
     }
   }, [activeForm, segments]);
 
+  const handleClickCity = (
+    name: string,
+    segmentId: string,
+    code: string,
+    fieldName: string
+  ) => {
+    if (fieldName === 'origin') {
+      dispatch(setOrigin(name, code, segmentId));
+    } else {
+      dispatch(setDestination(name, code, segmentId));
+    }
+
+    dispatch(setLocations(null));
+    setIsOpenOriginDropdown(false);
+    setIsOpenDestinationDropdown(false);
+  };
+
   const getForm = (type: string) => {
     const forms: FormsType = {
       multiCity: (
         <AviaMultiForm
           segments={segments}
           onChange={handleChange}
+          onClickItem={handleClickCity}
           onFocus={handleFocus}
           onBlur={handleBlur}
           errors={formErrors}
           errorMessages={errorMessages}
           disabledSubmit={!isValidForm}
+          isOpenOriginDropdown={isOpenOriginDropdown}
+          isOpenDepartureDropdown={isOpenDestinationDropdown}
+          originRef={wrapperOriginRef}
+          destinationRef={wrapperDestinationeRef}
+          locations={locations}
         />
       ),
       oneWay: (
         <AviaOnewayForm
           segments={segments}
           onChange={handleChange}
+          onClickItem={handleClickCity}
           onFocus={handleFocus}
           onBlur={handleBlur}
           errors={formErrors}
           errorMessages={errorMessages}
           disabledSubmit={!isValidForm}
+          isOpenOriginDropdown={isOpenOriginDropdown}
+          isOpenDepartureDropdown={isOpenDestinationDropdown}
+          originRef={wrapperOriginRef}
+          destinationRef={wrapperDestinationeRef}
+          locations={locations}
         />
       ),
       roundtrip: (
         <AviaStandartForm
           segments={segments}
           onChange={handleChange}
+          onClickItem={handleClickCity}
           onFocus={handleFocus}
           onBlur={handleBlur}
           errors={formErrors}
           errorMessages={errorMessages}
           disabledSubmit={!isValidForm}
+          isOpenOriginDropdown={isOpenOriginDropdown}
+          isOpenDepartureDropdown={isOpenDestinationDropdown}
+          originRef={wrapperOriginRef}
+          destinationRef={wrapperDestinationeRef}
+          locations={locations}
         />
       ),
     };

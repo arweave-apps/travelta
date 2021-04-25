@@ -5,13 +5,14 @@ import { SegmentType } from '../../../redux/reducers/aviaParams';
 import { addSegment } from '../../../redux/actions/aviaParams/aviaParams';
 
 import { ErrorMessagesType, ErrorsType } from '../AviaSearchForm';
+import { Cities } from '../../../redux/reducers/locations';
 
-import TextField from '../../TextField';
 import PassangerSelector from '../../PassangerSelector';
 import SimpleButton from '../../SimpleButton';
 import Datepicker from '../../Datepicker';
 
 import './AviaMultiForm.scss';
+import Autocomplete from '../../Autocomplete';
 
 type AviaMultiFormProps = {
   segments: SegmentType[];
@@ -19,12 +20,23 @@ type AviaMultiFormProps = {
   errorMessages: ErrorMessagesType;
   disabledSubmit: boolean;
   onChange: (
-    e: React.FormEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>,
     segmentId: string,
     fieldType: string
   ) => void;
-  onFocus: () => void;
+  onClickItem: (
+    name: string,
+    segmentId: string,
+    code: string,
+    fieldType: string
+  ) => void;
+  onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
   onBlur: () => void;
+  isOpenOriginDropdown: boolean;
+  isOpenDepartureDropdown: boolean;
+  locations: Cities[] | null;
+  originRef: React.RefObject<HTMLDivElement>;
+  destinationRef: React.RefObject<HTMLDivElement>;
 };
 
 const AviaMultiForm = ({
@@ -35,6 +47,12 @@ const AviaMultiForm = ({
   onChange,
   onFocus,
   onBlur,
+  onClickItem,
+  isOpenOriginDropdown,
+  isOpenDepartureDropdown,
+  locations,
+  originRef,
+  destinationRef,
 }: AviaMultiFormProps): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -52,35 +70,37 @@ const AviaMultiForm = ({
 
         return (
           <div className="multicity-form__segment" key={id}>
-            <div className="multicity-form__origin">
-              <TextField
+            <div className="multicity-form__origin" ref={originRef}>
+              <Autocomplete
+                segmentId={id}
+                fieldValue={origin}
                 placeholder="Откуда"
-                id={`origin-${id}`}
-                value={origin}
                 onChange={(e) => onChange(e, id, 'origin')}
-                onFocus={onFocus}
+                onFocus={(e) => onFocus(e)}
+                onClickItem={onClickItem}
                 onBlur={onBlur}
-                hasError={errors[id]?.includes('origin')}
-                errorText={
-                  errors[id]?.includes('origin') ? errorMessages.origin : ''
-                }
+                errors={errors}
+                errorMessages={errorMessages}
+                isOpen={isOpenOriginDropdown}
+                locations={locations}
+                fieldName="origin"
               />
             </div>
 
-            <div className="multicity-form__destination">
-              <TextField
+            <div className="multicity-form__destination" ref={destinationRef}>
+              <Autocomplete
+                segmentId={id}
+                fieldValue={destination}
                 placeholder="Куда"
-                id={`destination-${id}`}
-                value={destination}
                 onChange={(e) => onChange(e, id, 'destination')}
-                onFocus={onFocus}
+                onFocus={(e) => onFocus(e)}
+                onClickItem={onClickItem}
                 onBlur={onBlur}
-                hasError={errors[id]?.includes('destination')}
-                errorText={
-                  errors[id]?.includes('destination')
-                    ? errorMessages.destination
-                    : ''
-                }
+                errors={errors}
+                errorMessages={errorMessages}
+                isOpen={isOpenDepartureDropdown}
+                locations={locations}
+                fieldName="destination"
               />
             </div>
 
