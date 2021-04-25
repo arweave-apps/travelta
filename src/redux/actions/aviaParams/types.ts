@@ -7,18 +7,22 @@ export const SET_PASSANGERS = 'SET_PASSANGERS';
 export const ADD_SEGMENT = 'ADD_SEGMENT';
 export const CLEAR_SEGMENTS = 'CLEAR_SEGMENTS';
 
-type PayloadType = {
+export const SET_ORIGIN = 'SET_ORIGIN';
+export const SET_DESTINATION = 'SET_DESTINATION';
+
+type DatePayloadType = {
   date: Date | null;
   segmentId: string;
 };
+
 type ActionSetDepartureDateType = {
   type: typeof SET_DEPARTURE_DATE;
-  payload: PayloadType;
+  payload: DatePayloadType;
 };
 
 type ActionSetReturnDateType = {
   type: typeof SET_RETURN_DATE;
-  payload: PayloadType;
+  payload: DatePayloadType;
 };
 
 type ActionSetCabinClassType = {
@@ -39,10 +43,28 @@ type ActionClearSegmentsType = {
   type: typeof CLEAR_SEGMENTS;
 };
 
+type CityPayloadType = {
+  name: string;
+  code: string;
+  segmentId: string;
+};
+
+type ActionSetOriginType = {
+  type: typeof SET_ORIGIN;
+  payload: CityPayloadType;
+};
+
+type ActionSetDestinationType = {
+  type: typeof SET_DESTINATION;
+  payload: CityPayloadType;
+};
+
 export type ActionAviaParamsTypes =
   | ActionSetDepartureDateType
   | ActionSetReturnDateType
   | ActionSetCabinClassType
   | ActionSetPassangersType
   | ActionAddSegmentType
-  | ActionClearSegmentsType;
+  | ActionClearSegmentsType
+  | ActionSetOriginType
+  | ActionSetDestinationType;

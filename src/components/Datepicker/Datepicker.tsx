@@ -1,7 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import classNames from 'classnames';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 
@@ -10,9 +8,13 @@ import {
   setActiveSegment,
 } from '../../redux/actions/pageSettings/pageSettings';
 import { RootStateType } from '../../redux/reducers';
+import {
+  ErrorMessagesType,
+  ErrorsType,
+} from '../AviaSearchForm/AviaSearchForm';
 
 import DatepickerCalendar from './DatepickerCalendar';
-import TextInput from '../TextInput';
+import TextField from '../TextField';
 
 import './Datepicker.scss';
 
@@ -20,37 +22,32 @@ type DatepickerPropsType = {
   segmentId: string;
   returnDate: Date | null;
   departureDate: Date | null;
+  errors: ErrorsType;
+  errorMessages: ErrorMessagesType;
+  onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
+  onBlur: () => void;
 };
 
 const Datepicker = ({
   segmentId,
   returnDate,
   departureDate,
+  errors,
+  errorMessages,
+  onFocus,
+  onBlur,
 }: DatepickerPropsType): JSX.Element => {
   const dispatch = useDispatch();
+
+  const inputDepartRef = useRef<HTMLInputElement>(null);
+  const inputReturnRef = useRef<HTMLInputElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
   const activeForm = useSelector(
     (state: RootStateType) => state.pageSettings.activeForm
   );
-
-  const [isOpen, setOpen] = useState<boolean>(false);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  useOutsideClick(
-    wrapperRef,
-    () => {
-      setOpen(false);
-      dispatch(setActiveInputDate(null));
-    },
-    isOpen
-  );
-
-  const handleClickCalendarOpen = () => {
-    if (isOpen) {
-      return;
-    }
-
-    setOpen(true);
-  };
 
   const activeInputDate = useSelector(
     (state: RootStateType) => state.pageSettings.activeInputDate
@@ -63,6 +60,34 @@ const Datepicker = ({
   const disabledDates = useSelector(
     (state: RootStateType) => state.pageSettings.disabledDates
   );
+
+  useEffect(() => {
+    if (activeInputDate === 'departure' && segmentId === activeSegment) {
+      inputDepartRef.current?.focus();
+      return;
+    }
+
+    if (activeInputDate === 'return' && segmentId === activeSegment) {
+      inputReturnRef.current?.focus();
+    }
+  }, [activeInputDate, activeSegment, segmentId]);
+
+  useOutsideClick(
+    wrapperRef,
+    () => {
+      setIsCalendarOpen(false);
+      dispatch(setActiveInputDate(null));
+    },
+    isCalendarOpen
+  );
+
+  const handleClickCalendarOpen = () => {
+    if (isCalendarOpen) {
+      return;
+    }
+
+    setIsCalendarOpen(true);
+  };
 
   const handleClickInputDate = (inputType: string) => {
     dispatch(setActiveInputDate(inputType));
@@ -77,40 +102,52 @@ const Datepicker = ({
       onClick={handleClickCalendarOpen}
     >
       <div
-        className={classNames('datepicker__depart', {
-          'datepicker__depart--active':
-            activeInputDate === 'departure' && segmentId === activeSegment,
-        })}
+        className="datepicker__depart"
         role="presentation"
         onClick={() => handleClickInputDate('departure')}
       >
-        <TextInput
+        <TextField
           placeholder="Когда"
           id="depart"
           value={departureDate?.toLocaleDateString()}
           readonly
+          onFocus={onFocus}
+          onBlur={onBlur}
+          inputRef={inputDepartRef}
+          hasError={errors[segmentId]?.includes('departureDate')}
+          errorText={
+            errors[segmentId]?.includes('departureDate')
+              ? errorMessages.departureDate
+              : ''
+          }
         />
       </div>
 
-      {activeForm === 'standart' && (
+      {activeForm === 'roundtrip' && (
         <div
-          className={classNames('datepicker__return', {
-            'datepicker__return--active':
-              activeInputDate === 'return' && segmentId === activeSegment,
-          })}
+          className="datepicker__return"
           role="presentation"
           onClick={() => handleClickInputDate('return')}
         >
-          <TextInput
+          <TextField
             placeholder="Обратно"
             id="return"
             value={returnDate?.toLocaleDateString()}
             readonly
+            onFocus={onFocus}
+            onBlur={onBlur}
+            inputRef={inputReturnRef}
+            hasError={errors[segmentId]?.includes('returnDate')}
+            errorText={
+              errors[segmentId]?.includes('returnDate')
+                ? errorMessages.returnDate
+                : ''
+            }
           />
         </div>
       )}
 
-      {isOpen && (
+      {isCalendarOpen && (
         <DatepickerCalendar
           segmentId={segmentId}
           returnDate={returnDate}

@@ -6,6 +6,8 @@ import {
   SET_PASSANGERS,
   ADD_SEGMENT,
   CLEAR_SEGMENTS,
+  SET_ORIGIN,
+  SET_DESTINATION,
 } from './types';
 
 export const setDepartureDate = (
@@ -43,4 +45,22 @@ export const addSegment = (): ActionAviaParamsTypes => ({
 
 export const clearSegments = (): ActionAviaParamsTypes => ({
   type: CLEAR_SEGMENTS,
+});
+
+export const setOrigin = (
+  name: string,
+  code: string,
+  segmentId: string
+): ActionAviaParamsTypes => ({
+  type: SET_ORIGIN,
+  payload: { name, code, segmentId },
+});
+
+export const setDestination = (
+  name: string,
+  code: string,
+  segmentId: string
+): ActionAviaParamsTypes => ({
+  type: SET_DESTINATION,
+  payload: { name, code, segmentId },
 });

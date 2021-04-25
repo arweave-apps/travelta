@@ -4,6 +4,8 @@ import {
   CLEAR_SEGMENTS,
   SET_CABIN_CLASS,
   SET_DEPARTURE_DATE,
+  SET_DESTINATION,
+  SET_ORIGIN,
   SET_PASSANGERS,
   SET_RETURN_DATE,
 } from '../actions/aviaParams/types';
@@ -11,9 +13,11 @@ import {
 const initialState = {
   segments: [
     {
-      id: 'segment-0',
+      id: 'segment-1',
       origin: '',
+      originCode: '',
       destination: '',
+      destinationCode: '',
       departureDate: null,
       returnDate: null,
     },
@@ -27,19 +31,19 @@ const initialState = {
   selectedCabins: 'M',
 };
 
-export type PassangersType = {
-  [key: string]: number;
-  adults: number;
-  children: number;
-  infants: number;
-};
-
 export type SegmentType = {
   id: string;
   origin: string;
   destination: string;
   departureDate: Date | null;
   returnDate: Date | null;
+};
+
+export type PassangersType = {
+  [key: string]: number;
+  adults: number;
+  children: number;
+  infants: number;
 };
 
 export type InitialAviaParamsStateType = {
@@ -81,6 +85,36 @@ export const aviaParamsReducer = (
 
       return { ...state, segments: newSegments };
     }
+    case SET_ORIGIN: {
+      const { name, code, segmentId } = action.payload;
+      const newSegments = state.segments.map((segment) => {
+        if (segment.id === segmentId) {
+          return {
+            ...segment,
+            origin: name,
+            originCode: code,
+          };
+        }
+        return segment;
+      });
+
+      return { ...state, segments: newSegments };
+    }
+    case SET_DESTINATION: {
+      const { name, code, segmentId } = action.payload;
+      const newSegments = state.segments.map((segment) => {
+        if (segment.id === segmentId) {
+          return {
+            ...segment,
+            destination: name,
+            destinationCode: code,
+          };
+        }
+        return segment;
+      });
+
+      return { ...state, segments: newSegments };
+    }
     case SET_CABIN_CLASS:
       return { ...state, selectedCabins: action.payload };
     case SET_PASSANGERS: {
@@ -96,6 +130,7 @@ export const aviaParamsReducer = (
           destination: '',
           departureDate: null,
           returnDate: null,
+          // locations: null,
         },
       ];
       return { ...state, segments: newSegments };

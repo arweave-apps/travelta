@@ -8,7 +8,7 @@ import {
 } from '../actions/pageSettings/types';
 
 const initialState = {
-  activeForm: 'standart',
+  activeForm: 'roundtrip',
   activeInputDate: null,
   activeSegment: null,
   disabledDates: {

@@ -21,17 +21,9 @@ const TextBlock = ({
     <div
       className={classNames('text-block', { 'text-block--column': hasColumn })}
     >
-      {label ? (
-        <>
-          <span className="text-block__label">{label}</span>
-          <span className="text-block__text">{text}</span>
-        </>
-      ) : (
-        <>
-          <span className="text-block__text">{text}</span>
-          <span className="text-block__subtext">{subtext}</span>
-        </>
-      )}
+      {label && <span className="text-block__label">{label}</span>}
+      <span className="text-block__text">{text}</span>
+      {subtext && <span className="text-block__subtext">{subtext}</span>}
     </div>
   );
 };

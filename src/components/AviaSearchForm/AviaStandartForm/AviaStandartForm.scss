@@ -32,11 +32,16 @@
       border-right: none;
     }
 
+    & label:after {
+      border-radius: $radius 0 0 0;
+    }
+
     @include mq('tablet-wide') {
       grid-column: 1/3;
 
       & input {
         border-radius: $radius 0 0 0;
+        // border-right: $border-width solid $border-color;
       }
     }
 
@@ -47,10 +52,16 @@
         border-radius: $radius $radius 0 0;
         border-right: $border-width solid $border-color;
       }
+
+      & label:after {
+        border-radius: $radius $radius 0 0;
+      }
     }
   }
 
   &__destination {
+    position: relative;
+
     grid-column: 2/3;
     grid-row: 1/1;
 
@@ -65,6 +76,10 @@
         border-radius: 0 $radius 0 0;
         border-right: $border-width solid $border-color;
       }
+
+      & label:after {
+        border-radius: 0 $radius 0 0;
+      }
     }
 
     @include mq('phablet') {
@@ -75,6 +90,10 @@
         border-radius: 0;
         border-right: $border-width solid $border-color;
         border-top: none;
+      }
+
+      & label:after {
+        border-radius: 0;
       }
     }
   }
@@ -93,7 +112,20 @@
       grid-row: 3/3;
     }
 
-    & input {
+    & .input--depart {
+      border-right: none;
+
+      @include mq('tablet-wide') {
+        border-radius: 0 0 0 $radius;
+        border-top: none;
+      }
+
+      @include mq('phablet') {
+        border-radius: 0;
+      }
+    }
+
+    & .input--return {
       border-right: none;
 
       @include mq('tablet-wide') {
@@ -102,22 +134,8 @@
       }
 
       @include mq('phablet') {
-        border-radius: 0;
-        border-top: none;
+        border-right: $border-width solid $border-color;
       }
-    }
-
-    & input + input {
-      border-right: none;
-    }
-
-    @include mq('tablet-wide') {
-      border-top: none;
-    }
-
-    @include mq('phablet') {
-      border-top: none;
-      border-right: $border-width solid $border-color;
     }
   }
 
@@ -171,7 +189,7 @@
       grid-column: 1/6;
       grid-row: 3/3;
       margin-left: 0;
-      margin-top: rem(10);
+      margin-top: rem(5);
     }
 
     @include mq('phablet') {

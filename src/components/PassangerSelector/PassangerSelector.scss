@@ -35,25 +35,16 @@
 
   &:hover {
     cursor: pointer;
-
-    & .down-arrow {
-      color: $active-color;
-    }
   }
 
-  &:after {
-    @include pseudo();
-    top: 100%;
-    right: rem(6);
-    width: 0;
-    height: $border-width;
-    background: $active-color;
-    transition: width 0.2s linear;
+  &--opened {
+    border: $border-width solid $accent-color !important;
+    z-index: z('input-focus');
   }
+}
 
-  &--active {
-    &:after {
-      width: 96.5%;
-    }
+.down-arrow {
+  &--opened {
+    transform: rotate(180deg);
   }
 }

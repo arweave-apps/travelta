@@ -19,7 +19,7 @@ import './DatepickerCalendarMonth.scss';
 type DatePickerCalendarMonthProps = {
   calendarDate: Date | null;
   monthDates: Array<number | undefined> | null;
-  onClickDay: (date: Date) => void;
+  onClickDay: (e: React.MouseEvent<HTMLDivElement>, date: Date) => void;
   startDate: Date | null;
   endDate: Date | null;
   hoverDate: Date | null;
@@ -91,10 +91,10 @@ const DatePickerCalendarMonth = ({
                 className={classNames('month__day month__day--clickable', {
                   'month__day--active':
                     isSelectedDay(comparisonDate, startDate) ||
-                    (activeForm === 'standart' &&
+                    (activeForm === 'roundtrip' &&
                       isSelectedDay(comparisonDate, endDate)),
                   'month__day--filled-right':
-                    activeForm === 'standart' &&
+                    activeForm === 'roundtrip' &&
                     isFilledRightHalfCell(
                       comparisonDate,
                       startDate,
@@ -102,7 +102,7 @@ const DatePickerCalendarMonth = ({
                       endDate
                     ),
                   'month__day--filled-left':
-                    activeForm === 'standart' &&
+                    activeForm === 'roundtrip' &&
                     isFilledLeftHalfCell(
                       comparisonDate,
                       startDate,
@@ -110,12 +110,14 @@ const DatePickerCalendarMonth = ({
                       endDate
                     ),
                   'month__day--filled':
-                    activeForm === 'standart' &&
+                    activeForm === 'roundtrip' &&
                     isFilled(comparisonDate, startDate, hoverDate, endDate),
                 })}
                 role="presentation"
                 key={uuidv4()}
-                onClick={() => onClickDay(new Date(year, month, monthDay))}
+                onMouseDown={(e) =>
+                  onClickDay(e, new Date(year, month, monthDay))
+                }
                 onMouseEnter={() =>
                   onMouseEnterDay(new Date(year, month, monthDay))
                 }

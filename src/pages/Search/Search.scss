@@ -1,0 +1,32 @@
+.avia-search {
+  padding-top: rem(40);
+  padding-bottom: rem(100);
+
+  &__inner {
+    display: grid;
+    grid-template-columns: rem(295) rem(730);
+    grid-template-areas:
+      'filters prediction'
+      'filters action'
+      'filters tickets';
+    grid-gap: rem(20);
+  }
+}
+
+.filters {
+  background-color: $panel-color;
+  border-radius: $radius;
+
+  grid-area: filters;
+
+  box-shadow: $panel-shadow-search;
+}
+
+.tickets {
+  background-color: $panel-color;
+  border-radius: $radius;
+
+  grid-area: tickets;
+
+  box-shadow: $panel-shadow-search;
+}
