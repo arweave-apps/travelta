@@ -24,7 +24,7 @@ type DatepickerPropsType = {
   departureDate: Date | null;
   errors: ErrorsType;
   errorMessages: ErrorMessagesType;
-  onFocus: () => void;
+  onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
   onBlur: () => void;
 };
 
