@@ -18,7 +18,6 @@ type AutocompleteProps = {
   errorMessages: ErrorMessagesType;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
-  onBlur: () => void;
   onClickItem: (
     name: string,
     segmentId: string,
@@ -38,7 +37,6 @@ const Autocomplete = ({
   errorMessages,
   onChange,
   onFocus,
-  onBlur,
   onClickItem,
   isOpen,
   locations,
@@ -53,7 +51,6 @@ const Autocomplete = ({
         value={fieldValue}
         onChange={onChange}
         onFocus={onFocus}
-        onBlur={onBlur}
         hasError={errors[segmentId]?.includes(fieldName)}
         errorText={
           errors[segmentId]?.includes(fieldName) ? errorMessages[fieldName] : ''

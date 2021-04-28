@@ -29,12 +29,11 @@ type AviaStandartFormProps = {
     fieldType: string
   ) => void;
   onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
-  onBlur: () => void;
-  isOpenOriginDropdown: boolean;
-  isOpenDepartureDropdown: boolean;
+  isOpenDropdown: boolean;
   locations: Cities[] | null;
   originRef: React.RefObject<HTMLDivElement>;
   destinationRef: React.RefObject<HTMLDivElement>;
+  activeInputName: string;
 };
 
 const AviaStandartForm = ({
@@ -44,13 +43,12 @@ const AviaStandartForm = ({
   disabledSubmit,
   onChange,
   onFocus,
-  onBlur,
   onClickItem,
-  isOpenOriginDropdown,
-  isOpenDepartureDropdown,
+  isOpenDropdown,
   locations,
   originRef,
   destinationRef,
+  activeInputName,
 }: AviaStandartFormProps): JSX.Element => {
   const { id, origin, destination, returnDate, departureDate } = segments[0];
 
@@ -64,10 +62,9 @@ const AviaStandartForm = ({
           onChange={(e) => onChange(e, id, 'origin')}
           onFocus={(e) => onFocus(e)}
           onClickItem={onClickItem}
-          onBlur={onBlur}
           errors={errors}
           errorMessages={errorMessages}
-          isOpen={isOpenOriginDropdown}
+          isOpen={isOpenDropdown && activeInputName === `origin-${id}`}
           locations={locations}
           fieldName="origin"
         />
@@ -82,10 +79,9 @@ const AviaStandartForm = ({
           onChange={(e) => onChange(e, id, 'destination')}
           onFocus={(e) => onFocus(e)}
           onClickItem={onClickItem}
-          onBlur={onBlur}
           errors={errors}
           errorMessages={errorMessages}
-          isOpen={isOpenDepartureDropdown}
+          isOpen={isOpenDropdown && activeInputName === `destination-${id}`}
           locations={locations}
           fieldName="destination"
         />
@@ -99,7 +95,6 @@ const AviaStandartForm = ({
           errors={errors}
           errorMessages={errorMessages}
           onFocus={onFocus}
-          onBlur={onBlur}
         />
       </div>
 

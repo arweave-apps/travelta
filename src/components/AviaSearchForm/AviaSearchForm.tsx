@@ -69,24 +69,17 @@ const AviaSearchForm = (): JSX.Element => {
 
   const [isValidForm, setIsValidForm] = useState(true);
   const [formErrors, setFormErrors] = useState<ErrorsType>({});
+  const [activeInputName, setActiveInputName] = useState<string>('');
 
-  const [isOpenOriginDropdown, setIsOpenOriginDropdown] = useState(false);
-  const [isOpenDestinationDropdown, setIsOpenDestinationDropdown] = useState(
-    false
-  );
+  const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
   const wrapperOriginRef = useRef<HTMLDivElement>(null);
   const wrapperDestinationeRef = useRef<HTMLDivElement>(null);
 
   useOutsideClick(
-    wrapperOriginRef,
-    () => setIsOpenOriginDropdown(false),
-    isOpenOriginDropdown
-  );
-  useOutsideClick(
-    wrapperDestinationeRef,
-    () => setIsOpenDestinationDropdown(false),
-    isOpenDestinationDropdown
+    [wrapperOriginRef, wrapperDestinationeRef],
+    () => setIsOpenDropdown(false),
+    isOpenDropdown
   );
 
   const { activeForm } = useSelector(
@@ -163,6 +156,8 @@ const AviaSearchForm = (): JSX.Element => {
         dispatch(setDestination(e.currentTarget.value, '', segmentId));
       }
 
+      setIsOpenDropdown(true);
+
       debounсe(e.currentTarget.value);
     },
     [segments, activeForm, debounсe, dispatch]
@@ -170,32 +165,16 @@ const AviaSearchForm = (): JSX.Element => {
 
   const handleFocus = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
+      setActiveInputName(e.currentTarget.name);
+
       if (!validateForm(segments, activeForm)) {
         setIsValidForm(false);
       } else {
         setIsValidForm(true);
       }
-
-      if (e.currentTarget.name.includes('origin')) {
-        setIsOpenOriginDropdown(true);
-      }
-
-      if (e.currentTarget.name.includes('destination')) {
-        setIsOpenDestinationDropdown(true);
-      }
     },
     [activeForm, segments]
   );
-
-  const handleBlur = useCallback(() => {
-    validateSegments(segments);
-
-    if (!validateForm(segments, activeForm)) {
-      setIsValidForm(false);
-    } else {
-      setIsValidForm(true);
-    }
-  }, [activeForm, segments]);
 
   const handleClickCity = (
     name: string,
@@ -210,8 +189,8 @@ const AviaSearchForm = (): JSX.Element => {
     }
 
     dispatch(setLocations(null));
-    setIsOpenOriginDropdown(false);
-    setIsOpenDestinationDropdown(false);
+    setIsOpenDropdown(false);
+    setActiveInputName('');
   };
 
   const getForm = (type: string) => {
@@ -222,15 +201,14 @@ const AviaSearchForm = (): JSX.Element => {
           onChange={handleChange}
           onClickItem={handleClickCity}
           onFocus={handleFocus}
-          onBlur={handleBlur}
           errors={formErrors}
           errorMessages={errorMessages}
           disabledSubmit={!isValidForm}
-          isOpenOriginDropdown={isOpenOriginDropdown}
-          isOpenDepartureDropdown={isOpenDestinationDropdown}
+          isOpenDropdown={isOpenDropdown}
           originRef={wrapperOriginRef}
           destinationRef={wrapperDestinationeRef}
           locations={locations}
+          activeInputName={activeInputName}
         />
       ),
       oneWay: (
@@ -239,15 +217,14 @@ const AviaSearchForm = (): JSX.Element => {
           onChange={handleChange}
           onClickItem={handleClickCity}
           onFocus={handleFocus}
-          onBlur={handleBlur}
           errors={formErrors}
           errorMessages={errorMessages}
           disabledSubmit={!isValidForm}
-          isOpenOriginDropdown={isOpenOriginDropdown}
-          isOpenDepartureDropdown={isOpenDestinationDropdown}
+          isOpenDropdown={isOpenDropdown}
           originRef={wrapperOriginRef}
           destinationRef={wrapperDestinationeRef}
           locations={locations}
+          activeInputName={activeInputName}
         />
       ),
       roundtrip: (
@@ -256,15 +233,14 @@ const AviaSearchForm = (): JSX.Element => {
           onChange={handleChange}
           onClickItem={handleClickCity}
           onFocus={handleFocus}
-          onBlur={handleBlur}
           errors={formErrors}
           errorMessages={errorMessages}
           disabledSubmit={!isValidForm}
-          isOpenOriginDropdown={isOpenOriginDropdown}
-          isOpenDepartureDropdown={isOpenDestinationDropdown}
+          isOpenDropdown={isOpenDropdown}
           originRef={wrapperOriginRef}
           destinationRef={wrapperDestinationeRef}
           locations={locations}
+          activeInputName={activeInputName}
         />
       ),
     };
