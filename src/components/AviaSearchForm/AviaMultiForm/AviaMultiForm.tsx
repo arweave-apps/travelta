@@ -1,18 +1,14 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-
-import { SegmentType } from '../../../redux/reducers/aviaParams';
 import { addSegment } from '../../../redux/actions/aviaParams/aviaParams';
-
-import { ErrorMessagesType, ErrorsType } from '../AviaSearchForm';
+import { SegmentType } from '../../../redux/reducers/aviaParams';
 import { Cities } from '../../../redux/reducers/locations';
-
+import Autocomplete from '../../Autocomplete';
+import Datepicker from '../../Datepicker';
 import PassangerSelector from '../../PassangerSelector';
 import SimpleButton from '../../SimpleButton';
-import Datepicker from '../../Datepicker';
-
+import { ErrorMessagesType, ErrorsType } from '../AviaSearchForm';
 import './AviaMultiForm.scss';
-import Autocomplete from '../../Autocomplete';
 
 type AviaMultiFormProps = {
   segments: SegmentType[];
@@ -31,12 +27,11 @@ type AviaMultiFormProps = {
     fieldType: string
   ) => void;
   onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
-  onBlur: () => void;
-  isOpenOriginDropdown: boolean;
-  isOpenDepartureDropdown: boolean;
+  isOpenDropdown: boolean;
   locations: Cities[] | null;
   originRef: React.RefObject<HTMLDivElement>;
   destinationRef: React.RefObject<HTMLDivElement>;
+  activeInputName: string;
 };
 
 const AviaMultiForm = ({
@@ -46,13 +41,13 @@ const AviaMultiForm = ({
   disabledSubmit,
   onChange,
   onFocus,
-  onBlur,
   onClickItem,
-  isOpenOriginDropdown,
-  isOpenDepartureDropdown,
+  isOpenDropdown,
   locations,
   originRef,
   destinationRef,
+
+  activeInputName,
 }: AviaMultiFormProps): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -78,10 +73,9 @@ const AviaMultiForm = ({
                 onChange={(e) => onChange(e, id, 'origin')}
                 onFocus={(e) => onFocus(e)}
                 onClickItem={onClickItem}
-                onBlur={onBlur}
                 errors={errors}
                 errorMessages={errorMessages}
-                isOpen={isOpenOriginDropdown}
+                isOpen={isOpenDropdown && activeInputName === `origin-${id}`}
                 locations={locations}
                 fieldName="origin"
               />
@@ -95,10 +89,9 @@ const AviaMultiForm = ({
                 onChange={(e) => onChange(e, id, 'destination')}
                 onFocus={(e) => onFocus(e)}
                 onClickItem={onClickItem}
-                onBlur={onBlur}
                 errors={errors}
                 errorMessages={errorMessages}
-                isOpen={isOpenDepartureDropdown}
+                isOpen={activeInputName === `destination-${id}`}
                 locations={locations}
                 fieldName="destination"
               />
@@ -112,7 +105,6 @@ const AviaMultiForm = ({
                 errors={errors}
                 errorMessages={errorMessages}
                 onFocus={onFocus}
-                onBlur={onBlur}
               />
             </div>
           </div>
