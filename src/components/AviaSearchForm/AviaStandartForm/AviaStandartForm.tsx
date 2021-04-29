@@ -31,9 +31,8 @@ type AviaStandartFormProps = {
   onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
   isOpenDropdown: boolean;
   locations: Cities[] | null;
-  originRef: React.RefObject<HTMLDivElement>;
-  destinationRef: React.RefObject<HTMLDivElement>;
   activeInputName: string;
+  addToRefs: (el: HTMLDivElement) => void;
 };
 
 const AviaStandartForm = ({
@@ -46,15 +45,14 @@ const AviaStandartForm = ({
   onClickItem,
   isOpenDropdown,
   locations,
-  originRef,
-  destinationRef,
   activeInputName,
+  addToRefs,
 }: AviaStandartFormProps): JSX.Element => {
   const { id, origin, destination, returnDate, departureDate } = segments[0];
 
   return (
     <div className="search-form">
-      <div className="search-form__origin" ref={originRef}>
+      <div className="search-form__origin" ref={addToRefs}>
         <Autocomplete
           segmentId={id}
           fieldValue={origin}
@@ -71,7 +69,7 @@ const AviaStandartForm = ({
         <SwitchButton />
       </div>
 
-      <div className="search-form__destination" ref={destinationRef}>
+      <div className="search-form__destination" ref={addToRefs}>
         <Autocomplete
           segmentId={id}
           fieldValue={destination}

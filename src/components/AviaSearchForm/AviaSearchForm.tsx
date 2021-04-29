@@ -67,44 +67,38 @@ const AviaSearchForm = (): JSX.Element => {
   const history = useHistory();
   const dispatch = useDispatch();
 
+  const { segments } = useSelector((state: RootStateType) => state.aviaParams);
+  const { locations } = useSelector((state: RootStateType) => state.locations);
+
   const [isValidForm, setIsValidForm] = useState(true);
   const [formErrors, setFormErrors] = useState<ErrorsType>({});
   const [activeInputName, setActiveInputName] = useState<string>('');
 
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
-  const wrapperOriginRef = useRef<HTMLDivElement>(null);
-  const wrapperDestinationeRef = useRef<HTMLDivElement>(null);
-
-  useOutsideClick(
-    [wrapperOriginRef, wrapperDestinationeRef],
-    () => setIsOpenDropdown(false),
-    isOpenDropdown
-  );
+  const refsArray = useRef<HTMLDivElement[]>([]);
+  useOutsideClick(refsArray, () => setIsOpenDropdown(false), isOpenDropdown);
 
   const { activeForm } = useSelector(
     (state: RootStateType) => state.pageSettings
   );
 
-  const { segments } = useSelector((state: RootStateType) => state.aviaParams);
-  const { locations } = useSelector((state: RootStateType) => state.locations);
-
-  const validateSegments = (array: SegmentType[]) => {
+  const getSegmentsErrors = (array: SegmentType[]) => {
     array.forEach((segment) => {
       const { id } = segment;
       const fieldValues = Object.values(segment);
       const fields = Object.keys(segment);
-      const tempArr: string[] = [];
+      const errors: string[] = [];
 
       fieldValues.forEach((value, i) => {
         if (!value && fields[i] !== 'id') {
-          tempArr.push(fields[i]);
+          errors.push(fields[i]);
         }
       });
 
       setFormErrors((prevErrors) => ({
         ...prevErrors,
-        [id]: tempArr,
+        [id]: errors,
       }));
     });
   };
@@ -118,7 +112,7 @@ const AviaSearchForm = (): JSX.Element => {
   const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    validateSegments(segments);
+    getSegmentsErrors(segments);
 
     if (!validateForm(segments, activeForm)) {
       setIsValidForm(false);
@@ -142,7 +136,7 @@ const AviaSearchForm = (): JSX.Element => {
       segmentId: string,
       fieldType: string
     ) => {
-      validateSegments(segments);
+      getSegmentsErrors(segments);
 
       if (!validateForm(segments, activeForm)) {
         setIsValidForm(false);
@@ -182,6 +176,8 @@ const AviaSearchForm = (): JSX.Element => {
     code: string,
     fieldName: string
   ) => {
+    getSegmentsErrors(segments);
+
     if (fieldName === 'origin') {
       dispatch(setOrigin(name, code, segmentId));
     } else {
@@ -192,6 +188,12 @@ const AviaSearchForm = (): JSX.Element => {
     setIsOpenDropdown(false);
     setActiveInputName('');
   };
+
+  const addToRefs = useCallback((el: HTMLDivElement) => {
+    if (el && !refsArray.current.includes(el)) {
+      refsArray.current.push(el);
+    }
+  }, []);
 
   const getForm = (type: string) => {
     const forms: FormsType = {
@@ -205,10 +207,9 @@ const AviaSearchForm = (): JSX.Element => {
           errorMessages={errorMessages}
           disabledSubmit={!isValidForm}
           isOpenDropdown={isOpenDropdown}
-          originRef={wrapperOriginRef}
-          destinationRef={wrapperDestinationeRef}
           locations={locations}
           activeInputName={activeInputName}
+          addToRefs={addToRefs}
         />
       ),
       oneWay: (
@@ -221,10 +222,9 @@ const AviaSearchForm = (): JSX.Element => {
           errorMessages={errorMessages}
           disabledSubmit={!isValidForm}
           isOpenDropdown={isOpenDropdown}
-          originRef={wrapperOriginRef}
-          destinationRef={wrapperDestinationeRef}
           locations={locations}
           activeInputName={activeInputName}
+          addToRefs={addToRefs}
         />
       ),
       roundtrip: (
@@ -237,10 +237,9 @@ const AviaSearchForm = (): JSX.Element => {
           errorMessages={errorMessages}
           disabledSubmit={!isValidForm}
           isOpenDropdown={isOpenDropdown}
-          originRef={wrapperOriginRef}
-          destinationRef={wrapperDestinationeRef}
           locations={locations}
           activeInputName={activeInputName}
+          addToRefs={addToRefs}
         />
       ),
     };

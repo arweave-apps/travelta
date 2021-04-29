@@ -32,9 +32,8 @@ type AviaOnewayFormProps = {
   onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
   isOpenDropdown: boolean;
   locations: Cities[] | null;
-  originRef: React.RefObject<HTMLDivElement>;
-  destinationRef: React.RefObject<HTMLDivElement>;
   activeInputName: string;
+  addToRefs: (el: HTMLDivElement) => void;
 };
 
 const AviaOnewayForm = ({
@@ -47,15 +46,14 @@ const AviaOnewayForm = ({
   onClickItem,
   isOpenDropdown,
   locations,
-  originRef,
-  destinationRef,
   activeInputName,
+  addToRefs,
 }: AviaOnewayFormProps): JSX.Element => {
   const { id, origin, destination, returnDate, departureDate } = segments[0];
 
   return (
     <div className="oneway-form">
-      <div className="oneway-form__origin" ref={originRef}>
+      <div className="oneway-form__origin" ref={addToRefs}>
         <Autocomplete
           segmentId={id}
           fieldValue={origin}
@@ -72,7 +70,7 @@ const AviaOnewayForm = ({
         <SwitchButton />
       </div>
 
-      <div className="oneway-form__destination" ref={destinationRef}>
+      <div className="oneway-form__destination" ref={addToRefs}>
         <Autocomplete
           segmentId={id}
           fieldValue={destination}

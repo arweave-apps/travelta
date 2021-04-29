@@ -1,13 +1,17 @@
+/* eslint-disable no-param-reassign */
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+
 import { addSegment } from '../../../redux/actions/aviaParams/aviaParams';
 import { SegmentType } from '../../../redux/reducers/aviaParams';
 import { Cities } from '../../../redux/reducers/locations';
+
 import Autocomplete from '../../Autocomplete';
 import Datepicker from '../../Datepicker';
 import PassangerSelector from '../../PassangerSelector';
 import SimpleButton from '../../SimpleButton';
 import { ErrorMessagesType, ErrorsType } from '../AviaSearchForm';
+
 import './AviaMultiForm.scss';
 
 type AviaMultiFormProps = {
@@ -29,9 +33,8 @@ type AviaMultiFormProps = {
   onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
   isOpenDropdown: boolean;
   locations: Cities[] | null;
-  originRef: React.RefObject<HTMLDivElement>;
-  destinationRef: React.RefObject<HTMLDivElement>;
   activeInputName: string;
+  addToRefs: (el: HTMLDivElement) => void;
 };
 
 const AviaMultiForm = ({
@@ -44,10 +47,8 @@ const AviaMultiForm = ({
   onClickItem,
   isOpenDropdown,
   locations,
-  originRef,
-  destinationRef,
-
   activeInputName,
+  addToRefs,
 }: AviaMultiFormProps): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -65,7 +66,7 @@ const AviaMultiForm = ({
 
         return (
           <div className="multicity-form__segment" key={id}>
-            <div className="multicity-form__origin" ref={originRef}>
+            <div className="multicity-form__origin" ref={addToRefs}>
               <Autocomplete
                 segmentId={id}
                 fieldValue={origin}
@@ -81,7 +82,7 @@ const AviaMultiForm = ({
               />
             </div>
 
-            <div className="multicity-form__destination" ref={destinationRef}>
+            <div className="multicity-form__destination" ref={addToRefs}>
               <Autocomplete
                 segmentId={id}
                 fieldValue={destination}
