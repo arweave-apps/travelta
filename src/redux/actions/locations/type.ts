@@ -68,7 +68,7 @@ export interface LocationObject {
   hotels: number;
   bus_stations: number;
   subdivision: Subdivision;
-  autonomous_territory?: any;
+  autonomous_territory?: unknown;
   country: Country;
   region: Region;
   continent: Continent;
