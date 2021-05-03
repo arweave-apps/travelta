@@ -23,10 +23,11 @@ export type DisabledDatesType = {
 };
 
 export type FormsType = 'multiCity' | 'oneWay' | 'roundtrip';
+export type ActiveInputType = 'departure' | 'return' | null;
 
 export type InitialPageSettingsStateType = {
   activeForm: FormsType;
-  activeInputDate: null | string;
+  activeInputDate: ActiveInputType;
   activeSegment: null | string;
   disabledDates: DisabledDatesType;
 };

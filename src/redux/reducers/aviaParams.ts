@@ -10,7 +10,7 @@ import {
   SET_RETURN_DATE,
 } from '../actions/aviaParams/types';
 
-const initialState = {
+const initialState: InitialAviaParamsStateType = {
   segments: [
     {
       id: 'segment-1',
@@ -45,17 +45,14 @@ export type SegmentType = {
   returnDate: Date | null;
 };
 
-export type PassangersType = {
-  [key: string]: number;
-  adults: number;
-  children: number;
-  infants: number;
-};
+export type PassangersNamesTypes = 'adults' | 'children' | 'infants';
+export type CabinClassTypes = 'M' | 'W' | 'C' | 'F';
+export type PassangersType = Record<PassangersNamesTypes, number>;
 
 export type InitialAviaParamsStateType = {
   segments: Array<SegmentType>;
   passangers: PassangersType;
-  selectedCabins: string;
+  selectedCabins: CabinClassTypes;
 };
 
 export const aviaParamsReducer = (

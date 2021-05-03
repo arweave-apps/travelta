@@ -4,17 +4,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
 import { setCurrency } from '../../redux/actions/settings/settings';
-import { RootStateType } from '../../redux/reducers';
+import { CurrencyType } from '../../redux/reducers/settings';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 
-import './CurrencySelector.scss';
+import { getCurrency } from '../../selectors/selectros';
+
 import Dropdown from '../Dropdown';
 import DropdownItem from '../Dropdown/DropdownItem/DropdownItem';
 import TextBlock from '../TextBlock';
 import TriggerButton from '../TriggerButton';
 
-const currencyList = [
+import './CurrencySelector.scss';
+
+type CurrencyTextType = 'Рубли' | 'Евро' | 'Доллары';
+type CurrensyListType = { label: CurrencyType; text: CurrencyTextType };
+
+const currencyList: CurrensyListType[] = [
   { label: 'RUB', text: 'Рубли' },
   { label: 'EUR', text: 'Евро' },
   { label: 'USD', text: 'Доллары' },
@@ -28,7 +34,7 @@ const CurrencySelector = ({
   isSearchPage,
 }: CurrencySelectorProps): JSX.Element => {
   const dispatch = useDispatch();
-  const { currency } = useSelector(({ settings }: RootStateType) => settings);
+  const currency = useSelector(getCurrency);
 
   const [isOpen, setOpen] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -39,7 +45,7 @@ const CurrencySelector = ({
   };
 
   const handleClickDropdownItem = useCallback(
-    (value: string) => {
+    (value: CurrencyType) => {
       dispatch(setCurrency(value));
     },
     [dispatch]

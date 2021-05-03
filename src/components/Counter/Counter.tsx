@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { PassangersNamesTypes } from '../../redux/reducers/aviaParams';
+
 import PlusIcon from '../../assets/images/icons/plus.svg';
 import MinusIcon from '../../assets/images/icons/minus.svg';
 
@@ -8,9 +10,9 @@ import CounterButton from './CounterButton';
 import './Counter.scss';
 
 type CounterProps = {
-  passangerType: string;
+  passangerType: PassangersNamesTypes;
   number: number;
-  onClickCounter: (number: number, name: string) => void;
+  onClickCounter: (number: number, name: PassangersNamesTypes) => void;
   minDisabled: boolean;
   maxDisabled: boolean;
 };

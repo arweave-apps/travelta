@@ -1,10 +1,14 @@
 import { ActionSettingsTypes, SET_CURRENCY } from '../actions/settings/types';
 
-const initialState = {
+export type CurrencyType = 'RUB' | 'USD' | 'EUR';
+
+const initialState: InitialSettingsStateType = {
   currency: 'RUB',
 };
 
-export type InitialSettingsStateType = typeof initialState;
+export type InitialSettingsStateType = {
+  currency: CurrencyType;
+};
 
 export const settingsReducer = (
   state: InitialSettingsStateType = initialState,

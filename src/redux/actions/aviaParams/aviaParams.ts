@@ -1,4 +1,8 @@
 import {
+  CabinClassTypes,
+  PassangersNamesTypes,
+} from '../../reducers/aviaParams';
+import {
   ActionAviaParamsTypes,
   SET_CABIN_CLASS,
   SET_DEPARTURE_DATE,
@@ -26,14 +30,16 @@ export const setReturnDate = (
   payload: { date, segmentId },
 });
 
-export const setCabinClass = (cabinClass: string): ActionAviaParamsTypes => ({
+export const setCabinClass = (
+  cabinClass: CabinClassTypes
+): ActionAviaParamsTypes => ({
   type: SET_CABIN_CLASS,
   payload: cabinClass,
 });
 
 export const setPassangers = (
   value: number,
-  name: string
+  name: PassangersNamesTypes
 ): ActionAviaParamsTypes => ({
   type: SET_PASSANGERS,
   payload: { name, value },

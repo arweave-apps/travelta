@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -15,7 +14,8 @@ import {
   DisabledDatesType,
   FormsType,
 } from '../../../redux/reducers/pageSettings';
-import { RootStateType } from '../../../redux/reducers';
+
+import { getSegments } from '../../../selectors/selectros';
 
 import NextIcon from '../../../assets/images/icons/right-arrow.svg';
 import PrevIcon from '../../../assets/images/icons/left-arrow.svg';
@@ -69,6 +69,8 @@ const DatepickerCalendar = ({
 }: DatepickerCalendarPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
+  const segments = useSelector(getSegments);
+
   const [prevMonthData, setPrevMonthData] = useState<Array<
     number | undefined
   > | null>(null);
@@ -79,12 +81,7 @@ const DatepickerCalendar = ({
 
   const [prevMonthDate, setPrevMonthDate] = useState<Date | null>(null);
   const [nextMonthDate, setNextMonthDate] = useState<Date | null>(null);
-
   const [hoverDate, setHoverDate] = useState<Date | null>(null);
-
-  const segments = useSelector(
-    (state: RootStateType) => state.aviaParams.segments
-  );
 
   useEffect(() => {
     const now = new Date();

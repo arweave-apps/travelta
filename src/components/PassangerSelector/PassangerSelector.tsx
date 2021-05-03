@@ -6,11 +6,12 @@ import classNames from 'classnames';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import getNounDeclension from '../../utils/getNounDeclension';
 
-import { RootStateType } from '../../redux/reducers';
 import {
   setCabinClass,
   setPassangers,
 } from '../../redux/actions/aviaParams/aviaParams';
+
+import { getPassangers, getSelectedCabins } from '../../selectors/selectros';
 
 import { cabinClassItems, getCabinClassName, passangerItems } from './helpers';
 
@@ -25,20 +26,18 @@ import Divider from '../Divider';
 import TriggerButton from '../TriggerButton';
 
 import './PassangerSelector.scss';
+import {
+  CabinClassTypes,
+  PassangersNamesTypes,
+} from '../../redux/reducers/aviaParams';
 
 const PassangerSelector = (): JSX.Element => {
   const dispatch = useDispatch();
 
-  const passangers = useSelector(
-    ({ aviaParams }: RootStateType) => aviaParams.passangers
-  );
-
-  const { selectedCabins } = useSelector(
-    ({ aviaParams }: RootStateType) => aviaParams
-  );
+  const passangers = useSelector(getPassangers);
+  const selectedCabins = useSelector(getSelectedCabins);
 
   const [totalPassangers, setTotalPassangers] = useState<number>(1);
-
   const [isOpen, setOpen] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -55,11 +54,14 @@ const PassangerSelector = (): JSX.Element => {
     setTotalPassangers(total);
   }, [passangers, totalPassangers]);
 
-  const handleChangeCabinClass = (cabinClass: string) => {
+  const handleChangeCabinClass = (cabinClass: CabinClassTypes) => {
     dispatch(setCabinClass(cabinClass));
   };
 
-  const handleClickCounter = (changedValue: number, passangerType: string) => {
+  const handleClickCounter = (
+    changedValue: number,
+    passangerType: PassangersNamesTypes
+  ) => {
     if (passangerType === 'infants' && changedValue > passangers.adults) {
       return;
     }

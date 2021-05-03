@@ -1,4 +1,27 @@
-export const passangerItems = [
+import {
+  CabinClassTypes,
+  PassangersNamesTypes,
+} from '../../redux/reducers/aviaParams';
+
+type PassangerItemsTextTypes = 'Взрослые' | 'Дети' | 'Младенцы';
+type PassangerItemsSubTextTypes =
+  | 'старше 12 лет'
+  | 'от 2 до 12'
+  | 'до 2 лет, без места';
+
+type PassangerCountType = {
+  name: PassangersNamesTypes;
+  min: number;
+  max: number;
+};
+
+type PassangerItemsType = {
+  text: PassangerItemsTextTypes;
+  subtext: PassangerItemsSubTextTypes;
+  count: PassangerCountType;
+};
+
+export const passangerItems: PassangerItemsType[] = [
   {
     text: 'Взрослые',
     subtext: 'старше 12 лет',
@@ -16,7 +39,16 @@ export const passangerItems = [
   },
 ];
 
-export const cabinClassItems = [
+type CabinIdTypes = 'econom' | 'comfort' | 'business' | 'first-class';
+type CabinTextTypes = 'Эконом' | 'Комфорт' | 'Бизнес' | 'Первый класс';
+
+type CabinClassItemType = {
+  id: CabinIdTypes;
+  text: CabinTextTypes;
+  cabinClass: CabinClassTypes;
+};
+
+export const cabinClassItems: CabinClassItemType[] = [
   {
     id: 'econom',
     text: 'Эконом',
@@ -39,7 +71,9 @@ export const cabinClassItems = [
   },
 ];
 
-export const getCabinClassName = (cabinClass: string): string | undefined => {
+export const getCabinClassName = (
+  cabinClass: CabinClassTypes
+): CabinTextTypes | undefined => {
   const searchedItem = cabinClassItems.find(
     (item) => item.cabinClass === cabinClass
   );
