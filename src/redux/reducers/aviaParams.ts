@@ -36,7 +36,11 @@ const initialState = {
 export type SegmentType = {
   id: string;
   origin: string;
+  originCode: string;
+
   destination: string;
+  destinationCode: string;
+
   departureDate: Date | null;
   returnDate: Date | null;
 };
