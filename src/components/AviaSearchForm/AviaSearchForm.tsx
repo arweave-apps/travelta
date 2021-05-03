@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-
+import React, { useCallback, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useFormik } from 'formik';
 
 import useDebounce from '../../hooks/useDebounce';
 import useOutsideClick from '../../hooks/useOutsideClick';
@@ -16,6 +16,7 @@ import {
 } from '../../redux/actions/aviaParams/aviaParams';
 import { RootStateType } from '../../redux/reducers';
 import { SegmentType } from '../../redux/reducers/aviaParams';
+import { FormsType } from '../../redux/reducers/pageSettings';
 
 import AviaStandartForm from './AviaStandartForm/AviaStandartForm';
 import AviaMultiForm from './AviaMultiForm';
@@ -23,45 +24,66 @@ import AviaOnewayForm from './AviaOnewayForm';
 
 import './AviaSearchForm.scss';
 
-type FormsType = {
-  [key: string]: JSX.Element;
-};
+export type ErrorMessagesType =
+  | 'departureDate'
+  | 'returnDate'
+  | 'destination'
+  | 'origin';
 
-const errorMessages = {
+const errorMessages: Record<ErrorMessagesType, string> = {
   departureDate: 'Укажите дату отправления',
   returnDate: 'Укажите дату возвращения',
   destination: 'Укажите город прибытия',
   origin: 'Укажите город отправления',
 };
 
-export type ErrorMessagesType = {
-  [key: string]: string;
+export type InitialValues = {
+  [key: string]: string | Date | null;
 };
 
 export type ErrorsType = {
-  [key: string]: string[];
+  [key: string]: string;
 };
 
-const checkValue = (value: string | Date | null) =>
-  value !== '' && value !== null;
+type Keys<T> = Array<keyof T>;
 
-const validateForm = (array: SegmentType[], activeForm: string): boolean =>
-  array.every((segment) => {
-    const fieldValues = Object.values(segment);
-    const fieldKeys = Object.keys(segment);
+const getInitialValues = (segments: SegmentType[], activeForm: FormsType) => {
+  return segments.reduce((acc, currSegment) => {
+    const { id } = currSegment;
+    const segmentKeys = Object.keys(currSegment) as Keys<typeof currSegment>;
 
-    if (activeForm === 'oneWay' || activeForm === 'multiCity') {
-      const idx = fieldKeys.findIndex((key) => key === 'returnDate');
-      const newFieldValues = [
-        ...fieldValues.slice(0, idx),
-        ...fieldValues.slice(idx + 1),
-      ];
+    segmentKeys.forEach((key) => {
+      if (activeForm === 'multiCity' || activeForm === 'oneWay') {
+        if (
+          key !== 'id' &&
+          key !== 'originCode' &&
+          key !== 'destinationCode' &&
+          key !== 'returnDate'
+        ) {
+          acc[`${key}-${id}`] = currSegment[key];
+        }
+      } else if (
+        key !== 'id' &&
+        key !== 'originCode' &&
+        key !== 'destinationCode'
+      ) {
+        acc[`${key}-${id}`] = currSegment[key];
+      }
+    });
+    return acc;
+  }, {} as InitialValues);
+};
 
-      return newFieldValues.every(checkValue);
+const validate = (values: InitialValues) => {
+  return Object.entries(values).reduce((acc, [key, value]) => {
+    if (!value) {
+      const error = key.split('-')[0] as ErrorMessagesType;
+
+      acc[key] = errorMessages[error];
     }
-
-    return fieldValues.every(checkValue);
-  });
+    return acc;
+  }, {} as ErrorsType);
+};
 
 const AviaSearchForm = (): JSX.Element => {
   const history = useHistory();
@@ -69,9 +91,6 @@ const AviaSearchForm = (): JSX.Element => {
 
   const { segments } = useSelector((state: RootStateType) => state.aviaParams);
   const { locations } = useSelector((state: RootStateType) => state.locations);
-
-  const [isValidForm, setIsValidForm] = useState(true);
-  const [formErrors, setFormErrors] = useState<ErrorsType>({});
   const [activeInputName, setActiveInputName] = useState<string>('');
 
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
@@ -83,111 +102,10 @@ const AviaSearchForm = (): JSX.Element => {
     (state: RootStateType) => state.pageSettings
   );
 
-  const getSegmentsErrors = (array: SegmentType[]) => {
-    array.forEach((segment) => {
-      const { id } = segment;
-      const fieldValues = Object.values(segment);
-      const fields = Object.keys(segment);
-      const errors: string[] = [];
-
-      fieldValues.forEach((value, i) => {
-        if (!value && fields[i] !== 'id') {
-          errors.push(fields[i]);
-        }
-      });
-
-      setFormErrors((prevErrors) => ({
-        ...prevErrors,
-        [id]: errors,
-      }));
-    });
-  };
-
-  useEffect(() => {
-    // clear errors when choose another form
-    setFormErrors({});
-    setIsValidForm(true);
-  }, [activeForm]);
-
-  const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    getSegmentsErrors(segments);
-
-    if (!validateForm(segments, activeForm)) {
-      setIsValidForm(false);
-      return;
-    }
-
-    if (!history.location.pathname.includes('search')) {
-      history.push(`${history.location.pathname}/search`);
-    }
-  };
-
   const getCities = (value: string) => {
     dispatch(fetchLocations(value));
   };
-
   const debounсe = useDebounce(getCities, 500);
-
-  const handleChange = useCallback(
-    (
-      e: React.ChangeEvent<HTMLInputElement>,
-      segmentId: string,
-      fieldType: string
-    ) => {
-      getSegmentsErrors(segments);
-
-      if (!validateForm(segments, activeForm)) {
-        setIsValidForm(false);
-      } else {
-        setIsValidForm(true);
-      }
-
-      if (fieldType === 'origin') {
-        dispatch(setOrigin(e.currentTarget.value, '', segmentId));
-      } else {
-        dispatch(setDestination(e.currentTarget.value, '', segmentId));
-      }
-
-      setIsOpenDropdown(true);
-
-      debounсe(e.currentTarget.value);
-    },
-    [segments, activeForm, debounсe, dispatch]
-  );
-
-  const handleFocus = useCallback(
-    (e: React.FormEvent<HTMLInputElement>) => {
-      setActiveInputName(e.currentTarget.name);
-
-      if (!validateForm(segments, activeForm)) {
-        setIsValidForm(false);
-      } else {
-        setIsValidForm(true);
-      }
-    },
-    [activeForm, segments]
-  );
-
-  const handleClickCity = (
-    name: string,
-    segmentId: string,
-    code: string,
-    fieldName: string
-  ) => {
-    getSegmentsErrors(segments);
-
-    if (fieldName === 'origin') {
-      dispatch(setOrigin(name, code, segmentId));
-    } else {
-      dispatch(setDestination(name, code, segmentId));
-    }
-
-    dispatch(setLocations(null));
-    setIsOpenDropdown(false);
-    setActiveInputName('');
-  };
 
   const addToRefs = useCallback((el: HTMLDivElement) => {
     if (el && !refsArray.current.includes(el)) {
@@ -195,51 +113,115 @@ const AviaSearchForm = (): JSX.Element => {
     }
   }, []);
 
-  const getForm = (type: string) => {
-    const forms: FormsType = {
+  const formik = useFormik({
+    initialValues: getInitialValues(segments, activeForm),
+    validate,
+    enableReinitialize: true,
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    onSubmit: (values) => {
+      if (!history.location.pathname.includes('search')) {
+        history.push(`${history.location.pathname}/search`);
+      }
+    },
+  });
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.currentTarget;
+
+      formik.handleChange(e);
+      setIsOpenDropdown(true);
+      debounсe(value);
+    },
+    [debounсe, formik]
+  );
+
+  const handleFocus = useCallback((e: React.FormEvent<HTMLInputElement>) => {
+    setActiveInputName(e.currentTarget.name);
+  }, []);
+
+  const handleClickCity = useCallback(
+    (name: string, segmentId: string, code: string, fieldName: string) => {
+      if (fieldName === 'origin') {
+        dispatch(setOrigin(name, code, segmentId));
+      } else {
+        dispatch(setDestination(name, code, segmentId));
+      }
+
+      dispatch(setLocations(null));
+      setIsOpenDropdown(false);
+      setActiveInputName('');
+    },
+    [dispatch]
+  );
+
+  const getForm = (type: FormsType) => {
+    const forms: Record<FormsType, JSX.Element> = {
       multiCity: (
         <AviaMultiForm
           segments={segments}
+          values={formik.values}
+          errors={formik.errors}
+          touched={formik.touched}
           onChange={handleChange}
           onClickItem={handleClickCity}
           onFocus={handleFocus}
-          errors={formErrors}
-          errorMessages={errorMessages}
-          disabledSubmit={!isValidForm}
+          onBlur={formik.handleBlur}
+          isDisabledSubmit={!formik.isValid}
           isOpenDropdown={isOpenDropdown}
           locations={locations}
           activeInputName={activeInputName}
           addToRefs={addToRefs}
+          onSetFormikValue={formik.setFieldValue}
+          onSetFormikDepartureDate={formik.setFieldValue}
+          onSetFormikReturnDate={formik.setFieldValue}
+          onSetFormikTouchedDepartureDate={formik.setFieldTouched}
+          onSetFormikTouchedReturnDate={formik.setFieldTouched}
         />
       ),
       oneWay: (
         <AviaOnewayForm
           segments={segments}
+          values={formik.values}
+          errors={formik.errors}
+          touched={formik.touched}
           onChange={handleChange}
           onClickItem={handleClickCity}
           onFocus={handleFocus}
-          errors={formErrors}
-          errorMessages={errorMessages}
-          disabledSubmit={!isValidForm}
+          onBlur={formik.handleBlur}
+          isDisabledSubmit={!formik.isValid}
           isOpenDropdown={isOpenDropdown}
           locations={locations}
           activeInputName={activeInputName}
           addToRefs={addToRefs}
+          onSetFormikValue={formik.setFieldValue}
+          onSetFormikDepartureDate={formik.setFieldValue}
+          onSetFormikReturnDate={formik.setFieldValue}
+          onSetFormikTouchedDepartureDate={formik.setFieldTouched}
+          onSetFormikTouchedReturnDate={formik.setFieldTouched}
         />
       ),
       roundtrip: (
         <AviaStandartForm
           segments={segments}
+          values={formik.values}
+          errors={formik.errors}
+          touched={formik.touched}
           onChange={handleChange}
           onClickItem={handleClickCity}
           onFocus={handleFocus}
-          errors={formErrors}
-          errorMessages={errorMessages}
-          disabledSubmit={!isValidForm}
+          onBlur={formik.handleBlur}
+          isDisabledSubmit={!formik.isValid}
           isOpenDropdown={isOpenDropdown}
           locations={locations}
           activeInputName={activeInputName}
           addToRefs={addToRefs}
+          onSetFormikValue={formik.setFieldValue}
+          onSetFormikDepartureDate={formik.setFieldValue}
+          onSetFormikReturnDate={formik.setFieldValue}
+          onSetFormikTouchedDepartureDate={formik.setFieldTouched}
+          onSetFormikTouchedReturnDate={formik.setFieldTouched}
         />
       ),
     };
@@ -247,7 +229,7 @@ const AviaSearchForm = (): JSX.Element => {
     return forms[type];
   };
 
-  return <form onSubmit={handleSubmitForm}>{getForm(activeForm)}</form>;
+  return <form onSubmit={formik.handleSubmit}>{getForm(activeForm)}</form>;
 };
 
 export default AviaSearchForm;

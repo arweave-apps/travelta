@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import React, { useCallback } from 'react';
+import { FormikErrors, FormikTouched } from 'formik';
 import { useDispatch } from 'react-redux';
 
 import { addSegment } from '../../../redux/actions/aviaParams/aviaParams';
@@ -10,20 +11,16 @@ import Autocomplete from '../../Autocomplete';
 import Datepicker from '../../Datepicker';
 import PassangerSelector from '../../PassangerSelector';
 import SimpleButton from '../../SimpleButton';
-import { ErrorMessagesType, ErrorsType } from '../AviaSearchForm';
+import { InitialValues } from '../AviaSearchForm';
 
 import './AviaMultiForm.scss';
 
 type AviaMultiFormProps = {
   segments: SegmentType[];
-  errors: ErrorsType;
-  errorMessages: ErrorMessagesType;
-  disabledSubmit: boolean;
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement>,
-    segmentId: string,
-    fieldType: string
-  ) => void;
+  values: InitialValues;
+  errors: FormikErrors<InitialValues>;
+  touched: FormikTouched<InitialValues>;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClickItem: (
     name: string,
     segmentId: string,
@@ -31,24 +28,58 @@ type AviaMultiFormProps = {
     fieldType: string
   ) => void;
   onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
+  onBlur: (e: React.FormEvent<HTMLInputElement>) => void;
+  isDisabledSubmit: boolean;
   isOpenDropdown: boolean;
   locations: Cities[] | null;
   activeInputName: string;
   addToRefs: (el: HTMLDivElement) => void;
+  onSetFormikValue: (
+    field: string,
+    value: string,
+    shouldValidate?: boolean
+  ) => void;
+  onSetFormikDepartureDate: (
+    field: string,
+    value: string,
+    shouldValidate?: boolean
+  ) => void;
+  onSetFormikReturnDate: (
+    field: string,
+    value: string,
+    shouldValidate?: boolean
+  ) => void;
+  onSetFormikTouchedDepartureDate: (
+    field: string,
+    isTouched?: boolean,
+    shouldValidate?: boolean
+  ) => void;
+  onSetFormikTouchedReturnDate: (
+    field: string,
+    isTouched?: boolean,
+    shouldValidate?: boolean
+  ) => void;
 };
 
 const AviaMultiForm = ({
   segments,
+  values,
   errors,
-  errorMessages,
-  disabledSubmit,
+  touched,
   onChange,
-  onFocus,
   onClickItem,
+  onFocus,
+  onBlur,
+  isDisabledSubmit,
   isOpenDropdown,
   locations,
   activeInputName,
   addToRefs,
+  onSetFormikValue,
+  onSetFormikDepartureDate,
+  onSetFormikReturnDate,
+  onSetFormikTouchedDepartureDate,
+  onSetFormikTouchedReturnDate,
 }: AviaMultiFormProps): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -62,7 +93,9 @@ const AviaMultiForm = ({
   return (
     <div className="multicity-form">
       {segments.map((segment) => {
-        const { id, origin, destination, returnDate, departureDate } = segment;
+        const { id, returnDate, departureDate } = segment;
+        const origin = values[`origin-${id}`] as string;
+        const destination = values[`destination-${id}`] as string;
 
         return (
           <div className="multicity-form__segment" key={id}>
@@ -71,14 +104,16 @@ const AviaMultiForm = ({
                 segmentId={id}
                 fieldValue={origin}
                 placeholder="Откуда"
-                onChange={(e) => onChange(e, id, 'origin')}
-                onFocus={(e) => onFocus(e)}
+                onChange={onChange}
+                onFocus={onFocus}
+                onBlur={onBlur}
                 onClickItem={onClickItem}
-                errors={errors}
-                errorMessages={errorMessages}
                 isOpen={isOpenDropdown && activeInputName === `origin-${id}`}
                 locations={locations}
                 fieldName="origin"
+                onSetFormikValue={onSetFormikValue}
+                errorText={errors[`origin-${id}`]}
+                hasError={!!touched[`origin-${id}`] && !!errors[`origin-${id}`]}
               />
             </div>
 
@@ -87,14 +122,19 @@ const AviaMultiForm = ({
                 segmentId={id}
                 fieldValue={destination}
                 placeholder="Куда"
-                onChange={(e) => onChange(e, id, 'destination')}
-                onFocus={(e) => onFocus(e)}
+                onChange={onChange}
+                onFocus={onFocus}
+                onBlur={onBlur}
                 onClickItem={onClickItem}
-                errors={errors}
-                errorMessages={errorMessages}
                 isOpen={activeInputName === `destination-${id}`}
                 locations={locations}
                 fieldName="destination"
+                onSetFormikValue={onSetFormikValue}
+                errorText={errors[`destination-${id}`]}
+                hasError={
+                  !!touched[`destination-${id}`] &&
+                  !!errors[`destination-${id}`]
+                }
               />
             </div>
 
@@ -104,8 +144,14 @@ const AviaMultiForm = ({
                 returnDate={returnDate}
                 departureDate={departureDate}
                 errors={errors}
-                errorMessages={errorMessages}
-                onFocus={onFocus}
+                touched={touched}
+                onBlur={onBlur}
+                onSetFormikDepartureDate={onSetFormikDepartureDate}
+                onSetFormikReturnDate={onSetFormikReturnDate}
+                onSetFormikTouchedDepartureDate={
+                  onSetFormikTouchedDepartureDate
+                }
+                onSetFormikTouchedReturnDate={onSetFormikTouchedReturnDate}
               />
             </div>
           </div>
@@ -127,7 +173,12 @@ const AviaMultiForm = ({
         </div>
 
         <div className="multicity-form__search-btn">
-          <SimpleButton submit accent title="Найти" disabled={disabledSubmit} />
+          <SimpleButton
+            submit
+            accent
+            title="Найти"
+            disabled={isDisabledSubmit}
+          />
         </div>
       </div>
     </div>

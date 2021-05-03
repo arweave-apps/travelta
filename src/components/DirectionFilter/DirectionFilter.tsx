@@ -4,12 +4,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearSegments } from '../../redux/actions/aviaParams/aviaParams';
 import { setActiveForm } from '../../redux/actions/pageSettings/pageSettings';
 import { RootStateType } from '../../redux/reducers';
+import { FormsType } from '../../redux/reducers/pageSettings';
 
 import RadioButton from '../RadioButton';
 
 import './DirectionFilter.scss';
 
-export const filterItems = [
+type FilterItemstype = {
+  id: FormsType;
+  text: string;
+};
+
+export const filterItems: FilterItemstype[] = [
   {
     id: 'roundtrip',
     text: 'Туда-обратно',
@@ -30,7 +36,7 @@ const DirectionFilter = (): JSX.Element => {
     (state: RootStateType) => state.pageSettings.activeForm
   );
 
-  const handleChangeRadioButton = (id: string) => {
+  const handleChangeRadioButton = (id: FormsType) => {
     dispatch(setActiveForm(id));
     dispatch(clearSegments());
   };

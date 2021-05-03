@@ -16,8 +16,10 @@ const initialState = {
       id: 'segment-1',
       origin: '',
       originCode: '',
+
       destination: '',
       destinationCode: '',
+
       departureDate: null,
       returnDate: null,
     },
@@ -34,7 +36,11 @@ const initialState = {
 export type SegmentType = {
   id: string;
   origin: string;
+  originCode: string;
+
   destination: string;
+  destinationCode: string;
+
   departureDate: Date | null;
   returnDate: Date | null;
 };
@@ -127,10 +133,11 @@ export const aviaParamsReducer = (
         {
           id: `segment-${state.segments.length + 1}`,
           origin: '',
+          originCode: '',
           destination: '',
+          destinationCode: '',
           departureDate: null,
           returnDate: null,
-          // locations: null,
         },
       ];
       return { ...state, segments: newSegments };

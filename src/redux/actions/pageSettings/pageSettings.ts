@@ -1,3 +1,4 @@
+import { FormsType } from '../../reducers/pageSettings';
 import {
   ActionPageSettingsTypes,
   SET_ACTIVE_FORM,
@@ -7,7 +8,9 @@ import {
   SET_BEFORE_DISABLED_DATES,
 } from './types';
 
-export const setActiveForm = (activeForm: string): ActionPageSettingsTypes => ({
+export const setActiveForm = (
+  activeForm: FormsType
+): ActionPageSettingsTypes => ({
   type: SET_ACTIVE_FORM,
   payload: activeForm,
 });

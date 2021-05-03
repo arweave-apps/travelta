@@ -7,7 +7,7 @@ import {
   SET_BEFORE_DISABLED_DATES,
 } from '../actions/pageSettings/types';
 
-const initialState = {
+const initialState: InitialPageSettingsStateType = {
   activeForm: 'roundtrip',
   activeInputDate: null,
   activeSegment: null,
@@ -22,8 +22,10 @@ export type DisabledDatesType = {
   before: Date | null;
 };
 
+export type FormsType = 'multiCity' | 'oneWay' | 'roundtrip';
+
 export type InitialPageSettingsStateType = {
-  activeForm: string;
+  activeForm: FormsType;
   activeInputDate: null | string;
   activeSegment: null | string;
   disabledDates: DisabledDatesType;
