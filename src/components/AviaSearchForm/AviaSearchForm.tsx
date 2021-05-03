@@ -10,13 +10,15 @@ import {
   fetchLocations,
   setLocations,
 } from '../../redux/actions/locations/locations';
-import {
-  setDestination,
-  setOrigin,
-} from '../../redux/actions/aviaParams/aviaParams';
-import { RootStateType } from '../../redux/reducers';
+import { setCity } from '../../redux/actions/aviaParams/aviaParams';
 import { SegmentType } from '../../redux/reducers/aviaParams';
 import { FormsType } from '../../redux/reducers/pageSettings';
+
+import {
+  getActiveForm,
+  getLocations,
+  getSegments,
+} from '../../selectors/selectros';
 
 import AviaStandartForm from './AviaStandartForm/AviaStandartForm';
 import AviaMultiForm from './AviaMultiForm';
@@ -89,18 +91,15 @@ const AviaSearchForm = (): JSX.Element => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { segments } = useSelector((state: RootStateType) => state.aviaParams);
-  const { locations } = useSelector((state: RootStateType) => state.locations);
-  const [activeInputName, setActiveInputName] = useState<string>('');
+  const segments = useSelector(getSegments);
+  const locations = useSelector(getLocations);
+  const activeForm = useSelector(getActiveForm);
 
+  const [activeInputName, setActiveInputName] = useState<string>('');
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
   const refsArray = useRef<HTMLDivElement[]>([]);
   useOutsideClick(refsArray, () => setIsOpenDropdown(false), isOpenDropdown);
-
-  const { activeForm } = useSelector(
-    (state: RootStateType) => state.pageSettings
-  );
 
   const getCities = (value: string) => {
     dispatch(fetchLocations(value));
@@ -144,9 +143,9 @@ const AviaSearchForm = (): JSX.Element => {
   const handleClickCity = useCallback(
     (name: string, segmentId: string, code: string, fieldName: string) => {
       if (fieldName === 'origin') {
-        dispatch(setOrigin(name, code, segmentId));
+        dispatch(setCity(name, code, segmentId, 'origin'));
       } else {
-        dispatch(setDestination(name, code, segmentId));
+        dispatch(setCity(name, code, segmentId, 'destination'));
       }
 
       dispatch(setLocations(null));

@@ -1,4 +1,4 @@
-import { FormsType } from '../../reducers/pageSettings';
+import { ActiveInputType, FormsType } from '../../reducers/pageSettings';
 import {
   ActionPageSettingsTypes,
   SET_ACTIVE_FORM,
@@ -16,7 +16,7 @@ export const setActiveForm = (
 });
 
 export const setActiveInputDate = (
-  inputType: string | null
+  inputType: ActiveInputType
 ): ActionPageSettingsTypes => ({
   type: SET_ACTIVE_INPUT_DATE,
   payload: inputType,

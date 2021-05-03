@@ -5,10 +5,17 @@ import { FormikErrors, FormikTouched } from 'formik';
 import useOutsideClick from '../../hooks/useOutsideClick';
 
 import {
+  getActiveForm,
+  getActiveInputDate,
+  getActiveSegment,
+  getDisabledDates,
+} from '../../selectors/selectros';
+
+import {
   setActiveInputDate,
   setActiveSegment,
 } from '../../redux/actions/pageSettings/pageSettings';
-import { RootStateType } from '../../redux/reducers';
+import { ActiveInputType } from '../../redux/reducers/pageSettings';
 
 import { InitialValues } from '../AviaSearchForm/AviaSearchForm';
 
@@ -60,33 +67,18 @@ const Datepicker = ({
 }: DatepickerPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
+  const activeForm = useSelector(getActiveForm);
+  const activeInputDate = useSelector(getActiveInputDate);
+  const activeSegment = useSelector(getActiveSegment);
+  const disabledDates = useSelector(getDisabledDates);
+
   const inputDepartRef = useRef<HTMLInputElement>(null);
-  console.log('~ inputDepartRef', inputDepartRef);
   const inputReturnRef = useRef<HTMLInputElement>(null);
-  console.log('~ inputReturnRef', inputReturnRef);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
-  const activeForm = useSelector(
-    (state: RootStateType) => state.pageSettings.activeForm
-  );
-
-  const activeInputDate = useSelector(
-    (state: RootStateType) => state.pageSettings.activeInputDate
-  );
-
-  const activeSegment = useSelector(
-    (state: RootStateType) => state.pageSettings.activeSegment
-  );
-
-  const disabledDates = useSelector(
-    (state: RootStateType) => state.pageSettings.disabledDates
-  );
-
   useEffect(() => {
-    console.log({ activeInputDate });
-
     if (activeInputDate === 'departure' && segmentId === activeSegment) {
       inputDepartRef.current?.focus();
       return;
@@ -114,7 +106,7 @@ const Datepicker = ({
     setIsCalendarOpen(true);
   };
 
-  const handleClickInputDate = (inputType: string) => {
+  const handleClickInputDate = (inputType: ActiveInputType) => {
     dispatch(setActiveInputDate(inputType));
     dispatch(setActiveSegment(segmentId));
   };
