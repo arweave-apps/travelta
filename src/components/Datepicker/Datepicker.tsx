@@ -61,9 +61,7 @@ const Datepicker = ({
   const dispatch = useDispatch();
 
   const inputDepartRef = useRef<HTMLInputElement>(null);
-  console.log('~ inputDepartRef', inputDepartRef);
   const inputReturnRef = useRef<HTMLInputElement>(null);
-  console.log('~ inputReturnRef', inputReturnRef);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
@@ -85,8 +83,6 @@ const Datepicker = ({
   );
 
   useEffect(() => {
-    console.log({ activeInputDate });
-
     if (activeInputDate === 'departure' && segmentId === activeSegment) {
       inputDepartRef.current?.focus();
       return;
