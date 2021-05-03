@@ -5,29 +5,22 @@ import {
 import {
   ActionAviaParamsTypes,
   SET_CABIN_CLASS,
-  SET_DEPARTURE_DATE,
-  SET_RETURN_DATE,
+  SET_DATE,
   SET_PASSANGERS,
   ADD_SEGMENT,
   CLEAR_SEGMENTS,
-  SET_ORIGIN,
-  SET_DESTINATION,
+  SET_CITY,
+  FieldNameTypes,
+  DateTypeTypes,
 } from './types';
 
-export const setDepartureDate = (
+export const setDate = (
   date: Date | null,
-  segmentId: string
+  segmentId: string,
+  dateType: DateTypeTypes
 ): ActionAviaParamsTypes => ({
-  type: SET_DEPARTURE_DATE,
-  payload: { date, segmentId },
-});
-
-export const setReturnDate = (
-  date: Date | null,
-  segmentId: string
-): ActionAviaParamsTypes => ({
-  type: SET_RETURN_DATE,
-  payload: { date, segmentId },
+  type: SET_DATE,
+  payload: { date, segmentId, dateType },
 });
 
 export const setCabinClass = (
@@ -53,20 +46,12 @@ export const clearSegments = (): ActionAviaParamsTypes => ({
   type: CLEAR_SEGMENTS,
 });
 
-export const setOrigin = (
+export const setCity = (
   name: string,
   code: string,
-  segmentId: string
+  segmentId: string,
+  fieldName: FieldNameTypes
 ): ActionAviaParamsTypes => ({
-  type: SET_ORIGIN,
-  payload: { name, code, segmentId },
-});
-
-export const setDestination = (
-  name: string,
-  code: string,
-  segmentId: string
-): ActionAviaParamsTypes => ({
-  type: SET_DESTINATION,
-  payload: { name, code, segmentId },
+  type: SET_CITY,
+  payload: { name, code, segmentId, fieldName },
 });

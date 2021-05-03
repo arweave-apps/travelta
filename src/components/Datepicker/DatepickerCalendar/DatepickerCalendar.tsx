@@ -1,10 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  setDepartureDate,
-  setReturnDate,
-} from '../../../redux/actions/aviaParams/aviaParams';
+import { setDate } from '../../../redux/actions/aviaParams/aviaParams';
 import {
   setActiveInputDate,
   setAfterDisabledDates,
@@ -142,7 +139,7 @@ const DatepickerCalendar = ({
       e.stopPropagation(); // otherwise click outside will work
 
       if (activeForm !== 'roundtrip' && activeInputDate === 'departure') {
-        dispatch(setDepartureDate(date, segmentId));
+        dispatch(setDate(date, segmentId, 'departureDate'));
         onSetFormikDepartureDate(
           `departureDate-${segmentId}`,
           date.toLocaleDateString()
@@ -160,7 +157,7 @@ const DatepickerCalendar = ({
       }
 
       if (departureDate && hoverDate < departureDate) {
-        dispatch(setDepartureDate(date, segmentId));
+        dispatch(setDate(date, segmentId, 'departureDate'));
         dispatch(setActiveInputDate('return'));
         onSetFormikReturnDate(
           `returnDate-${segmentId}`,
@@ -171,7 +168,7 @@ const DatepickerCalendar = ({
       }
 
       if (returnDate && hoverDate > returnDate) {
-        dispatch(setReturnDate(date, segmentId));
+        dispatch(setDate(date, segmentId, 'returnDate'));
         dispatch(setActiveInputDate('departure'));
         onSetFormikDepartureDate(
           `departureDate-${segmentId}`,
@@ -186,7 +183,7 @@ const DatepickerCalendar = ({
       }
 
       if (activeInputDate === 'departure') {
-        dispatch(setDepartureDate(date, segmentId));
+        dispatch(setDate(date, segmentId, 'departureDate'));
         dispatch(setActiveInputDate('return'));
         onSetFormikReturnDate(
           `returnDate-${segmentId}`,
@@ -197,7 +194,7 @@ const DatepickerCalendar = ({
       }
 
       if (activeInputDate === 'return') {
-        dispatch(setReturnDate(date, segmentId));
+        dispatch(setDate(date, segmentId, 'returnDate'));
         dispatch(setActiveInputDate('departure'));
         onSetFormikDepartureDate(
           `departureDate-${segmentId}`,
@@ -237,7 +234,7 @@ const DatepickerCalendar = ({
     date ? date.getMonth() === disabledDates.before?.getMonth() : false;
 
   const handleClickNoReturnButton = () => {
-    dispatch(setReturnDate(null, segmentId));
+    dispatch(setDate(null, segmentId, 'returnDate'));
   };
 
   return (

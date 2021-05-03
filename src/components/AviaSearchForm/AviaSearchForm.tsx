@@ -10,10 +10,7 @@ import {
   fetchLocations,
   setLocations,
 } from '../../redux/actions/locations/locations';
-import {
-  setDestination,
-  setOrigin,
-} from '../../redux/actions/aviaParams/aviaParams';
+import { setCity } from '../../redux/actions/aviaParams/aviaParams';
 import { SegmentType } from '../../redux/reducers/aviaParams';
 import { FormsType } from '../../redux/reducers/pageSettings';
 
@@ -146,9 +143,9 @@ const AviaSearchForm = (): JSX.Element => {
   const handleClickCity = useCallback(
     (name: string, segmentId: string, code: string, fieldName: string) => {
       if (fieldName === 'origin') {
-        dispatch(setOrigin(name, code, segmentId));
+        dispatch(setCity(name, code, segmentId, 'origin'));
       } else {
-        dispatch(setDestination(name, code, segmentId));
+        dispatch(setCity(name, code, segmentId, 'destination'));
       }
 
       dispatch(setLocations(null));
