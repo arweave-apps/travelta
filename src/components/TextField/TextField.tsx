@@ -1,29 +1,33 @@
-import classNames from 'classnames';
 import React from 'react';
+
+import classNames from 'classnames';
+
 import './TextField.scss';
 
 type TextFieldProps = {
-  placeholder: string;
   id: string;
   value: string | undefined;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
+  onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
   readonly?: boolean;
   inputRef?: React.RefObject<HTMLInputElement>;
-  hasError?: boolean;
-  errorText: string;
-  onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
+  errorText: string | undefined;
+  onFocus?: (e: React.FormEvent<HTMLInputElement>) => void;
+  hasError: boolean;
 };
 
 const TextField = ({
-  placeholder,
   id,
   value = '',
   onChange,
+  placeholder,
+  onBlur,
   readonly = false,
   inputRef,
-  hasError,
-  errorText,
   onFocus,
+  errorText,
+  hasError,
 }: TextFieldProps): JSX.Element => {
   return (
     <label
@@ -38,13 +42,16 @@ const TextField = ({
         name={id}
         type="text"
         placeholder={placeholder}
-        className={classNames('input', `input--${id}`, {
+        className={classNames('input', {
+          'input--depart': id.includes('departureDate'),
+          'input--return': id.includes('returnDate'),
           'input--pointer': readonly,
           'input--error': hasError,
         })}
         value={value}
         onChange={onChange}
         onFocus={onFocus}
+        onBlur={onBlur}
         readOnly={readonly}
         ref={inputRef}
       />

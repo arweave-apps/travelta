@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { FormikErrors, FormikTouched } from 'formik';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 
@@ -8,10 +9,8 @@ import {
   setActiveSegment,
 } from '../../redux/actions/pageSettings/pageSettings';
 import { RootStateType } from '../../redux/reducers';
-import {
-  ErrorMessagesType,
-  ErrorsType,
-} from '../AviaSearchForm/AviaSearchForm';
+
+import { InitialValues } from '../AviaSearchForm/AviaSearchForm';
 
 import DatepickerCalendar from './DatepickerCalendar';
 import TextField from '../TextField';
@@ -22,9 +21,29 @@ type DatepickerPropsType = {
   segmentId: string;
   returnDate: Date | null;
   departureDate: Date | null;
-  errors: ErrorsType;
-  errorMessages: ErrorMessagesType;
-  onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
+  errors: FormikErrors<InitialValues>;
+  touched: FormikTouched<InitialValues>;
+  onBlur: (e: React.FormEvent<HTMLInputElement>) => void;
+  onSetFormikDepartureDate: (
+    field: string,
+    value: string,
+    shouldValidate?: boolean
+  ) => void;
+  onSetFormikReturnDate: (
+    field: string,
+    value: string,
+    shouldValidate?: boolean
+  ) => void;
+  onSetFormikTouchedDepartureDate: (
+    field: string,
+    isTouched?: boolean,
+    shouldValidate?: boolean
+  ) => void;
+  onSetFormikTouchedReturnDate: (
+    field: string,
+    isTouched?: boolean,
+    shouldValidate?: boolean
+  ) => void;
 };
 
 const Datepicker = ({
@@ -32,13 +51,19 @@ const Datepicker = ({
   returnDate,
   departureDate,
   errors,
-  errorMessages,
-  onFocus,
+  touched,
+  onBlur,
+  onSetFormikDepartureDate,
+  onSetFormikReturnDate,
+  onSetFormikTouchedDepartureDate,
+  onSetFormikTouchedReturnDate,
 }: DatepickerPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
   const inputDepartRef = useRef<HTMLInputElement>(null);
+  console.log('~ inputDepartRef', inputDepartRef);
   const inputReturnRef = useRef<HTMLInputElement>(null);
+  console.log('~ inputReturnRef', inputReturnRef);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
@@ -60,6 +85,8 @@ const Datepicker = ({
   );
 
   useEffect(() => {
+    console.log({ activeInputDate });
+
     if (activeInputDate === 'departure' && segmentId === activeSegment) {
       inputDepartRef.current?.focus();
       return;
@@ -106,16 +133,14 @@ const Datepicker = ({
       >
         <TextField
           placeholder="Когда"
-          id="depart"
+          id={`departureDate-${segmentId}`}
           value={departureDate?.toLocaleDateString()}
           readonly
-          onFocus={onFocus}
           inputRef={inputDepartRef}
-          hasError={errors[segmentId]?.includes('departureDate')}
-          errorText={
-            errors[segmentId]?.includes('departureDate')
-              ? errorMessages.departureDate
-              : ''
+          errorText={errors[`departureDate-${segmentId}`]}
+          hasError={
+            !!touched[`departureDate-${segmentId}`] &&
+            !!errors[`departureDate-${segmentId}`]
           }
         />
       </div>
@@ -128,16 +153,15 @@ const Datepicker = ({
         >
           <TextField
             placeholder="Обратно"
-            id="return"
+            id={`returnDate-${segmentId}`}
             value={returnDate?.toLocaleDateString()}
             readonly
-            onFocus={onFocus}
+            onBlur={onBlur}
             inputRef={inputReturnRef}
-            hasError={errors[segmentId]?.includes('returnDate')}
-            errorText={
-              errors[segmentId]?.includes('returnDate')
-                ? errorMessages.returnDate
-                : ''
+            errorText={errors[`returnDate-${segmentId}`]}
+            hasError={
+              !!touched[`returnDate-${segmentId}`] &&
+              !!errors[`departureDate-${segmentId}`]
             }
           />
         </div>
@@ -151,6 +175,10 @@ const Datepicker = ({
           activeInputDate={activeInputDate}
           activeForm={activeForm}
           disabledDates={disabledDates}
+          onSetFormikDepartureDate={onSetFormikDepartureDate}
+          onSetFormikReturnDate={onSetFormikReturnDate}
+          onSetFormikTouchedDepartureDate={onSetFormikTouchedDepartureDate}
+          onSetFormikTouchedReturnDate={onSetFormikTouchedReturnDate}
         />
       )}
     </div>

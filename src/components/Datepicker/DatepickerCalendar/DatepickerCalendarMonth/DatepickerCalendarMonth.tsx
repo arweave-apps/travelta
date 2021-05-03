@@ -12,7 +12,10 @@ import {
   monthsNames,
   shortWeekDays,
 } from '../helpers';
-import { DisabledDatesType } from '../../../../redux/reducers/pageSettings';
+import {
+  DisabledDatesType,
+  FormsType,
+} from '../../../../redux/reducers/pageSettings';
 
 import './DatepickerCalendarMonth.scss';
 
@@ -25,7 +28,7 @@ type DatePickerCalendarMonthProps = {
   hoverDate: Date | null;
   onMouseEnterDay: (date: Date | null) => void;
   onMouseLeaveMonth: () => void;
-  activeForm: string;
+  activeForm: FormsType;
   disabledDates: DisabledDatesType;
 };
 

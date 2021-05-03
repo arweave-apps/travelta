@@ -11,7 +11,11 @@ import {
   setAfterDisabledDates,
   setBeforeDisabledDates,
 } from '../../../redux/actions/pageSettings/pageSettings';
-import { DisabledDatesType } from '../../../redux/reducers/pageSettings';
+import {
+  DisabledDatesType,
+  FormsType,
+} from '../../../redux/reducers/pageSettings';
+import { RootStateType } from '../../../redux/reducers';
 
 import NextIcon from '../../../assets/images/icons/right-arrow.svg';
 import PrevIcon from '../../../assets/images/icons/left-arrow.svg';
@@ -21,15 +25,34 @@ import SlideButton from '../../SlideButton';
 import { getMonthDates } from './helpers';
 
 import './DatepickerCalendar.scss';
-import { RootStateType } from '../../../redux/reducers';
 
 type DatepickerCalendarPropsType = {
   segmentId: string;
   returnDate: Date | null;
   departureDate: Date | null;
   activeInputDate: string | null;
-  activeForm: string;
+  activeForm: FormsType;
   disabledDates: DisabledDatesType;
+  onSetFormikDepartureDate: (
+    field: string,
+    value: string,
+    shouldValidate?: boolean
+  ) => void;
+  onSetFormikReturnDate: (
+    field: string,
+    value: string,
+    shouldValidate?: boolean
+  ) => void;
+  onSetFormikTouchedDepartureDate: (
+    field: string,
+    isTouched?: boolean,
+    shouldValidate?: boolean
+  ) => void;
+  onSetFormikTouchedReturnDate: (
+    field: string,
+    isTouched?: boolean,
+    shouldValidate?: boolean
+  ) => void;
 };
 
 const DatepickerCalendar = ({
@@ -39,6 +62,10 @@ const DatepickerCalendar = ({
   activeInputDate,
   activeForm,
   disabledDates,
+  onSetFormikDepartureDate,
+  onSetFormikReturnDate,
+  onSetFormikTouchedDepartureDate,
+  onSetFormikTouchedReturnDate,
 }: DatepickerCalendarPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -119,6 +146,15 @@ const DatepickerCalendar = ({
 
       if (activeForm !== 'roundtrip' && activeInputDate === 'departure') {
         dispatch(setDepartureDate(date, segmentId));
+        onSetFormikDepartureDate(
+          `departureDate-${segmentId}`,
+          date.toLocaleDateString()
+        );
+        onSetFormikTouchedDepartureDate(
+          `departureDate-${segmentId}`,
+          true,
+          false
+        );
         return;
       }
 
@@ -129,24 +165,52 @@ const DatepickerCalendar = ({
       if (departureDate && hoverDate < departureDate) {
         dispatch(setDepartureDate(date, segmentId));
         dispatch(setActiveInputDate('return'));
+        onSetFormikReturnDate(
+          `returnDate-${segmentId}`,
+          date.toLocaleDateString()
+        );
+        onSetFormikTouchedReturnDate(`returnDate-${segmentId}`, true, false);
         return;
       }
 
       if (returnDate && hoverDate > returnDate) {
         dispatch(setReturnDate(date, segmentId));
         dispatch(setActiveInputDate('departure'));
+        onSetFormikDepartureDate(
+          `departureDate-${segmentId}`,
+          date.toLocaleDateString()
+        );
+        onSetFormikTouchedDepartureDate(
+          `departureDate-${segmentId}`,
+          true,
+          false
+        );
         return;
       }
 
       if (activeInputDate === 'departure') {
         dispatch(setDepartureDate(date, segmentId));
         dispatch(setActiveInputDate('return'));
+        onSetFormikReturnDate(
+          `returnDate-${segmentId}`,
+          date.toLocaleDateString()
+        );
+        onSetFormikTouchedReturnDate(`returnDate-${segmentId}`, true, false);
         return;
       }
 
       if (activeInputDate === 'return') {
         dispatch(setReturnDate(date, segmentId));
         dispatch(setActiveInputDate('departure'));
+        onSetFormikDepartureDate(
+          `departureDate-${segmentId}`,
+          date.toLocaleDateString()
+        );
+        onSetFormikTouchedDepartureDate(
+          `departureDate-${segmentId}`,
+          true,
+          false
+        );
       }
     },
     [
@@ -157,6 +221,10 @@ const DatepickerCalendar = ({
       returnDate,
       dispatch,
       segmentId,
+      onSetFormikDepartureDate,
+      onSetFormikTouchedDepartureDate,
+      onSetFormikReturnDate,
+      onSetFormikTouchedReturnDate,
     ]
   );
 
