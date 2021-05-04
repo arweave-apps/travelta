@@ -1,65 +1,16 @@
-/* eslint-disable no-param-reassign */
 import React, { useCallback } from 'react';
-import { FormikErrors, FormikTouched } from 'formik';
 import { useDispatch } from 'react-redux';
 
 import { addSegment } from '../../../redux/actions/aviaParams/aviaParams';
-import { SegmentType } from '../../../redux/reducers/aviaParams';
-import { Cities } from '../../../redux/reducers/locations';
+
+import { SearchFormsPropsType } from '../helpers';
 
 import Autocomplete from '../../Autocomplete';
 import Datepicker from '../../Datepicker';
 import PassangerSelector from '../../PassangerSelector';
 import SimpleButton from '../../SimpleButton';
-import { InitialValues } from '../AviaSearchForm';
 
 import './AviaMultiForm.scss';
-
-type AviaMultiFormProps = {
-  segments: SegmentType[];
-  values: InitialValues;
-  errors: FormikErrors<InitialValues>;
-  touched: FormikTouched<InitialValues>;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onClickItem: (
-    name: string,
-    segmentId: string,
-    code: string,
-    fieldType: string
-  ) => void;
-  onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
-  onBlur: (e: React.FormEvent<HTMLInputElement>) => void;
-  isDisabledSubmit: boolean;
-  isOpenDropdown: boolean;
-  locations: Cities[] | null;
-  activeInputName: string;
-  addToRefs: (el: HTMLDivElement) => void;
-  onSetFormikValue: (
-    field: string,
-    value: string,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikDepartureDate: (
-    field: string,
-    value: string,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikReturnDate: (
-    field: string,
-    value: string,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikTouchedDepartureDate: (
-    field: string,
-    isTouched?: boolean,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikTouchedReturnDate: (
-    field: string,
-    isTouched?: boolean,
-    shouldValidate?: boolean
-  ) => void;
-};
 
 const AviaMultiForm = ({
   segments,
@@ -80,7 +31,7 @@ const AviaMultiForm = ({
   onSetFormikReturnDate,
   onSetFormikTouchedDepartureDate,
   onSetFormikTouchedReturnDate,
-}: AviaMultiFormProps): JSX.Element => {
+}: SearchFormsPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
   const handleClickAddSegment = useCallback(() => {

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,7 +12,6 @@ import {
   setLocations,
 } from '../../redux/actions/locations/locations';
 import { setCity } from '../../redux/actions/aviaParams/aviaParams';
-import { SegmentType } from '../../redux/reducers/aviaParams';
 import { FormsType } from '../../redux/reducers/pageSettings';
 
 import {
@@ -20,71 +20,29 @@ import {
   getSegments,
 } from '../../selectors/selectros';
 
+import { getInitialValues, validate, SearchFormsPropsType } from './helpers';
+
 import AviaStandartForm from './AviaStandartForm/AviaStandartForm';
 import AviaMultiForm from './AviaMultiForm';
 import AviaOnewayForm from './AviaOnewayForm';
 
 import './AviaSearchForm.scss';
 
-export type ErrorMessagesType =
-  | 'departureDate'
-  | 'returnDate'
-  | 'destination'
-  | 'origin';
+const Form = ({
+  type,
+  ...otherProps
+}: SearchFormsPropsType): JSX.Element | null => {
+  const forms: Record<FormsType, JSX.Element> = {
+    multiCity: <AviaMultiForm {...otherProps} />,
+    oneWay: <AviaOnewayForm {...otherProps} />,
+    roundtrip: <AviaStandartForm {...otherProps} />,
+  };
 
-const errorMessages: Record<ErrorMessagesType, string> = {
-  departureDate: 'Укажите дату отправления',
-  returnDate: 'Укажите дату возвращения',
-  destination: 'Укажите город прибытия',
-  origin: 'Укажите город отправления',
-};
+  if (!type) {
+    return null;
+  }
 
-export type InitialValues = {
-  [key: string]: string | Date | null;
-};
-
-export type ErrorsType = {
-  [key: string]: string;
-};
-
-type Keys<T> = Array<keyof T>;
-
-const getInitialValues = (segments: SegmentType[], activeForm: FormsType) => {
-  return segments.reduce((acc, currSegment) => {
-    const { id } = currSegment;
-    const segmentKeys = Object.keys(currSegment) as Keys<typeof currSegment>;
-
-    segmentKeys.forEach((key) => {
-      if (activeForm === 'multiCity' || activeForm === 'oneWay') {
-        if (
-          key !== 'id' &&
-          key !== 'originCode' &&
-          key !== 'destinationCode' &&
-          key !== 'returnDate'
-        ) {
-          acc[`${key}-${id}`] = currSegment[key];
-        }
-      } else if (
-        key !== 'id' &&
-        key !== 'originCode' &&
-        key !== 'destinationCode'
-      ) {
-        acc[`${key}-${id}`] = currSegment[key];
-      }
-    });
-    return acc;
-  }, {} as InitialValues);
-};
-
-const validate = (values: InitialValues) => {
-  return Object.entries(values).reduce((acc, [key, value]) => {
-    if (!value) {
-      const error = key.split('-')[0] as ErrorMessagesType;
-
-      acc[key] = errorMessages[error];
-    }
-    return acc;
-  }, {} as ErrorsType);
+  return forms[type];
 };
 
 const AviaSearchForm = (): JSX.Element => {
@@ -155,80 +113,31 @@ const AviaSearchForm = (): JSX.Element => {
     [dispatch]
   );
 
-  const getForm = (type: FormsType) => {
-    const forms: Record<FormsType, JSX.Element> = {
-      multiCity: (
-        <AviaMultiForm
-          segments={segments}
-          values={formik.values}
-          errors={formik.errors}
-          touched={formik.touched}
-          onChange={handleChange}
-          onClickItem={handleClickCity}
-          onFocus={handleFocus}
-          onBlur={formik.handleBlur}
-          isDisabledSubmit={!formik.isValid}
-          isOpenDropdown={isOpenDropdown}
-          locations={locations}
-          activeInputName={activeInputName}
-          addToRefs={addToRefs}
-          onSetFormikValue={formik.setFieldValue}
-          onSetFormikDepartureDate={formik.setFieldValue}
-          onSetFormikReturnDate={formik.setFieldValue}
-          onSetFormikTouchedDepartureDate={formik.setFieldTouched}
-          onSetFormikTouchedReturnDate={formik.setFieldTouched}
-        />
-      ),
-      oneWay: (
-        <AviaOnewayForm
-          segments={segments}
-          values={formik.values}
-          errors={formik.errors}
-          touched={formik.touched}
-          onChange={handleChange}
-          onClickItem={handleClickCity}
-          onFocus={handleFocus}
-          onBlur={formik.handleBlur}
-          isDisabledSubmit={!formik.isValid}
-          isOpenDropdown={isOpenDropdown}
-          locations={locations}
-          activeInputName={activeInputName}
-          addToRefs={addToRefs}
-          onSetFormikValue={formik.setFieldValue}
-          onSetFormikDepartureDate={formik.setFieldValue}
-          onSetFormikReturnDate={formik.setFieldValue}
-          onSetFormikTouchedDepartureDate={formik.setFieldTouched}
-          onSetFormikTouchedReturnDate={formik.setFieldTouched}
-        />
-      ),
-      roundtrip: (
-        <AviaStandartForm
-          segments={segments}
-          values={formik.values}
-          errors={formik.errors}
-          touched={formik.touched}
-          onChange={handleChange}
-          onClickItem={handleClickCity}
-          onFocus={handleFocus}
-          onBlur={formik.handleBlur}
-          isDisabledSubmit={!formik.isValid}
-          isOpenDropdown={isOpenDropdown}
-          locations={locations}
-          activeInputName={activeInputName}
-          addToRefs={addToRefs}
-          onSetFormikValue={formik.setFieldValue}
-          onSetFormikDepartureDate={formik.setFieldValue}
-          onSetFormikReturnDate={formik.setFieldValue}
-          onSetFormikTouchedDepartureDate={formik.setFieldTouched}
-          onSetFormikTouchedReturnDate={formik.setFieldTouched}
-        />
-      ),
-    };
-
-    return forms[type];
-  };
-
-  return <form onSubmit={formik.handleSubmit}>{getForm(activeForm)}</form>;
+  return (
+    <form onSubmit={formik.handleSubmit}>
+      <Form
+        type={activeForm}
+        segments={segments}
+        values={formik.values}
+        errors={formik.errors}
+        touched={formik.touched}
+        onChange={handleChange}
+        onClickItem={handleClickCity}
+        onFocus={handleFocus}
+        onBlur={formik.handleBlur}
+        isDisabledSubmit={!formik.isValid}
+        isOpenDropdown={isOpenDropdown}
+        locations={locations}
+        activeInputName={activeInputName}
+        addToRefs={addToRefs}
+        onSetFormikValue={formik.setFieldValue}
+        onSetFormikDepartureDate={formik.setFieldValue}
+        onSetFormikReturnDate={formik.setFieldValue}
+        onSetFormikTouchedDepartureDate={formik.setFieldTouched}
+        onSetFormikTouchedReturnDate={formik.setFieldTouched}
+      />
+    </form>
+  );
 };
 
 export default AviaSearchForm;
