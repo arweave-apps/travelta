@@ -1,64 +1,14 @@
 import React from 'react';
 
-import { FormikErrors, FormikTouched } from 'formik';
-
-import { SegmentType } from '../../../redux/reducers/aviaParams';
-import { Cities } from '../../../redux/reducers/locations';
+import { SearchFormsPropsType } from '../helpers';
 
 import SwitchButton from '../../SwitchButton';
 import PassangerSelector from '../../PassangerSelector';
 import SimpleButton from '../../SimpleButton';
 import Datepicker from '../../Datepicker';
 import Autocomplete from '../../Autocomplete';
-import { InitialValues } from '../AviaSearchForm';
 
 import './AviaOnewayForm.scss';
-
-type AviaOnewayFormProps = {
-  segments: SegmentType[];
-  values: InitialValues;
-  errors: FormikErrors<InitialValues>;
-  touched: FormikTouched<InitialValues>;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onClickItem: (
-    name: string,
-    segmentId: string,
-    code: string,
-    fieldType: string
-  ) => void;
-  onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
-  onBlur: (e: React.FormEvent<HTMLInputElement>) => void;
-  isDisabledSubmit: boolean;
-  isOpenDropdown: boolean;
-  locations: Cities[] | null;
-  activeInputName: string;
-  addToRefs: (el: HTMLDivElement) => void;
-  onSetFormikValue: (
-    field: string,
-    value: string,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikDepartureDate: (
-    field: string,
-    value: string,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikReturnDate: (
-    field: string,
-    value: string,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikTouchedDepartureDate: (
-    field: string,
-    isTouched?: boolean,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikTouchedReturnDate: (
-    field: string,
-    isTouched?: boolean,
-    shouldValidate?: boolean
-  ) => void;
-};
 
 const AviaOnewayForm = ({
   segments,
@@ -79,7 +29,7 @@ const AviaOnewayForm = ({
   onSetFormikReturnDate,
   onSetFormikTouchedDepartureDate,
   onSetFormikTouchedReturnDate,
-}: AviaOnewayFormProps): JSX.Element => {
+}: SearchFormsPropsType): JSX.Element => {
   const { id, returnDate, departureDate } = segments[0];
 
   const origin = values[`origin-${id}`] as string;

@@ -17,7 +17,7 @@ import {
 } from '../../redux/actions/pageSettings/pageSettings';
 import { ActiveInputType } from '../../redux/reducers/pageSettings';
 
-import { InitialValues } from '../AviaSearchForm/AviaSearchForm';
+import { InitialValues } from '../AviaSearchForm/helpers';
 
 import DatepickerCalendar from './DatepickerCalendar';
 import TextField from '../TextField';
