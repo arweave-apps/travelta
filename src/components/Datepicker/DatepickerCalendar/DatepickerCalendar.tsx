@@ -90,15 +90,30 @@ const DatepickerCalendar = ({
     setNextMonthDate(new Date(year, month + 1));
 
     if (segments.length > 1) {
-      const prevSegment = segments[segments.length - 2];
-      const prevDepartureDate = prevSegment.departureDate;
-      dispatch(setBeforeDisabledDates(prevDepartureDate));
+      const activeSegmentIndex = segments.findIndex(
+        (segment) => segmentId === segment.id
+      );
+
+      const prevSegmentIndex = activeSegmentIndex - 1;
+
+      if (prevSegmentIndex === -1) {
+        dispatch(setBeforeDisabledDates(new Date(year, month, day)));
+      } else {
+        const prevSegment = segments[prevSegmentIndex];
+        const prevDepartureDate = prevSegment.departureDate;
+
+        if (!prevDepartureDate) {
+          dispatch(setBeforeDisabledDates(new Date(year, month, day)));
+        } else {
+          dispatch(setBeforeDisabledDates(prevDepartureDate));
+        }
+      }
     } else {
       dispatch(setBeforeDisabledDates(new Date(year, month, day)));
     }
 
     dispatch(setAfterDisabledDates(new Date(year + 1, month + 1, day)));
-  }, [activeForm, dispatch, segments]);
+  }, [activeForm, dispatch, segmentId, segments]);
 
   useEffect(() => {
     if (nextMonthDate && prevMonthDate) {
