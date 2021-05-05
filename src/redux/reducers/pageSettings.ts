@@ -2,7 +2,7 @@ import {
   ActionPageSettingsTypes,
   SET_ACTIVE_FORM,
   SET_ACTIVE_INPUT_DATE,
-  SET_ACTIVE_SEGMENT,
+  SET_ACTIVE_SEGMENT_ID,
   SET_AFTER_DISABLED_DATES,
   SET_BEFORE_DISABLED_DATES,
 } from '../actions/pageSettings/types';
@@ -10,16 +10,16 @@ import {
 const initialState: InitialPageSettingsStateType = {
   activeForm: 'roundtrip',
   activeInputDate: null,
-  activeSegment: null,
+  activeSegmentId: null,
   disabledDates: {
-    after: null,
     before: null,
+    after: null,
   },
 };
 
 export type DisabledDatesType = {
-  after: Date | null;
   before: Date | null;
+  after: Date | null;
 };
 
 export type FormsType = 'multiCity' | 'oneWay' | 'roundtrip';
@@ -28,7 +28,7 @@ export type ActiveInputType = 'departure' | 'return' | null;
 export type InitialPageSettingsStateType = {
   activeForm: FormsType;
   activeInputDate: ActiveInputType;
-  activeSegment: null | string;
+  activeSegmentId: null | string;
   disabledDates: DisabledDatesType;
 };
 
@@ -41,8 +41,8 @@ export const pageSettingsReducer = (
       return { ...state, activeForm: action.payload };
     case SET_ACTIVE_INPUT_DATE:
       return { ...state, activeInputDate: action.payload };
-    case SET_ACTIVE_SEGMENT:
-      return { ...state, activeSegment: action.payload };
+    case SET_ACTIVE_SEGMENT_ID:
+      return { ...state, activeSegmentId: action.payload };
     case SET_BEFORE_DISABLED_DATES:
       return {
         ...state,

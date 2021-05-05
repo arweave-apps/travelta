@@ -7,13 +7,13 @@ import useOutsideClick from '../../hooks/useOutsideClick';
 import {
   getActiveForm,
   getActiveInputDate,
-  getActiveSegment,
+  getActiveSegmentId,
   getDisabledDates,
 } from '../../selectors/selectros';
 
 import {
   setActiveInputDate,
-  setActiveSegment,
+  setActiveSegmentId,
 } from '../../redux/actions/pageSettings/pageSettings';
 import { ActiveInputType } from '../../redux/reducers/pageSettings';
 
@@ -69,7 +69,7 @@ const Datepicker = ({
 
   const activeForm = useSelector(getActiveForm);
   const activeInputDate = useSelector(getActiveInputDate);
-  const activeSegment = useSelector(getActiveSegment);
+  const activeSegmentId = useSelector(getActiveSegmentId);
   const disabledDates = useSelector(getDisabledDates);
 
   const inputDepartRef = useRef<HTMLInputElement>(null);
@@ -79,15 +79,15 @@ const Datepicker = ({
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    if (activeInputDate === 'departure' && segmentId === activeSegment) {
+    if (activeInputDate === 'departure' && segmentId === activeSegmentId) {
       inputDepartRef.current?.focus();
       return;
     }
 
-    if (activeInputDate === 'return' && segmentId === activeSegment) {
+    if (activeInputDate === 'return' && segmentId === activeSegmentId) {
       inputReturnRef.current?.focus();
     }
-  }, [activeInputDate, activeSegment, segmentId]);
+  }, [activeInputDate, activeSegmentId, segmentId]);
 
   useOutsideClick(
     wrapperRef,
@@ -108,7 +108,7 @@ const Datepicker = ({
 
   const handleClickInputDate = (inputType: ActiveInputType) => {
     dispatch(setActiveInputDate(inputType));
-    dispatch(setActiveSegment(segmentId));
+    dispatch(setActiveSegmentId(segmentId));
   };
 
   return (
