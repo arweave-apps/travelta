@@ -1,7 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setDate } from '../../../redux/actions/aviaParams/aviaParams';
+import {
+  resetDates,
+  setDate,
+} from '../../../redux/actions/aviaParams/aviaParams';
 import {
   setActiveInputDate,
   setAfterDisabledDates,
@@ -152,6 +155,23 @@ const DatepickerCalendar = ({
   const handleClickDay = useCallback(
     (e: React.MouseEvent<HTMLDivElement>, date: Date) => {
       e.stopPropagation(); // otherwise click outside will work
+
+      if (segments.length > 1) {
+        const activeSegmentIndex = segments.findIndex(
+          (segment) => segmentId === segment.id
+        );
+
+        const nextSegmentIndex = activeSegmentIndex + 1;
+        const nextSegment = segments[nextSegmentIndex];
+
+        if (nextSegment) {
+          const nextDepartureDate = nextSegment.departureDate;
+
+          if (nextDepartureDate && date > nextDepartureDate) {
+            dispatch(resetDates(segmentId));
+          }
+        }
+      }
 
       if (activeForm !== 'roundtrip' && activeInputDate === 'departure') {
         dispatch(setDate(date, segmentId, 'departureDate'));
