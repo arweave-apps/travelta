@@ -9,6 +9,8 @@ export const SET_CABIN_CLASS = 'SET_CABIN_CLASS';
 export const SET_PASSANGERS = 'SET_PASSANGERS';
 
 export const ADD_SEGMENT = 'ADD_SEGMENT';
+export const RESET_DATES = 'RESET_DATES';
+
 export const CLEAR_SEGMENTS = 'CLEAR_SEGMENTS';
 
 export const SET_CITY = 'SET_CITY';
@@ -34,6 +36,11 @@ type ActionSetCabinClassType = {
 type ActionSetPassangersType = {
   type: typeof SET_PASSANGERS;
   payload: { value: number; name: PassangersNamesTypes };
+};
+
+type ActionResetDates = {
+  type: typeof RESET_DATES;
+  payload: string;
 };
 
 type ActionAddSegmentType = {
@@ -64,4 +71,5 @@ export type ActionAviaParamsTypes =
   | ActionSetPassangersType
   | ActionAddSegmentType
   | ActionClearSegmentsType
-  | ActionSetCityType;
+  | ActionSetCityType
+  | ActionResetDates;

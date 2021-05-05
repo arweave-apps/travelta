@@ -8,6 +8,7 @@ import {
   SET_PASSANGERS,
   DateTypeTypes,
   FieldNameTypes,
+  RESET_DATES,
 } from '../actions/aviaParams/types';
 
 const initialState: InitialAviaParamsStateType = {
@@ -113,6 +114,20 @@ export const aviaParamsReducer = (
           returnDate: null,
         },
       ];
+      return { ...state, segments: newSegments };
+    }
+    case RESET_DATES: {
+      const segmentId = action.payload;
+      const newSegments = state.segments.map((segment) => {
+        if (segment.id !== segmentId) {
+          return {
+            ...segment,
+            departureDate: null,
+          };
+        }
+        return segment;
+      });
+
       return { ...state, segments: newSegments };
     }
     case CLEAR_SEGMENTS: {
