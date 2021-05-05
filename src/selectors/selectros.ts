@@ -30,8 +30,8 @@ export const getActiveForm = (state: RootStateType): FormsType =>
 export const getActiveInputDate = (state: RootStateType): ActiveInputType =>
   state.pageSettings.activeInputDate;
 
-export const getActiveSegment = (state: RootStateType): null | string =>
-  state.pageSettings.activeSegment;
+export const getActiveSegmentId = (state: RootStateType): null | string =>
+  state.pageSettings.activeSegmentId;
 
 export const getDisabledDates = (state: RootStateType): DisabledDatesType =>
   state.pageSettings.disabledDates;
