@@ -14,6 +14,7 @@ type TextFieldProps = {
   inputRef?: React.RefObject<HTMLInputElement>;
   errorText: string | undefined;
   onFocus?: (e: React.FormEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   hasError: boolean;
 };
 
@@ -26,6 +27,7 @@ const TextField = ({
   readonly = false,
   inputRef,
   onFocus,
+  onKeyDown,
   errorText,
   hasError,
 }: TextFieldProps): JSX.Element => {
@@ -52,6 +54,7 @@ const TextField = ({
         onChange={onChange}
         onFocus={onFocus}
         onBlur={onBlur}
+        onKeyDown={onKeyDown}
         readOnly={readonly}
         ref={inputRef}
       />
