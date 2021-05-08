@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import useOutsideClick from '../../hooks/useOutsideClick';
 
 import { Cities } from '../../redux/reducers/locations';
 
@@ -6,6 +7,8 @@ import Dropdown from '../Dropdown';
 import DropdownItem from '../Dropdown/DropdownItem/DropdownItem';
 import TextBlock from '../TextBlock';
 import TextField from '../TextField';
+
+import './Autocomplete.scss';
 
 type AutocompleteProps = {
   segmentId: string;
@@ -48,6 +51,7 @@ const Autocomplete = ({
   hasError,
 }: AutocompleteProps): JSX.Element => {
   const [activeSuggestion, setActiveSuggestion] = useState<number>(0);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const handleKeyDownCity = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (
@@ -67,7 +71,7 @@ const Autocomplete = ({
 
     if (e.code === 'Enter') {
       if (locations) {
-        const { name, code } = locations && locations[activeSuggestion];
+        const { name, code } = locations[activeSuggestion];
         onClickItem(name, segmentId, code, fieldName);
         onSetFormikValue(`${fieldName}-${segmentId}`, name);
       }
@@ -75,8 +79,20 @@ const Autocomplete = ({
     }
   };
 
+  useOutsideClick(
+    wrapperRef,
+    () => {
+      if (locations) {
+        const { name, code } = locations[0];
+        onClickItem(name, segmentId, code, fieldName);
+        onSetFormikValue(`${fieldName}-${segmentId}`, name);
+      }
+    },
+    isOpen
+  );
+
   return (
-    <>
+    <div className="autocomplete" ref={wrapperRef}>
       <TextField
         id={`${fieldName}-${segmentId}`}
         value={fieldValue}
@@ -111,7 +127,7 @@ const Autocomplete = ({
             })}
         </Dropdown>
       )}
-    </>
+    </div>
   );
 };
 
