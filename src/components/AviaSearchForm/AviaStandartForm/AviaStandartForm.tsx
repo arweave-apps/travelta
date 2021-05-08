@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { SegmentType } from '../../../redux/reducers/aviaParams';
-import { ErrorMessagesType, ErrorsType } from '../AviaSearchForm';
-import { Cities } from '../../../redux/reducers/locations';
+import { SearchFormsPropsType } from '../helpers';
 
 import SwitchButton from '../../SwitchButton';
 import PassangerSelector from '../../PassangerSelector';
@@ -12,82 +10,68 @@ import Autocomplete from '../../Autocomplete';
 
 import './AviaStandartForm.scss';
 
-type AviaStandartFormProps = {
-  segments: SegmentType[];
-  errors: ErrorsType;
-  errorMessages: ErrorMessagesType;
-  disabledSubmit: boolean;
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement>,
-    segmentId: string,
-    fieldType: string
-  ) => void;
-  onClickItem: (
-    name: string,
-    segmentId: string,
-    code: string,
-    fieldType: string
-  ) => void;
-  onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
-  onBlur: () => void;
-  isOpenOriginDropdown: boolean;
-  isOpenDepartureDropdown: boolean;
-  locations: Cities[] | null;
-  originRef: React.RefObject<HTMLDivElement>;
-  destinationRef: React.RefObject<HTMLDivElement>;
-};
-
 const AviaStandartForm = ({
   segments,
+  values,
   errors,
-  errorMessages,
-  disabledSubmit,
+  touched,
   onChange,
+  onClickItem,
   onFocus,
   onBlur,
-  onClickItem,
-  isOpenOriginDropdown,
-  isOpenDepartureDropdown,
+  isDisabledSubmit,
+  isOpenDropdown,
   locations,
-  originRef,
-  destinationRef,
-}: AviaStandartFormProps): JSX.Element => {
-  const { id, origin, destination, returnDate, departureDate } = segments[0];
+  activeInputName,
+  onSetFormikValue,
+  onSetFormikDepartureDate,
+  onSetFormikReturnDate,
+  onSetFormikTouchedDepartureDate,
+  onSetFormikTouchedReturnDate,
+}: SearchFormsPropsType): JSX.Element => {
+  const { id, returnDate, departureDate } = segments[0];
+
+  const origin = values[`origin-${id}`] as string;
+  const destination = values[`destination-${id}`] as string;
 
   return (
     <div className="search-form">
-      <div className="search-form__origin" ref={originRef}>
+      <div className="search-form__origin">
         <Autocomplete
           segmentId={id}
           fieldValue={origin}
           placeholder="Откуда"
-          onChange={(e) => onChange(e, id, 'origin')}
-          onFocus={(e) => onFocus(e)}
-          onClickItem={onClickItem}
+          onChange={onChange}
+          onFocus={onFocus}
           onBlur={onBlur}
-          errors={errors}
-          errorMessages={errorMessages}
-          isOpen={isOpenOriginDropdown}
+          onClickItem={onClickItem}
+          isOpen={isOpenDropdown && activeInputName === `origin-${id}`}
           locations={locations}
           fieldName="origin"
+          onSetFormikValue={onSetFormikValue}
+          errorText={errors[`origin-${id}`]}
+          hasError={!!touched[`origin-${id}`] && !!errors[`origin-${id}`]}
         />
         <SwitchButton />
       </div>
 
-      <div className="search-form__destination" ref={destinationRef}>
+      <div className="search-form__destination">
         <Autocomplete
           segmentId={id}
           fieldValue={destination}
           placeholder="Куда"
-          onChange={(e) => onChange(e, id, 'destination')}
-          onFocus={(e) => onFocus(e)}
-          onClickItem={onClickItem}
+          onChange={onChange}
+          onFocus={onFocus}
           onBlur={onBlur}
-          errors={errors}
-          errorMessages={errorMessages}
-          isOpen={isOpenDepartureDropdown}
+          onClickItem={onClickItem}
+          isOpen={isOpenDropdown && activeInputName === `destination-${id}`}
           locations={locations}
           fieldName="destination"
+          onSetFormikValue={onSetFormikValue}
+          errorText={errors[`destination-${id}`]}
+          hasError={
+            !!touched[`destination-${id}`] && !!errors[`destination-${id}`]
+          }
         />
       </div>
 
@@ -97,9 +81,12 @@ const AviaStandartForm = ({
           returnDate={returnDate}
           departureDate={departureDate}
           errors={errors}
-          errorMessages={errorMessages}
-          onFocus={onFocus}
+          touched={touched}
           onBlur={onBlur}
+          onSetFormikDepartureDate={onSetFormikDepartureDate}
+          onSetFormikReturnDate={onSetFormikReturnDate}
+          onSetFormikTouchedDepartureDate={onSetFormikTouchedDepartureDate}
+          onSetFormikTouchedReturnDate={onSetFormikTouchedReturnDate}
         />
       </div>
 
@@ -107,7 +94,7 @@ const AviaStandartForm = ({
         <PassangerSelector />
       </div>
       <div className="search-form__search-btn">
-        <SimpleButton submit accent title="Найти" disabled={disabledSubmit} />
+        <SimpleButton submit accent title="Найти" disabled={isDisabledSubmit} />
       </div>
     </div>
   );

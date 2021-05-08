@@ -1,59 +1,40 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { SegmentType } from '../../../redux/reducers/aviaParams';
-import { addSegment } from '../../../redux/actions/aviaParams/aviaParams';
+import {
+  addSegment,
+  deleteSegment,
+} from '../../../redux/actions/aviaParams/aviaParams';
 
-import { ErrorMessagesType, ErrorsType } from '../AviaSearchForm';
-import { Cities } from '../../../redux/reducers/locations';
+import { SearchFormsPropsType } from '../helpers';
 
+import Autocomplete from '../../Autocomplete';
+import Datepicker from '../../Datepicker';
 import PassangerSelector from '../../PassangerSelector';
 import SimpleButton from '../../SimpleButton';
-import Datepicker from '../../Datepicker';
+import DeleteButton from '../../DeleteButton';
 
 import './AviaMultiForm.scss';
-import Autocomplete from '../../Autocomplete';
-
-type AviaMultiFormProps = {
-  segments: SegmentType[];
-  errors: ErrorsType;
-  errorMessages: ErrorMessagesType;
-  disabledSubmit: boolean;
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement>,
-    segmentId: string,
-    fieldType: string
-  ) => void;
-  onClickItem: (
-    name: string,
-    segmentId: string,
-    code: string,
-    fieldType: string
-  ) => void;
-  onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
-  onBlur: () => void;
-  isOpenOriginDropdown: boolean;
-  isOpenDepartureDropdown: boolean;
-  locations: Cities[] | null;
-  originRef: React.RefObject<HTMLDivElement>;
-  destinationRef: React.RefObject<HTMLDivElement>;
-};
 
 const AviaMultiForm = ({
   segments,
+  values,
   errors,
-  errorMessages,
-  disabledSubmit,
+  touched,
   onChange,
+  onClickItem,
   onFocus,
   onBlur,
-  onClickItem,
-  isOpenOriginDropdown,
-  isOpenDepartureDropdown,
+  isDisabledSubmit,
+  isOpenDropdown,
   locations,
-  originRef,
-  destinationRef,
-}: AviaMultiFormProps): JSX.Element => {
+  activeInputName,
+  onSetFormikValue,
+  onSetFormikDepartureDate,
+  onSetFormikReturnDate,
+  onSetFormikTouchedDepartureDate,
+  onSetFormikTouchedReturnDate,
+}: SearchFormsPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
   const handleClickAddSegment = useCallback(() => {
@@ -63,44 +44,61 @@ const AviaMultiForm = ({
     dispatch(addSegment());
   }, [dispatch, segments.length]);
 
+  const handleClickDeleteSegment = useCallback(
+    (segmentId) => {
+      if (segments.length === 1) {
+        return;
+      }
+      dispatch(deleteSegment(segmentId));
+    },
+    [dispatch, segments.length]
+  );
+
   return (
     <div className="multicity-form">
-      {segments.map((segment) => {
-        const { id, origin, destination, returnDate, departureDate } = segment;
+      {segments.map((segment, i) => {
+        const { id, returnDate, departureDate } = segment;
+        const origin = values[`origin-${id}`] as string;
+        const destination = values[`destination-${id}`] as string;
 
         return (
           <div className="multicity-form__segment" key={id}>
-            <div className="multicity-form__origin" ref={originRef}>
+            <div className="multicity-form__origin">
               <Autocomplete
                 segmentId={id}
                 fieldValue={origin}
                 placeholder="Откуда"
-                onChange={(e) => onChange(e, id, 'origin')}
-                onFocus={(e) => onFocus(e)}
-                onClickItem={onClickItem}
+                onChange={onChange}
+                onFocus={onFocus}
                 onBlur={onBlur}
-                errors={errors}
-                errorMessages={errorMessages}
-                isOpen={isOpenOriginDropdown}
+                onClickItem={onClickItem}
+                isOpen={isOpenDropdown && activeInputName === `origin-${id}`}
                 locations={locations}
                 fieldName="origin"
+                onSetFormikValue={onSetFormikValue}
+                errorText={errors[`origin-${id}`]}
+                hasError={!!touched[`origin-${id}`] && !!errors[`origin-${id}`]}
               />
             </div>
 
-            <div className="multicity-form__destination" ref={destinationRef}>
+            <div className="multicity-form__destination">
               <Autocomplete
                 segmentId={id}
                 fieldValue={destination}
                 placeholder="Куда"
-                onChange={(e) => onChange(e, id, 'destination')}
-                onFocus={(e) => onFocus(e)}
-                onClickItem={onClickItem}
+                onChange={onChange}
+                onFocus={onFocus}
                 onBlur={onBlur}
-                errors={errors}
-                errorMessages={errorMessages}
-                isOpen={isOpenDepartureDropdown}
+                onClickItem={onClickItem}
+                isOpen={activeInputName === `destination-${id}`}
                 locations={locations}
                 fieldName="destination"
+                onSetFormikValue={onSetFormikValue}
+                errorText={errors[`destination-${id}`]}
+                hasError={
+                  !!touched[`destination-${id}`] &&
+                  !!errors[`destination-${id}`]
+                }
               />
             </div>
 
@@ -110,11 +108,21 @@ const AviaMultiForm = ({
                 returnDate={returnDate}
                 departureDate={departureDate}
                 errors={errors}
-                errorMessages={errorMessages}
-                onFocus={onFocus}
+                touched={touched}
                 onBlur={onBlur}
+                onSetFormikDepartureDate={onSetFormikDepartureDate}
+                onSetFormikReturnDate={onSetFormikReturnDate}
+                onSetFormikTouchedDepartureDate={
+                  onSetFormikTouchedDepartureDate
+                }
+                onSetFormikTouchedReturnDate={onSetFormikTouchedReturnDate}
               />
             </div>
+
+            {segments.length > 1 &&
+              segments[segments.length - 1] === segments[i] && (
+                <DeleteButton onClick={() => handleClickDeleteSegment(id)} />
+              )}
           </div>
         );
       })}
@@ -134,7 +142,12 @@ const AviaMultiForm = ({
         </div>
 
         <div className="multicity-form__search-btn">
-          <SimpleButton submit accent title="Найти" disabled={disabledSubmit} />
+          <SimpleButton
+            submit
+            accent
+            title="Найти"
+            disabled={isDisabledSubmit}
+          />
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ import {
   SET_LOCATIONS,
 } from '../actions/locations/type';
 
-const initialState = {
+const initialState: InitialLocationsStateType = {
   locations: null,
 };
 

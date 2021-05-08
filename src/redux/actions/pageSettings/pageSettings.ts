@@ -1,28 +1,31 @@
+import { ActiveInputType, FormsType } from '../../reducers/pageSettings';
 import {
   ActionPageSettingsTypes,
   SET_ACTIVE_FORM,
   SET_ACTIVE_INPUT_DATE,
-  SET_ACTIVE_SEGMENT,
+  SET_ACTIVE_SEGMENT_ID,
   SET_AFTER_DISABLED_DATES,
   SET_BEFORE_DISABLED_DATES,
 } from './types';
 
-export const setActiveForm = (activeForm: string): ActionPageSettingsTypes => ({
+export const setActiveForm = (
+  activeForm: FormsType
+): ActionPageSettingsTypes => ({
   type: SET_ACTIVE_FORM,
   payload: activeForm,
 });
 
 export const setActiveInputDate = (
-  inputType: string | null
+  inputType: ActiveInputType
 ): ActionPageSettingsTypes => ({
   type: SET_ACTIVE_INPUT_DATE,
   payload: inputType,
 });
 
-export const setActiveSegment = (
+export const setActiveSegmentId = (
   segmentId: string | null
 ): ActionPageSettingsTypes => ({
-  type: SET_ACTIVE_SEGMENT,
+  type: SET_ACTIVE_SEGMENT_ID,
   payload: segmentId,
 });
 

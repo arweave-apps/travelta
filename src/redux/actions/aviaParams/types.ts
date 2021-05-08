@@ -1,70 +1,82 @@
-export const SET_DEPARTURE_DATE = 'SET_DEPARTURE_DATE';
-export const SET_RETURN_DATE = 'SET_RETURN_DATE';
+import {
+  CabinClassTypes,
+  PassangersNamesTypes,
+} from '../../reducers/aviaParams';
+
+export const SET_DATE = 'SET_DATE';
 
 export const SET_CABIN_CLASS = 'SET_CABIN_CLASS';
 export const SET_PASSANGERS = 'SET_PASSANGERS';
 
 export const ADD_SEGMENT = 'ADD_SEGMENT';
+export const DELETE_SEGMENT = 'DELETE_SEGMENT';
+export const RESET_DATES = 'RESET_DATES';
+
 export const CLEAR_SEGMENTS = 'CLEAR_SEGMENTS';
 
-export const SET_ORIGIN = 'SET_ORIGIN';
-export const SET_DESTINATION = 'SET_DESTINATION';
+export const SET_CITY = 'SET_CITY';
 
-type DatePayloadType = {
+export type DateTypeTypes = 'departureDate' | 'returnDate';
+
+export type DatePayloadType = {
   date: Date | null;
   segmentId: string;
+  dateType: DateTypeTypes;
 };
 
-type ActionSetDepartureDateType = {
-  type: typeof SET_DEPARTURE_DATE;
-  payload: DatePayloadType;
-};
-
-type ActionSetReturnDateType = {
-  type: typeof SET_RETURN_DATE;
+type ActionSetDateType = {
+  type: typeof SET_DATE;
   payload: DatePayloadType;
 };
 
 type ActionSetCabinClassType = {
   type: typeof SET_CABIN_CLASS;
-  payload: string;
+  payload: CabinClassTypes;
 };
 
 type ActionSetPassangersType = {
   type: typeof SET_PASSANGERS;
-  payload: { value: number; name: string };
+  payload: { value: number; name: PassangersNamesTypes };
+};
+
+type ActionResetDates = {
+  type: typeof RESET_DATES;
+  payload: string;
 };
 
 type ActionAddSegmentType = {
   type: typeof ADD_SEGMENT;
 };
 
+type ActionDeleteSegmentType = {
+  type: typeof DELETE_SEGMENT;
+  payload: string;
+};
+
 type ActionClearSegmentsType = {
   type: typeof CLEAR_SEGMENTS;
 };
 
-type CityPayloadType = {
+export type FieldNameTypes = 'origin' | 'destination';
+
+export type CityPayloadType = {
   name: string;
   code: string;
   segmentId: string;
+  fieldName: FieldNameTypes;
 };
 
-type ActionSetOriginType = {
-  type: typeof SET_ORIGIN;
-  payload: CityPayloadType;
-};
-
-type ActionSetDestinationType = {
-  type: typeof SET_DESTINATION;
+type ActionSetCityType = {
+  type: typeof SET_CITY;
   payload: CityPayloadType;
 };
 
 export type ActionAviaParamsTypes =
-  | ActionSetDepartureDateType
-  | ActionSetReturnDateType
+  | ActionSetDateType
   | ActionSetCabinClassType
   | ActionSetPassangersType
   | ActionAddSegmentType
   | ActionClearSegmentsType
-  | ActionSetOriginType
-  | ActionSetDestinationType;
+  | ActionSetCityType
+  | ActionResetDates
+  | ActionDeleteSegmentType;

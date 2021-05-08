@@ -3,21 +3,25 @@ import {
   ADD_SEGMENT,
   CLEAR_SEGMENTS,
   SET_CABIN_CLASS,
-  SET_DEPARTURE_DATE,
-  SET_DESTINATION,
-  SET_ORIGIN,
+  SET_DATE,
+  SET_CITY,
   SET_PASSANGERS,
-  SET_RETURN_DATE,
+  DateTypeTypes,
+  FieldNameTypes,
+  RESET_DATES,
+  DELETE_SEGMENT,
 } from '../actions/aviaParams/types';
 
-const initialState = {
+const initialState: InitialAviaParamsStateType = {
   segments: [
     {
       id: 'segment-1',
       origin: '',
       originCode: '',
+
       destination: '',
       destinationCode: '',
+
       departureDate: null,
       returnDate: null,
     },
@@ -34,22 +38,49 @@ const initialState = {
 export type SegmentType = {
   id: string;
   origin: string;
+  originCode: string;
+
   destination: string;
+  destinationCode: string;
+
   departureDate: Date | null;
   returnDate: Date | null;
 };
 
-export type PassangersType = {
-  [key: string]: number;
-  adults: number;
-  children: number;
-  infants: number;
-};
+export type PassangersNamesTypes = 'adults' | 'children' | 'infants';
+export type CabinClassTypes = 'M' | 'W' | 'C' | 'F';
+export type PassangersType = Record<PassangersNamesTypes, number>;
 
 export type InitialAviaParamsStateType = {
   segments: Array<SegmentType>;
   passangers: PassangersType;
-  selectedCabins: string;
+  selectedCabins: CabinClassTypes;
+};
+
+const updateSegment = (
+  state: InitialAviaParamsStateType,
+  segmentId: string,
+  propName: DateTypeTypes | FieldNameTypes,
+  value: string | Date | null,
+  subValue?: string
+) => {
+  const newSegments = state.segments.map((segment) => {
+    if (segment.id === segmentId) {
+      return subValue
+        ? {
+            ...segment,
+            [propName]: value,
+            [`${propName}Code`]: subValue,
+          }
+        : {
+            ...segment,
+            [propName]: value,
+          };
+    }
+    return segment;
+  });
+
+  return { ...state, segments: newSegments };
 };
 
 export const aviaParamsReducer = (
@@ -57,63 +88,13 @@ export const aviaParamsReducer = (
   action: ActionAviaParamsTypes
 ): InitialAviaParamsStateType => {
   switch (action.type) {
-    case SET_DEPARTURE_DATE: {
-      const { date, segmentId } = action.payload;
-      const newSegments = state.segments.map((segment) => {
-        if (segment.id === segmentId) {
-          return {
-            ...segment,
-            departureDate: date,
-          };
-        }
-        return segment;
-      });
-
-      return { ...state, segments: newSegments };
+    case SET_DATE: {
+      const { date, segmentId, dateType } = action.payload;
+      return updateSegment(state, segmentId, dateType, date);
     }
-    case SET_RETURN_DATE: {
-      const { date, segmentId } = action.payload;
-      const newSegments = state.segments.map((segment) => {
-        if (segment.id === segmentId) {
-          return {
-            ...segment,
-            returnDate: date,
-          };
-        }
-        return segment;
-      });
-
-      return { ...state, segments: newSegments };
-    }
-    case SET_ORIGIN: {
-      const { name, code, segmentId } = action.payload;
-      const newSegments = state.segments.map((segment) => {
-        if (segment.id === segmentId) {
-          return {
-            ...segment,
-            origin: name,
-            originCode: code,
-          };
-        }
-        return segment;
-      });
-
-      return { ...state, segments: newSegments };
-    }
-    case SET_DESTINATION: {
-      const { name, code, segmentId } = action.payload;
-      const newSegments = state.segments.map((segment) => {
-        if (segment.id === segmentId) {
-          return {
-            ...segment,
-            destination: name,
-            destinationCode: code,
-          };
-        }
-        return segment;
-      });
-
-      return { ...state, segments: newSegments };
+    case SET_CITY: {
+      const { name, code, segmentId, fieldName } = action.payload;
+      return updateSegment(state, segmentId, fieldName, name, code);
     }
     case SET_CABIN_CLASS:
       return { ...state, selectedCabins: action.payload };
@@ -127,12 +108,35 @@ export const aviaParamsReducer = (
         {
           id: `segment-${state.segments.length + 1}`,
           origin: '',
+          originCode: '',
           destination: '',
+          destinationCode: '',
           departureDate: null,
           returnDate: null,
-          // locations: null,
         },
       ];
+      return { ...state, segments: newSegments };
+    }
+    case DELETE_SEGMENT: {
+      const segmentId = action.payload;
+      const newSegments = state.segments.filter(
+        (segment) => segment.id !== segmentId
+      );
+
+      return { ...state, segments: newSegments };
+    }
+    case RESET_DATES: {
+      const segmentId = action.payload;
+      const newSegments = state.segments.map((segment) => {
+        if (segment.id !== segmentId) {
+          return {
+            ...segment,
+            departureDate: null,
+          };
+        }
+        return segment;
+      });
+
       return { ...state, segments: newSegments };
     }
     case CLEAR_SEGMENTS: {

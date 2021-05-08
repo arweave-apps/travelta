@@ -1,31 +1,35 @@
-import classNames from 'classnames';
 import React from 'react';
+
+import classNames from 'classnames';
+
 import './TextField.scss';
 
 type TextFieldProps = {
-  placeholder: string;
   id: string;
   value: string | undefined;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
+  onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
   readonly?: boolean;
   inputRef?: React.RefObject<HTMLInputElement>;
-  hasError?: boolean;
-  errorText: string;
-  onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
-  onBlur: () => void;
+  errorText: string | undefined;
+  onFocus?: (e: React.FormEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  hasError: boolean;
 };
 
 const TextField = ({
-  placeholder,
   id,
   value = '',
   onChange,
+  placeholder,
+  onBlur,
   readonly = false,
   inputRef,
-  hasError,
-  errorText,
   onFocus,
-  onBlur,
+  onKeyDown,
+  errorText,
+  hasError,
 }: TextFieldProps): JSX.Element => {
   return (
     <label
@@ -40,7 +44,9 @@ const TextField = ({
         name={id}
         type="text"
         placeholder={placeholder}
-        className={classNames('input', `input--${id}`, {
+        className={classNames('input', {
+          'input--depart': id.includes('departureDate'),
+          'input--return': id.includes('returnDate'),
           'input--pointer': readonly,
           'input--error': hasError,
         })}
@@ -48,6 +54,7 @@ const TextField = ({
         onChange={onChange}
         onFocus={onFocus}
         onBlur={onBlur}
+        onKeyDown={onKeyDown}
         readOnly={readonly}
         ref={inputRef}
       />

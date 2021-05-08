@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 
 export default function useOutsideClick(
-  ref: React.RefObject<HTMLDivElement>,
+  ref:
+    | React.RefObject<HTMLDivElement>
+    | React.MutableRefObject<HTMLDivElement[]>,
   handler: () => void,
   isActive: boolean
 ): void {
@@ -13,7 +15,15 @@ export default function useOutsideClick(
     const handleClick = (e: MouseEvent) => {
       const target = e.target as Node;
 
-      if (ref.current && !ref.current.contains(target)) {
+      if (Array.isArray(ref.current)) {
+        const isConatainsNode = ref.current.every(
+          (node) => node && !node.contains(target)
+        );
+
+        if (isConatainsNode) {
+          handler();
+        }
+      } else if (ref.current && !ref.current.contains(target)) {
         handler();
       }
     };

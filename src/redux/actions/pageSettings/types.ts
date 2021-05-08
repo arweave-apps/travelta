@@ -1,22 +1,24 @@
+import { ActiveInputType, FormsType } from '../../reducers/pageSettings';
+
 export const SET_ACTIVE_FORM = 'SET_ACTIVE_FORM';
 export const SET_ACTIVE_INPUT_DATE = 'SET_ACTIVE_INPUT_DATE';
-export const SET_ACTIVE_SEGMENT = 'SET_ACTIVE_SEGMENT';
+export const SET_ACTIVE_SEGMENT_ID = 'SET_ACTIVE_SEGMENT_ID';
 
 export const SET_BEFORE_DISABLED_DATES = 'SET_BEFORE_DISABLED_DATES';
 export const SET_AFTER_DISABLED_DATES = 'SET_AFTER_DISABLED_DATES';
 
-type ActionSetACtiveFormType = {
+type ActionSetAсtiveFormType = {
   type: typeof SET_ACTIVE_FORM;
-  payload: string;
+  payload: FormsType;
 };
 
 type ActionSetActiveInputDateType = {
   type: typeof SET_ACTIVE_INPUT_DATE;
-  payload: string | null;
+  payload: ActiveInputType;
 };
 
-type ActionSetActiveSegmentType = {
-  type: typeof SET_ACTIVE_SEGMENT;
+type ActionSetActiveSegmentIdType = {
+  type: typeof SET_ACTIVE_SEGMENT_ID;
   payload: string | null;
 };
 
@@ -31,8 +33,8 @@ type ActionSetAfterDisabledDatesType = {
 };
 
 export type ActionPageSettingsTypes =
-  | ActionSetACtiveFormType
+  | ActionSetAсtiveFormType
   | ActionSetActiveInputDateType
-  | ActionSetActiveSegmentType
+  | ActionSetActiveSegmentIdType
   | ActionSetBeforeDisabledDatesType
   | ActionSetAfterDisabledDatesType;
