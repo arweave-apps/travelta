@@ -30,31 +30,6 @@
     @include font-roboto(rem(16), $primary-text-color, normal, normal, rem(16));
   }
 
-  &__no-return-btn {
-    @include font-roboto(
-      rem(16),
-      $alternative-text-color,
-      normal,
-      normal,
-      rem(16)
-    );
-
-    background: none;
-    border: none;
-
-    transition: color 0.2s linear;
-
-    &:hover {
-      cursor: pointer;
-      color: $active-color;
-    }
-
-    &[disabled] {
-      pointer-events: none;
-      color: rgba($secondary-text-color, 0.3);
-    }
-  }
-
   &__months {
     @include display(flex, space-between, center);
     padding: rem(20);
