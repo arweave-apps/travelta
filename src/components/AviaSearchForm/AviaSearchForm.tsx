@@ -56,19 +56,10 @@ const AviaSearchForm = (): JSX.Element => {
   const [activeInputName, setActiveInputName] = useState<string>('');
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
-  const refsArray = useRef<HTMLDivElement[]>([]);
-  useOutsideClick(refsArray, () => setIsOpenDropdown(false), isOpenDropdown);
-
   const getCities = (value: string) => {
     dispatch(fetchLocations(value));
   };
   const debounсe = useDebounce(getCities, 500);
-
-  const addToRefs = useCallback((el: HTMLDivElement) => {
-    if (el && !refsArray.current.includes(el)) {
-      refsArray.current.push(el);
-    }
-  }, []);
 
   const formik = useFormik({
     initialValues: getInitialValues(segments, activeForm),
@@ -129,7 +120,6 @@ const AviaSearchForm = (): JSX.Element => {
         isOpenDropdown={isOpenDropdown}
         locations={locations}
         activeInputName={activeInputName}
-        addToRefs={addToRefs}
         onSetFormikValue={formik.setFieldValue}
         onSetFormikDepartureDate={formik.setFieldValue}
         onSetFormikReturnDate={formik.setFieldValue}

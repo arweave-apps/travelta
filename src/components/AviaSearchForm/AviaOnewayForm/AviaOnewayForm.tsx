@@ -23,7 +23,6 @@ const AviaOnewayForm = ({
   isOpenDropdown,
   locations,
   activeInputName,
-  addToRefs,
   onSetFormikValue,
   onSetFormikDepartureDate,
   onSetFormikReturnDate,
@@ -37,7 +36,7 @@ const AviaOnewayForm = ({
 
   return (
     <div className="oneway-form">
-      <div className="oneway-form__origin" ref={addToRefs}>
+      <div className="oneway-form__origin">
         <Autocomplete
           segmentId={id}
           fieldValue={origin}
@@ -56,7 +55,7 @@ const AviaOnewayForm = ({
         <SwitchButton />
       </div>
 
-      <div className="oneway-form__destination" ref={addToRefs}>
+      <div className="oneway-form__destination">
         <Autocomplete
           segmentId={id}
           fieldValue={destination}

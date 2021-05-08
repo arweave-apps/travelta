@@ -85,7 +85,6 @@ export type SearchFormsPropsType = {
   isOpenDropdown: boolean;
   locations: Cities[] | null;
   activeInputName: string;
-  addToRefs: (el: HTMLDivElement) => void;
   onSetFormikValue: (
     field: string,
     value: string,

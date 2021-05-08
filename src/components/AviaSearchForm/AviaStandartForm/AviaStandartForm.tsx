@@ -23,7 +23,6 @@ const AviaStandartForm = ({
   isOpenDropdown,
   locations,
   activeInputName,
-  addToRefs,
   onSetFormikValue,
   onSetFormikDepartureDate,
   onSetFormikReturnDate,
@@ -37,7 +36,7 @@ const AviaStandartForm = ({
 
   return (
     <div className="search-form">
-      <div className="search-form__origin" ref={addToRefs}>
+      <div className="search-form__origin">
         <Autocomplete
           segmentId={id}
           fieldValue={origin}
@@ -56,7 +55,7 @@ const AviaStandartForm = ({
         <SwitchButton />
       </div>
 
-      <div className="search-form__destination" ref={addToRefs}>
+      <div className="search-form__destination">
         <Autocomplete
           segmentId={id}
           fieldValue={destination}

@@ -25,7 +25,6 @@ const AviaMultiForm = ({
   isOpenDropdown,
   locations,
   activeInputName,
-  addToRefs,
   onSetFormikValue,
   onSetFormikDepartureDate,
   onSetFormikReturnDate,
@@ -50,7 +49,7 @@ const AviaMultiForm = ({
 
         return (
           <div className="multicity-form__segment" key={id}>
-            <div className="multicity-form__origin" ref={addToRefs}>
+            <div className="multicity-form__origin">
               <Autocomplete
                 segmentId={id}
                 fieldValue={origin}
@@ -68,7 +67,7 @@ const AviaMultiForm = ({
               />
             </div>
 
-            <div className="multicity-form__destination" ref={addToRefs}>
+            <div className="multicity-form__destination">
               <Autocomplete
                 segmentId={id}
                 fieldValue={destination}
