@@ -1,5 +1,6 @@
 .multicity-form {
   &__segment {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(2, 1fr) 0.9fr;
     grid-template-rows: $search-form-row-height;

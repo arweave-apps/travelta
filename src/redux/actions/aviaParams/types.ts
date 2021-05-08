@@ -9,6 +9,7 @@ export const SET_CABIN_CLASS = 'SET_CABIN_CLASS';
 export const SET_PASSANGERS = 'SET_PASSANGERS';
 
 export const ADD_SEGMENT = 'ADD_SEGMENT';
+export const DELETE_SEGMENT = 'DELETE_SEGMENT';
 export const RESET_DATES = 'RESET_DATES';
 
 export const CLEAR_SEGMENTS = 'CLEAR_SEGMENTS';
@@ -47,6 +48,11 @@ type ActionAddSegmentType = {
   type: typeof ADD_SEGMENT;
 };
 
+type ActionDeleteSegmentType = {
+  type: typeof DELETE_SEGMENT;
+  payload: string;
+};
+
 type ActionClearSegmentsType = {
   type: typeof CLEAR_SEGMENTS;
 };
@@ -72,4 +78,5 @@ export type ActionAviaParamsTypes =
   | ActionAddSegmentType
   | ActionClearSegmentsType
   | ActionSetCityType
-  | ActionResetDates;
+  | ActionResetDates
+  | ActionDeleteSegmentType;

@@ -243,13 +243,14 @@ const DatepickerCalendar = ({
       }
     },
     [
+      segments,
       activeForm,
       activeInputDate,
       hoverDate,
       departureDate,
       returnDate,
-      dispatch,
       segmentId,
+      dispatch,
       onSetFormikDepartureDate,
       onSetFormikTouchedDepartureDate,
       onSetFormikReturnDate,
