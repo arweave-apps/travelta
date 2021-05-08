@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Cities } from '../../redux/reducers/locations';
 
@@ -47,6 +47,34 @@ const Autocomplete = ({
   errorText,
   hasError,
 }: AutocompleteProps): JSX.Element => {
+  const [activeSuggestion, setActiveSuggestion] = useState<number>(0);
+
+  const handleKeyDownCity = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (
+      (e.code === 'ArrowUp' && activeSuggestion === 0) ||
+      (e.code === 'ArrowDown' && activeSuggestion - 1 === locations?.length)
+    ) {
+      return;
+    }
+
+    if (e.code === 'ArrowUp') {
+      setActiveSuggestion(activeSuggestion - 1);
+    }
+
+    if (e.code === 'ArrowDown') {
+      setActiveSuggestion(activeSuggestion + 1);
+    }
+
+    if (e.code === 'Enter') {
+      if (locations) {
+        const { name, code } = locations && locations[activeSuggestion];
+        onClickItem(name, segmentId, code, fieldName);
+        onSetFormikValue(`${fieldName}-${segmentId}`, name);
+      }
+      setActiveSuggestion(0);
+    }
+  };
+
   return (
     <>
       <TextField
@@ -58,11 +86,12 @@ const Autocomplete = ({
         onBlur={onBlur}
         errorText={errorText}
         hasError={hasError}
+        onKeyDown={handleKeyDownCity}
       />
       {isOpen && (
         <Dropdown>
           {locations &&
-            locations.map((row) => {
+            locations.map((row, i) => {
               const { name, code, country } = row;
 
               return (
@@ -70,6 +99,7 @@ const Autocomplete = ({
                   key={`${name}-${code}`}
                   hasHover
                   hasMargin
+                  isActive={activeSuggestion === i}
                   onClick={() => {
                     onClickItem(name, segmentId, code, fieldName);
                     onSetFormikValue(`${fieldName}-${segmentId}`, name);
