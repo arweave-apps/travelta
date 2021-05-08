@@ -9,6 +9,7 @@ import {
   DateTypeTypes,
   FieldNameTypes,
   RESET_DATES,
+  DELETE_SEGMENT,
 } from '../actions/aviaParams/types';
 
 const initialState: InitialAviaParamsStateType = {
@@ -114,6 +115,14 @@ export const aviaParamsReducer = (
           returnDate: null,
         },
       ];
+      return { ...state, segments: newSegments };
+    }
+    case DELETE_SEGMENT: {
+      const segmentId = action.payload;
+      const newSegments = state.segments.filter(
+        (segment) => segment.id !== segmentId
+      );
+
       return { ...state, segments: newSegments };
     }
     case RESET_DATES: {

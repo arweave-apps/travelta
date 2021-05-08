@@ -13,6 +13,7 @@ import {
   FieldNameTypes,
   DateTypeTypes,
   RESET_DATES,
+  DELETE_SEGMENT,
 } from './types';
 
 export const setDate = (
@@ -41,6 +42,11 @@ export const setPassangers = (
 
 export const addSegment = (): ActionAviaParamsTypes => ({
   type: ADD_SEGMENT,
+});
+
+export const deleteSegment = (segmentId: string): ActionAviaParamsTypes => ({
+  type: DELETE_SEGMENT,
+  payload: segmentId,
 });
 
 export const clearSegments = (): ActionAviaParamsTypes => ({

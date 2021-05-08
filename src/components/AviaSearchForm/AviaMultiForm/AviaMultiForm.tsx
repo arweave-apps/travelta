@@ -1,7 +1,10 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { addSegment } from '../../../redux/actions/aviaParams/aviaParams';
+import {
+  addSegment,
+  deleteSegment,
+} from '../../../redux/actions/aviaParams/aviaParams';
 
 import { SearchFormsPropsType } from '../helpers';
 
@@ -9,6 +12,7 @@ import Autocomplete from '../../Autocomplete';
 import Datepicker from '../../Datepicker';
 import PassangerSelector from '../../PassangerSelector';
 import SimpleButton from '../../SimpleButton';
+import DeleteButton from '../../DeleteButton';
 
 import './AviaMultiForm.scss';
 
@@ -40,9 +44,19 @@ const AviaMultiForm = ({
     dispatch(addSegment());
   }, [dispatch, segments.length]);
 
+  const handleClickDeleteSegment = useCallback(
+    (segmentId) => {
+      if (segments.length === 1) {
+        return;
+      }
+      dispatch(deleteSegment(segmentId));
+    },
+    [dispatch, segments.length]
+  );
+
   return (
     <div className="multicity-form">
-      {segments.map((segment) => {
+      {segments.map((segment, i) => {
         const { id, returnDate, departureDate } = segment;
         const origin = values[`origin-${id}`] as string;
         const destination = values[`destination-${id}`] as string;
@@ -104,6 +118,11 @@ const AviaMultiForm = ({
                 onSetFormikTouchedReturnDate={onSetFormikTouchedReturnDate}
               />
             </div>
+
+            {segments.length > 1 &&
+              segments[segments.length - 1] === segments[i] && (
+                <DeleteButton onClick={() => handleClickDeleteSegment(id)} />
+              )}
           </div>
         );
       })}
