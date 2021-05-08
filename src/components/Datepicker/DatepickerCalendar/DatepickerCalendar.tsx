@@ -268,10 +268,6 @@ const DatepickerCalendar = ({
   const isDisabledBtn = (date: Date | null): boolean =>
     date ? date.getMonth() === disabledDates.before?.getMonth() : false;
 
-  const handleClickNoReturnButton = () => {
-    dispatch(setDate(null, segmentId, 'returnDate'));
-  };
-
   return (
     <div className="calendar">
       <div className="calendar__inner">
@@ -283,14 +279,6 @@ const DatepickerCalendar = ({
                 ? ' отправления'
                 : ' возвращения'}
             </span>
-            <button
-              type="button"
-              className="calendar__no-return-btn"
-              disabled={!returnDate}
-              onClick={handleClickNoReturnButton}
-            >
-              Без обратного билета
-            </button>
           </div>
         )}
 
