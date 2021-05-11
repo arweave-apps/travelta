@@ -1,11 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 
 import useDebounce from '../../hooks/useDebounce';
-import useOutsideClick from '../../hooks/useOutsideClick';
 
 import {
   fetchLocations,
