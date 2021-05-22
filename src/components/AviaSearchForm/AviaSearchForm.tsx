@@ -10,6 +10,7 @@ import {
   fetchLocations,
   setLocations,
 } from '../../redux/actions/locations/locations';
+import { fetchTickets } from '../../redux/actions/tickets/tickets';
 import { setCity } from '../../redux/actions/aviaParams/aviaParams';
 import { FormsType } from '../../redux/reducers/pageSettings';
 
@@ -17,6 +18,9 @@ import {
   getActiveForm,
   getLocations,
   getSegments,
+  getCurrency,
+  getPassangers,
+  getSelectedCabins,
 } from '../../selectors/selectros';
 
 import { getInitialValues, validate, SearchFormsPropsType } from './helpers';
@@ -51,6 +55,9 @@ const AviaSearchForm = (): JSX.Element => {
   const segments = useSelector(getSegments);
   const locations = useSelector(getLocations);
   const activeForm = useSelector(getActiveForm);
+  const currency = useSelector(getCurrency);
+  const passangers = useSelector(getPassangers);
+  const selectedCabins = useSelector(getSelectedCabins);
 
   const [activeInputName, setActiveInputName] = useState<string>('');
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
@@ -66,10 +73,13 @@ const AviaSearchForm = (): JSX.Element => {
     enableReinitialize: true,
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    onSubmit: (values) => {
+    onSubmit: () => {
       if (!history.location.pathname.includes('search')) {
         history.push(`${history.location.pathname}/search`);
       }
+      dispatch(
+        fetchTickets(segments, passangers, selectedCabins, currency, activeForm)
+      );
     },
   });
 

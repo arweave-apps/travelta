@@ -2,7 +2,7 @@ import {
   ActionSetLocationsType,
   LocationObject,
   SET_LOCATIONS,
-} from '../actions/locations/type';
+} from '../actions/locations/types';
 
 const initialState: InitialLocationsStateType = {
   locations: null,
