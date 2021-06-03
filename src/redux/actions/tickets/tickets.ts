@@ -7,6 +7,7 @@ import {
   searchMultiTicketsConfig,
   searchTicketsConfig,
 } from '../../../api/apiConfig';
+import { Ticket } from '../../../interfaces/tickets';
 import { RootStateType } from '../../reducers';
 import {
   CabinClassTypes,
@@ -15,7 +16,12 @@ import {
 } from '../../reducers/aviaParams';
 import { FormsType } from '../../reducers/pageSettings';
 import { CurrencyType } from '../../reducers/settings';
-import { ActionSearchTypes, SET_TICKETS, Ticket } from './types';
+import {
+  ActionSearchTypes,
+  SET_TICKETS,
+  FETCH_TICKETS_REQUESTED,
+  FETCH_TICKETS_ERROR,
+} from './types';
 
 type ThunkType = ThunkAction<
   Promise<void>,
@@ -32,9 +38,21 @@ type PointType = {
   dateTo: string | undefined;
 };
 
-export const setTickets = (tickets: Ticket[] | []): ActionSearchTypes => ({
+export const ticketsRequested = (): ActionSearchTypes => ({
+  type: FETCH_TICKETS_REQUESTED,
+});
+
+export const ticketsError = (error: Error): ActionSearchTypes => ({
+  type: FETCH_TICKETS_ERROR,
+  payload: error,
+});
+
+export const setTickets = (
+  tickets: Ticket[] | [],
+  isMulti: boolean
+): ActionSearchTypes => ({
   type: SET_TICKETS,
-  payload: tickets,
+  payload: { tickets, isMulti },
 });
 
 export const fetchTickets = (
@@ -47,6 +65,7 @@ export const fetchTickets = (
   try {
     const locale = 'ru';
     const { adults, infants, children } = passengers;
+    dispatch(ticketsRequested());
 
     if (activeForm === 'multiCity') {
       const { url, apikey } = searchMultiTicketsConfig;
@@ -74,7 +93,7 @@ export const fetchTickets = (
         { headers }
       );
 
-      dispatch(setTickets(response.data));
+      dispatch(setTickets(response.data, true));
     } else {
       const { url, apikey } = searchTicketsConfig;
 
@@ -100,9 +119,9 @@ export const fetchTickets = (
         }
       );
 
-      dispatch(setTickets(response.data));
+      dispatch(setTickets(response.data.data, false));
     }
   } catch (error) {
-    throw new Error(error);
+    dispatch(ticketsError(error));
   }
 };

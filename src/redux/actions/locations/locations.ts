@@ -2,8 +2,9 @@ import axios from 'axios';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { locationsConfig } from '../../../api/apiConfig';
+import { LocationObject } from '../../../interfaces/locations';
 import { RootStateType } from '../../reducers';
-import { ActionSetLocationsType, LocationObject, SET_LOCATIONS } from './types';
+import { ActionSetLocationsType, SET_LOCATIONS } from './types';
 
 type ThunkType = ThunkAction<
   Promise<void>,
