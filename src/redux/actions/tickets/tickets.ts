@@ -65,9 +65,10 @@ export const fetchTickets = (
   try {
     const locale = 'ru';
     const { adults, infants, children } = passengers;
+    const isMulti = activeForm === 'multiCity';
     dispatch(ticketsRequested());
 
-    if (activeForm === 'multiCity') {
+    if (isMulti) {
       const { url, apikey } = searchMultiTicketsConfig;
 
       const requests = segments.reduce((acc, segment) => {
@@ -93,7 +94,7 @@ export const fetchTickets = (
         { headers }
       );
 
-      dispatch(setTickets(response.data, true));
+      dispatch(setTickets(response.data, isMulti));
     } else {
       const { url, apikey } = searchTicketsConfig;
 
@@ -119,7 +120,7 @@ export const fetchTickets = (
         }
       );
 
-      dispatch(setTickets(response.data.data, false));
+      dispatch(setTickets(response.data.data, isMulti));
     }
   } catch (error) {
     dispatch(ticketsError(error));
