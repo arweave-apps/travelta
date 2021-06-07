@@ -59,14 +59,14 @@ export interface Route {
   return: number;
   bags_recheck_required: boolean;
   guarantee: boolean;
-  last_seen: Date;
-  refresh_timestamp: Date;
+  last_seen: string;
+  refresh_timestamp: string;
   equipment?: any;
   vehicle_type: string;
-  local_arrival: Date;
-  utc_arrival: Date;
-  local_departure: Date;
-  utc_departure: Date;
+  local_arrival: string;
+  utc_arrival: string;
+  local_departure: string;
+  utc_departure: string;
 }
 
 export interface TicketSearch {
@@ -101,49 +101,55 @@ export interface TicketSearch {
   technical_stops: number;
   virtual_interlining: boolean;
   transfers: any[];
-  local_arrival: Date;
-  utc_arrival: Date;
-  local_departure: Date;
-  utc_departure: Date;
+  local_arrival: string;
+  utc_arrival: string;
+  local_departure: string;
+  utc_departure: string;
 }
 
 // interfaces for multi route
 
 export interface RouteMulti {
   id: string;
-  nightsInDest?: any;
-  duration: Duration;
   flyFrom: string;
+  flyTo: string;
   cityFrom: string;
   cityCodeFrom: string;
-  countryFrom: CountryFrom;
-  flyTo: string;
   cityTo: string;
   cityCodeTo: string;
+  countryFrom: CountryFrom;
   countryTo: CountryTo;
+  type_flights: string[];
+  nightsInDest?: any;
+  quality: number;
   distance: number;
-  routes: string[][];
-  airlines: string[];
-  pnr_count: number;
-  has_airport_change: boolean;
-  technical_stops: number;
+  duration: Duration;
+  conversion: Conversion;
   bags_price: BagsPrice;
   baglimit: Baglimit;
   availability: Availability;
-  facilitated_booking_available: boolean;
-  conversion: Conversion;
-  quality: number;
-  transfers: any[];
-  type_flights: string[];
-  virtual_interlining: boolean;
+  routes: string[][];
+  airlines: string[];
   route: Route[];
-  local_arrival: Date;
-  utc_arrival: Date;
-  local_departure: Date;
-  utc_departure: Date;
+  facilitated_booking_available: boolean;
+  pnr_count: number;
+  has_airport_change: boolean;
+  technical_stops: number;
+  virtual_interlining: boolean;
+  transfers: any[];
+  local_arrival: string;
+  utc_arrival: string;
+  local_departure: string;
+  utc_departure: string;
 }
 
 export interface TicketMulti {
+  /*
+    Fake id - missing in the received data.
+    Id will be installed in the ticket conversion function
+    and is required for correct destructuring
+  */
+  id: string;
   quality: number;
   duration: number;
   price: number;
