@@ -1,6 +1,6 @@
+import { LocationObject } from '../../interfaces/locations';
 import {
   ActionSetLocationsType,
-  LocationObject,
   SET_LOCATIONS,
 } from '../actions/locations/types';
 
