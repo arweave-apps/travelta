@@ -26,6 +26,7 @@
       width: rem(30);
       height: rem(30);
       border-radius: 100%;
+      margin-right: rem(5);
     }
   }
 
@@ -44,14 +45,15 @@
     @include font-roboto(rem(36), $primary-text-color, normal, normal, rem(42));
   }
 
-  &__city {
+  &__cityname {
     @include font-roboto(
-      rem(16),
+      rem(14),
       $secondary-text-color,
       normal,
       normal,
-      rem(16)
+      rem(14)
     );
+    margin-bottom: rem(5);
   }
 
   &__date {
@@ -60,7 +62,7 @@
       $secondary-text-color,
       normal,
       normal,
-      rem(16)
+      rem(14)
     );
   }
 
@@ -104,12 +106,11 @@
     margin-right: rem(6);
   }
 
-  &__citycode {
+  &__citycodes {
     width: 100%;
     @include display(flex, space-between, center);
 
-    &-departure,
-    &-arrival {
+    &-item {
       @include font-roboto(
         rem(12),
         $alternative-text-color,

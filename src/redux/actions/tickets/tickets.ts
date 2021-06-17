@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-/* eslint-disable no-console */
 import axios from 'axios';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
@@ -80,6 +78,10 @@ export const fetchTickets = (
           directFlights: 0,
           dateFrom: departureDate?.toLocaleDateString('en-GB'),
           dateTo: departureDate?.toLocaleDateString('en-GB'),
+          selected_cabins: selectedCabins,
+          adults,
+          infants,
+          children,
         };
         acc.push(point);
 
@@ -105,20 +107,21 @@ export const fetchTickets = (
         returnDate,
       } = segments[0];
 
-      const response = await axios.get(
-        `${url}?fly_from=${originCode}&fly_to=${destinationCode}&date_from=${departureDate?.toLocaleDateString(
+      let requestUrl = `${url}?fly_from=${originCode}&fly_to=${destinationCode}&date_from=${departureDate?.toLocaleDateString(
+        'en-GB'
+      )}&date_to=${departureDate?.toLocaleDateString(
+        'en-GB'
+      )}&adults=${adults}&infants=${infants}&children=${children}&curr=${currency}&locale=${locale}&selected_cabins=${selectedCabins}`;
+
+      if (returnDate) {
+        requestUrl += `&return_from=${returnDate?.toLocaleDateString(
           'en-GB'
-        )}&date_to=${departureDate?.toLocaleDateString(
-          'en-GB'
-        )}&return_from=${returnDate?.toLocaleDateString(
-          'en-GB'
-        )}&return_to=${returnDate?.toLocaleDateString(
-          'en-GB'
-        )}&adults=${adults}&infants=${infants}&children=${children}&curr=${currency}&locale=${locale}`,
-        {
-          headers: { apikey },
-        }
-      );
+        )}&return_to=${returnDate?.toLocaleDateString('en-GB')}`;
+      }
+
+      const response = await axios.get(requestUrl, {
+        headers: { apikey },
+      });
 
       dispatch(setTickets(response.data.data, isMulti));
     }

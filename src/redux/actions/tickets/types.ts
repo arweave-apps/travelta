@@ -1,6 +1,7 @@
 import { Ticket } from '../../../interfaces/tickets';
 
 export const SET_TICKETS = 'SET_TICKETS';
+export const SET_MULTI_TICKETS = 'SET_MULTI_TICKETS';
 export const FETCH_TICKETS_REQUESTED = 'FETCH_TICKETS_REQUESTED';
 export const FETCH_TICKETS_ERROR = 'FETCH_TICKETS_ERROR';
 

@@ -1,10 +1,10 @@
 /* eslint-disable camelcase */
-interface CountryFrom {
+export interface CountryFrom {
   code: string;
   name: string;
 }
 
-interface CountryTo {
+export interface CountryTo {
   code: string;
   name: string;
 }
@@ -16,14 +16,14 @@ interface Duration {
 }
 
 interface Conversion {
-  EUR: number;
+  [key: string]: number;
 }
 
-interface BagsPrice {
+export interface BagsPrice {
   1: number;
 }
 
-interface Baglimit {
+export interface Baglimit {
   hand_height: number;
   hand_length: number;
   hand_weight: number;
@@ -61,13 +61,15 @@ export interface Route {
   guarantee: boolean;
   last_seen: string;
   refresh_timestamp: string;
-  equipment?: any;
+  equipment?: unknown;
   vehicle_type: string;
   local_arrival: string;
   utc_arrival: string;
   local_departure: string;
   utc_departure: string;
 }
+
+export type Routes = [string, string];
 
 export interface TicketSearch {
   id: string;
@@ -89,7 +91,7 @@ export interface TicketSearch {
   bags_price: BagsPrice;
   baglimit: Baglimit;
   availability: Availability;
-  routes: string[][];
+  routes: Routes[];
   airlines: string[];
   route: Route[];
   booking_token: string;
@@ -100,14 +102,12 @@ export interface TicketSearch {
   has_airport_change: boolean;
   technical_stops: number;
   virtual_interlining: boolean;
-  transfers: any[];
+  transfers: unknown[];
   local_arrival: string;
   utc_arrival: string;
   local_departure: string;
   utc_departure: string;
 }
-
-// interfaces for multi route
 
 export interface RouteMulti {
   id: string;
@@ -120,7 +120,7 @@ export interface RouteMulti {
   countryFrom: CountryFrom;
   countryTo: CountryTo;
   type_flights: string[];
-  nightsInDest?: any;
+  nightsInDest?: unknown;
   quality: number;
   distance: number;
   duration: Duration;
@@ -128,7 +128,7 @@ export interface RouteMulti {
   bags_price: BagsPrice;
   baglimit: Baglimit;
   availability: Availability;
-  routes: string[][];
+  routes: Routes[];
   airlines: string[];
   route: Route[];
   facilitated_booking_available: boolean;
@@ -136,7 +136,7 @@ export interface RouteMulti {
   has_airport_change: boolean;
   technical_stops: number;
   virtual_interlining: boolean;
-  transfers: any[];
+  transfers: unknown[];
   local_arrival: string;
   utc_arrival: string;
   local_departure: string;
@@ -144,12 +144,6 @@ export interface RouteMulti {
 }
 
 export interface TicketMulti {
-  /*
-    Fake id - missing in the received data.
-    Id will be installed in the ticket conversion function
-    and is required for correct destructuring
-  */
-  id: string;
   quality: number;
   duration: number;
   price: number;
@@ -157,7 +151,7 @@ export interface TicketMulti {
   pnr_count: number;
   booking_token: string;
   deep_link: string;
-  tracking_pixel?: any;
+  tracking_pixel?: unknown;
   multicity_version: string;
 }
 
