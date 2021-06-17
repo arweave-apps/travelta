@@ -21,7 +21,7 @@ import {
   getCurrency,
   getPassangers,
   getSelectedCabins,
-} from '../../selectors/selectros';
+} from '../../selectors/selectors';
 
 import { getInitialValues, validate, SearchFormsPropsType } from './helpers';
 

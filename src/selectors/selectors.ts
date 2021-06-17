@@ -11,7 +11,6 @@ import {
   FormsType,
 } from '../redux/reducers/pageSettings';
 import { CurrencyType } from '../redux/reducers/settings';
-import { ConvertedTicket } from '../redux/reducers/tickets';
 
 export const getSegments = (state: RootStateType): SegmentType[] =>
   state.aviaParams.segments;
@@ -40,5 +39,5 @@ export const getDisabledDates = (state: RootStateType): DisabledDatesType =>
 export const getCurrency = (state: RootStateType): CurrencyType =>
   state.settings.currency;
 
-export const getTickets = (state: RootStateType): ConvertedTicket[] =>
+export const getTickets = (state: RootStateType): unknown =>
   state.tickets.tickets;
