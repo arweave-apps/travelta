@@ -9,6 +9,7 @@ const initialState: InitialLocationsStateType = {
 };
 
 export type Cities = {
+  id: string;
   name: string;
   code: string;
   country: string;
@@ -27,8 +28,8 @@ const updateLocations = (
   }
 
   const newLocations: Cities[] = payload.map((location) => {
-    const { name, code, country } = location;
-    return { name, code, country: country.name };
+    const { id, name, code, country } = location;
+    return { id, name, code, country: country.name };
   });
 
   return { ...state, locations: newLocations };

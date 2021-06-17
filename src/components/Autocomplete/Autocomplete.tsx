@@ -108,11 +108,11 @@ const Autocomplete = ({
         <Dropdown>
           {locations &&
             locations.map((row, i) => {
-              const { name, code, country } = row;
+              const { id, name, code, country } = row;
 
               return (
                 <DropdownItem
-                  key={`${name}-${code}`}
+                  key={id}
                   hasHover
                   hasMargin
                   isActive={activeSuggestion === i}
