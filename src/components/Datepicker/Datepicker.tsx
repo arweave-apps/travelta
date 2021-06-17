@@ -9,7 +9,7 @@ import {
   getActiveInputDate,
   getActiveSegmentId,
   getDisabledDates,
-} from '../../selectors/selectros';
+} from '../../selectors/selectors';
 
 import {
   setActiveInputDate,

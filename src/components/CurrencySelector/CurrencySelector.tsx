@@ -8,7 +8,7 @@ import { CurrencyType } from '../../redux/reducers/settings';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 
-import { getCurrency } from '../../selectors/selectros';
+import { getCurrency } from '../../selectors/selectors';
 
 import Dropdown from '../Dropdown';
 import DropdownItem from '../Dropdown/DropdownItem/DropdownItem';

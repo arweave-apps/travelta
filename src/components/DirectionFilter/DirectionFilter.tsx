@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getActiveForm } from '../../selectors/selectros';
+import { getActiveForm } from '../../selectors/selectors';
 
 import { clearSegments } from '../../redux/actions/aviaParams/aviaParams';
 import { setActiveForm } from '../../redux/actions/pageSettings/pageSettings';

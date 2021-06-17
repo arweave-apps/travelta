@@ -1,6 +1,4 @@
 /* eslint-disable camelcase */
-export const SET_LOCATIONS = 'SET_LOCATIONS';
-
 interface Subdivision {
   id: string;
   name: string;
@@ -79,8 +77,3 @@ export interface LocationObject {
   car_rentals: CarRental[];
   type: string;
 }
-
-export type ActionSetLocationsType = {
-  type: typeof SET_LOCATIONS;
-  payload: LocationObject[] | null;
-};

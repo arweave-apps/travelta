@@ -7,45 +7,53 @@
     'ticket-expand ticket-expand';
   min-height: 262px;
 
+  background-color: $panel-color;
+  border-radius: $radius;
+  box-shadow: $panel-shadow-search;
+
+  margin-bottom: rem(30);
+
   &__left {
-    padding-left: 20px;
-    margin-right: 24px;
+    padding-left: rem(20);
+    margin-right: rem(24);
     grid-area: ticket-left;
   }
 
   &__airlines {
-    margin-bottom: 37px;
+    margin-bottom: rem(37);
 
     & > img {
-      width: 30px;
-      height: 30px;
+      width: rem(30);
+      height: rem(30);
       border-radius: 100%;
+      margin-right: rem(5);
     }
   }
 
   &__body {
     @include display(flex, flex-start, flex-start);
     flex-direction: column;
-    padding-top: 15px;
-    margin-bottom: 45px;
+    padding-top: rem(15);
   }
 
   &__route {
     @include display(flex, center, center);
+    margin-bottom: rem(45);
   }
 
   &__time {
     @include font-roboto(rem(36), $primary-text-color, normal, normal, rem(42));
   }
 
-  &__city {
+  &__cityname {
     @include font-roboto(
-      rem(16),
+      rem(14),
       $secondary-text-color,
       normal,
       normal,
-      rem(16)
+      rem(14)
     );
+    margin-bottom: rem(5);
   }
 
   &__date {
@@ -54,32 +62,32 @@
       $secondary-text-color,
       normal,
       normal,
-      rem(16)
+      rem(14)
     );
   }
 
   &__plane {
     @include display(flex, center, center);
     flex-direction: column;
-    width: 200px;
-    margin-left: 32px;
-    margin-right: 32px;
+    width: rem(200);
+    margin-left: rem(32);
+    margin-right: rem(32);
   }
 
   &__duration {
     @include font-roboto(rem(12), $primary-text-color, 500, normal, rem(14));
-    margin-bottom: 12px;
+    margin-bottom: rem(12);
   }
 
   &__timeline {
     position: relative;
     width: 100%;
-    height: 2px;
+    height: rem(2);
 
     background-color: $secondary-text-color;
-    border-radius: 10px;
+    border-radius: rem(10);
 
-    margin-bottom: 12px;
+    margin-bottom: rem(12);
   }
 
   &__point-wrapepr {
@@ -89,21 +97,20 @@
   }
 
   &__point {
-    width: 16px;
-    height: 16px;
+    width: rem(16);
+    height: rem(16);
 
     background: $warning-color;
-    border: 3px solid $panel-color;
+    border: rem(3) solid $panel-color;
     border-radius: 50%;
-    margin-right: 6px;
+    margin-right: rem(6);
   }
 
-  &__citycode {
+  &__citycodes {
     width: 100%;
     @include display(flex, space-between, center);
 
-    &-departure,
-    &-arrival {
+    &-item {
       @include font-roboto(
         rem(12),
         $alternative-text-color,
@@ -118,9 +125,9 @@
     @include display(flex, flex-start, center);
     flex-direction: column;
     border-left: $border-width solid $ticket-devider-color;
-    padding-top: 20px;
-    padding-right: 20px;
-    padding-left: 20px;
+    padding-top: rem(20);
+    padding-right: rem(20);
+    padding-left: rem(20);
 
     grid-area: ticket-right;
   }
@@ -128,15 +135,15 @@
   &__social {
     width: 100%;
     text-align: right;
-    margin-bottom: 15px;
+    margin-bottom: rem(15);
   }
 
   &__share,
   &__like {
-    width: 16px;
-    height: 16px;
+    width: rem(16);
+    height: rem(16);
     color: $secondary-text-color;
-    margin-left: 15px;
+    margin-left: rem(15);
 
     transition: color 0.2s linear, opacity 0.2s linear;
   }
@@ -177,31 +184,31 @@
 
   &__suitcase {
     @include font-roboto(rem(12), $warning-color, 400, normal, rem(14));
-    margin-bottom: 30px;
+    margin-bottom: rem(30);
   }
 
   &__handbag-icon {
-    width: 16px;
-    height: 16px;
+    width: rem(16);
+    height: rem(16);
     color: $secondary-text-color;
-    margin-right: 7px;
+    margin-right: rem(7);
   }
 
   &__suitcase-icon {
-    width: 12px;
-    height: 16px;
+    width: rem(12);
+    height: rem(16);
     color: $warning-color;
-    margin-right: 7px;
+    margin-right: rem(7);
   }
 
   &__buy-btn {
     width: 100%;
-    height: 50px;
+    height: rem(50);
   }
 
   &__expand-btn {
     width: 100%;
-    height: 25px;
+    height: rem(25);
 
     background: $ticket-devider-color;
     border: none;
@@ -212,8 +219,8 @@
     transition: background 0.2s linear;
 
     & > svg {
-      width: 14px;
-      height: 9px;
+      width: rem(14);
+      height: rem(9);
       color: $primary-text-color;
 
       transition: color 0.2s linear;

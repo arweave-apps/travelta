@@ -49,7 +49,7 @@
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
     "no-plusplus": "off",
-    "max-len": ["warn", 80, { "ignoreUrls": true }],
+    "max-len": ["warn", { "ignoreUrls": true, "ignoreTemplateLiterals": true }],
     "object-curly-spacing": ["error", "always"],
     "react/state-in-constructor": "off",
     "react/no-did-mount-set-state": "error",

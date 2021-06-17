@@ -4,34 +4,42 @@ import classNames from 'classnames';
 
 import './SimpleButton.scss';
 
+type ButtonBgType = 'accent' | 'second';
+
 type SimpleButtonProps = {
-  title: string;
-  submit?: boolean;
-  accent?: boolean;
-  second?: boolean;
+  bg: ButtonBgType;
+  link?: string;
+  isSubmit?: boolean;
+  children: React.ReactNode;
   disabled?: boolean;
   onClick?: () => void;
 };
 
 const SimpleButton = ({
-  title,
-  submit,
-  accent,
-  second,
+  isSubmit,
+  bg,
+  link,
+  children,
   disabled,
   onClick,
 }: SimpleButtonProps): JSX.Element => {
-  return (
+  return link ? (
+    <a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={classNames('button', `button--${bg}`)}
+    >
+      {children}
+    </a>
+  ) : (
     <button
-      type={submit ? 'submit' : 'button'}
-      className={classNames('button', {
-        'button--accent': accent,
-        'button--second': second,
-      })}
+      type={isSubmit ? 'submit' : 'button'}
+      className={classNames('button', `button--${bg}`)}
       onClick={onClick}
       disabled={disabled}
     >
-      {title}
+      {children}
     </button>
   );
 };

@@ -93,8 +93,11 @@ const AviaStandartForm = ({
       <div className="search-form__select">
         <PassangerSelector />
       </div>
+
       <div className="search-form__search-btn">
-        <SimpleButton submit accent title="Найти" disabled={isDisabledSubmit} />
+        <SimpleButton isSubmit bg="accent" disabled={isDisabledSubmit}>
+          Найти
+        </SimpleButton>
       </div>
     </div>
   );
