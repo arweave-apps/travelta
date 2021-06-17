@@ -1,14 +1,15 @@
+import { LocationObject } from '../../interfaces/locations';
 import {
   ActionSetLocationsType,
-  LocationObject,
   SET_LOCATIONS,
-} from '../actions/locations/type';
+} from '../actions/locations/types';
 
 const initialState: InitialLocationsStateType = {
   locations: null,
 };
 
 export type Cities = {
+  id: string;
   name: string;
   code: string;
   country: string;
@@ -27,8 +28,8 @@ const updateLocations = (
   }
 
   const newLocations: Cities[] = payload.map((location) => {
-    const { name, code, country } = location;
-    return { name, code, country: country.name };
+    const { id, name, code, country } = location;
+    return { id, name, code, country: country.name };
   });
 
   return { ...state, locations: newLocations };

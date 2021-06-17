@@ -15,7 +15,7 @@ import {
   FormsType,
 } from '../../../redux/reducers/pageSettings';
 
-import { getSegments } from '../../../selectors/selectros';
+import { getSegments } from '../../../selectors/selectors';
 
 import NextIcon from '../../../assets/images/icons/right-arrow.svg';
 import PrevIcon from '../../../assets/images/icons/left-arrow.svg';

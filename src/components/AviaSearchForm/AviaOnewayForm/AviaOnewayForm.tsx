@@ -95,7 +95,9 @@ const AviaOnewayForm = ({
       </div>
 
       <div className="oneway-form__search-btn">
-        <SimpleButton submit accent title="Найти" disabled={isDisabledSubmit} />
+        <SimpleButton isSubmit bg="accent" disabled={isDisabledSubmit}>
+          Найти
+        </SimpleButton>
       </div>
     </div>
   );

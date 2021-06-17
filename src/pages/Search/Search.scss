@@ -23,10 +23,5 @@
 }
 
 .tickets {
-  background-color: $panel-color;
-  border-radius: $radius;
-
   grid-area: tickets;
-
-  box-shadow: $panel-shadow-search;
 }

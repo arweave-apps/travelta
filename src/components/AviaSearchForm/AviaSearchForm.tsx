@@ -1,16 +1,16 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 
 import useDebounce from '../../hooks/useDebounce';
-import useOutsideClick from '../../hooks/useOutsideClick';
 
 import {
   fetchLocations,
   setLocations,
 } from '../../redux/actions/locations/locations';
+import { fetchTickets } from '../../redux/actions/tickets/tickets';
 import { setCity } from '../../redux/actions/aviaParams/aviaParams';
 import { FormsType } from '../../redux/reducers/pageSettings';
 
@@ -18,7 +18,10 @@ import {
   getActiveForm,
   getLocations,
   getSegments,
-} from '../../selectors/selectros';
+  getCurrency,
+  getPassangers,
+  getSelectedCabins,
+} from '../../selectors/selectors';
 
 import { getInitialValues, validate, SearchFormsPropsType } from './helpers';
 
@@ -52,6 +55,9 @@ const AviaSearchForm = (): JSX.Element => {
   const segments = useSelector(getSegments);
   const locations = useSelector(getLocations);
   const activeForm = useSelector(getActiveForm);
+  const currency = useSelector(getCurrency);
+  const passangers = useSelector(getPassangers);
+  const selectedCabins = useSelector(getSelectedCabins);
 
   const [activeInputName, setActiveInputName] = useState<string>('');
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
@@ -67,10 +73,13 @@ const AviaSearchForm = (): JSX.Element => {
     enableReinitialize: true,
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    onSubmit: (values) => {
+    onSubmit: () => {
       if (!history.location.pathname.includes('search')) {
         history.push(`${history.location.pathname}/search`);
       }
+      dispatch(
+        fetchTickets(segments, passangers, selectedCabins, currency, activeForm)
+      );
     },
   });
 

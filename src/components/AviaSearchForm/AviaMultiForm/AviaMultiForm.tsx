@@ -134,20 +134,18 @@ const AviaMultiForm = ({
 
         <div className="multicity-form__add-btn">
           <SimpleButton
-            second
-            title="+ добавить перелёт"
+            bg="second"
+            disabled={isDisabledSubmit}
             onClick={handleClickAddSegment}
-            disabled={segments.length > 5}
-          />
+          >
+            + добавить перелёт
+          </SimpleButton>
         </div>
 
         <div className="multicity-form__search-btn">
-          <SimpleButton
-            submit
-            accent
-            title="Найти"
-            disabled={isDisabledSubmit}
-          />
+          <SimpleButton isSubmit bg="accent" disabled={isDisabledSubmit}>
+            Найти
+          </SimpleButton>
         </div>
       </div>
     </div>

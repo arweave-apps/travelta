@@ -11,7 +11,7 @@ import {
   setPassangers,
 } from '../../redux/actions/aviaParams/aviaParams';
 
-import { getPassangers, getSelectedCabins } from '../../selectors/selectros';
+import { getPassangers, getSelectedCabins } from '../../selectors/selectors';
 
 import { cabinClassItems, getCabinClassName, passangerItems } from './helpers';
 
