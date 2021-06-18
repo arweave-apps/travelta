@@ -11,7 +11,7 @@ import {
   FormsType,
 } from '../redux/reducers/pageSettings';
 import { CurrencyType } from '../redux/reducers/settings';
-import { ConvertedData, ConvertedTickets } from '../utils/convertTickets';
+import { ConvertedTickets } from '../utils/convertTickets';
 
 export const getSegments = (state: RootStateType): SegmentType[] =>
   state.aviaParams.segments;
