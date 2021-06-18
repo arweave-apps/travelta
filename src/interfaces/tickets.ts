@@ -69,7 +69,7 @@ export interface Route {
   utc_departure: string;
 }
 
-export type Routes = [string, string];
+export type RoutesItem = string[];
 
 export interface TicketSearch {
   id: string;
@@ -91,7 +91,7 @@ export interface TicketSearch {
   bags_price: BagsPrice;
   baglimit: Baglimit;
   availability: Availability;
-  routes: Routes[];
+  routes: RoutesItem[];
   airlines: string[];
   route: Route[];
   booking_token: string;
@@ -128,7 +128,7 @@ export interface RouteMulti {
   bags_price: BagsPrice;
   baglimit: Baglimit;
   availability: Availability;
-  routes: Routes[];
+  routes: RoutesItem[];
   airlines: string[];
   route: Route[];
   facilitated_booking_available: boolean;

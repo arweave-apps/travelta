@@ -8,7 +8,7 @@ import {
   CountryTo,
   Route,
   RouteMulti,
-  Routes,
+  RoutesItem,
   Ticket,
   TicketMulti,
   TicketSearch,
@@ -85,7 +85,7 @@ const createFlight = (route: Route): Flight => {
   };
 };
 
-const getFlights = (route: Route[], currRouteArr: Routes) => {
+const getFlights = (route: Route[], currRouteArr: RoutesItem) => {
   let routeStarted = false;
   const [fromCityCode, toCityCode] = currRouteArr;
 
@@ -106,7 +106,7 @@ const getFlights = (route: Route[], currRouteArr: Routes) => {
   }, []);
 };
 
-const getTransfers = (route: Route[], currRouteArr: Routes) => {
+const getTransfers = (route: Route[], currRouteArr: RoutesItem) => {
   let transfer = {} as Transfer;
   let routeStarted = false;
   let prevAirportCode = '';
