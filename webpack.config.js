@@ -220,7 +220,18 @@ module.exports = {
           filename: `assets/images/${getFilename('[ext]')}`,
         },
       },
-      // SVG
+      // Only use file-loader aka assets/resource for svg's referenced in css/scss
+      {
+        test: /\.svg$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: `assets/images/icons/${getFilename('[ext]')}`,
+        },
+        issuer: {
+          and: [/\.(sa|sc|c)ss$/],
+        },
+      },
+      // Only use react-svg-loader for imports in js/jsx/ts/tsx files
       {
         test: /\.svg$/,
         use: [
@@ -234,6 +245,9 @@ module.exports = {
             },
           },
         ],
+        issuer: {
+          and: [/\.(js|jsx|ts|tsx)$/],
+        },
       },
       // Fonts loader
       {
