@@ -44,8 +44,12 @@ const Filters = ({
       const filteredTicketList = ticketsList.filter((ticketId) => {
         const { segments } = tickets[ticketId];
         const maxTrunsfersInTicket = Math.max(...trunsfersInTicket(segments));
+        const minTrunsfersInTicket = Math.min(...trunsfersInTicket(segments));
 
-        return activeTransfersFilters.includes(maxTrunsfersInTicket);
+        return (
+          activeTransfersFilters.includes(maxTrunsfersInTicket) ||
+          activeTransfersFilters.includes(minTrunsfersInTicket)
+        );
       });
 
       onSetVisibleTicketList(filteredTicketList);
