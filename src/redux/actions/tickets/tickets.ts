@@ -66,7 +66,18 @@ export const fetchTickets = (
     const isMulti = activeForm === 'multiCity';
     dispatch(ticketsRequested());
 
-    if (isMulti) {
+    /*
+    If the request comes from a multi-form and the number of segments
+    is equal to one, then the data from the server does not correspond
+    to the expected ones.
+
+    To exclude this, make a request as from the standart form.
+    Passing the inverted value of isMulti.
+
+    See line 137 - 141
+    */
+
+    if (isMulti && segments.length > 1) {
       const { url, apikey } = searchMultiTicketsConfig;
 
       const requests = segments.reduce((acc, segment) => {
@@ -123,7 +134,11 @@ export const fetchTickets = (
         headers: { apikey },
       });
 
-      dispatch(setTickets(response.data.data, isMulti));
+      if (segments.length === 1 && isMulti) {
+        dispatch(setTickets(response.data.data, !isMulti));
+      } else {
+        dispatch(setTickets(response.data.data, isMulti));
+      }
     }
   } catch (error) {
     dispatch(ticketsError(error));
