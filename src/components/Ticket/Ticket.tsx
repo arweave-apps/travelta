@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { v4 as uuidv4 } from 'uuid';
 import { useSelector } from 'react-redux';
 
 import { getCurrency } from '../../selectors/selectors';
@@ -77,15 +78,16 @@ const Ticket = ({ ticket }: TicketProps): JSX.Element => {
       <div className="ticket__left">
         <div className="ticket__body">
           <div className="ticket__airlines">
-            {ticket.airlines.map((airline) => {
-              return (
-                <img
-                  key={airline}
-                  src={`https://images.kiwi.com/airlines/64/${airline}.png`}
-                  alt="airline"
-                />
-              );
-            })}
+            {ticket.airlines.length > 0 &&
+              ticket.airlines.map((airline) => {
+                return (
+                  <img
+                    key={uuidv4()}
+                    src={`https://images.kiwi.com/airlines/64/${airline}.png`}
+                    alt="airline"
+                  />
+                );
+              })}
           </div>
 
           {ticket.segments.map(({ id, flights, duration, transfers }) => {
