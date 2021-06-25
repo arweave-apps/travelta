@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { getCurrency, getTickets } from '../../selectors/selectors';
+import { getCurrency } from '../../selectors/selectors';
 import getNounDeclension from '../../utils/getNounDeclension';
 
 import DownArrowIcon from '../../assets/images/icons/down-arrow.svg';
@@ -14,9 +14,10 @@ import SuitcaseIcon from '../../assets/images/icons/suitcase.svg';
 import SimpleButton from '../SimpleButton';
 
 import './Ticket.scss';
+import { TicketsWithSegments } from '../../utils/convertTickets';
 
 type TicketProps = {
-  ticketId: string;
+  ticket: TicketsWithSegments;
 };
 
 const currencySymbolsCharCodes = { RUB: 8381, EUR: 8364, USD: 65284 };
@@ -68,10 +69,8 @@ const getFormatedTimeFromSeconds = (seconds: number) => {
   return `${hour}ч ${minutes}мин`;
 };
 
-const Ticket = ({ ticketId }: TicketProps): JSX.Element => {
+const Ticket = ({ ticket }: TicketProps): JSX.Element => {
   const currency = useSelector(getCurrency);
-  const tickets = useSelector(getTickets);
-  const ticket = tickets[ticketId];
 
   return (
     <div className="ticket">

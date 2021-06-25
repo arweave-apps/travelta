@@ -1,0 +1,36 @@
+.filters {
+  background-color: $panel-color;
+  border-radius: $radius;
+
+  grid-area: filters;
+
+  box-shadow: $panel-shadow-search;
+
+  &__header {
+    @include display(flex, space-between, center);
+    margin-bottom: rem(45);
+
+    padding: rem(20) rem(20) 0 rem(20);
+  }
+
+  &__title {
+    @include font-roboto(rem(14), $primary-text-color, 500, normal, rem(16));
+  }
+
+  &__button-clear-all {
+    @include font-roboto(
+      rem(12),
+      $alternative-text-color,
+      normal,
+      normal,
+      rem(14)
+    );
+    background: none;
+    border: none;
+
+    &:hover {
+      cursor: pointer;
+      color: lighten($alternative-text-color, 9%);
+    }
+  }
+}

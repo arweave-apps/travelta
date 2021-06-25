@@ -13,15 +13,6 @@
   }
 }
 
-.filters {
-  background-color: $panel-color;
-  border-radius: $radius;
-
-  grid-area: filters;
-
-  box-shadow: $panel-shadow-search;
-}
-
 .tickets {
   grid-area: tickets;
 }
