@@ -15,7 +15,7 @@ import { getPassangers, getSelectedCabins } from '../../selectors/selectors';
 
 import { cabinClassItems, getCabinClassName, passangerItems } from './helpers';
 
-import DownArrowicon from '../../assets/images/icons/down-arrow.svg';
+import DownArrowIcon from '../../assets/images/icons/down-arrow.svg';
 
 import Counter from '../Counter';
 import RadioButton from '../RadioButton';
@@ -24,8 +24,10 @@ import TextBlock from '../TextBlock';
 import DropdownItem from '../Dropdown/DropdownItem/DropdownItem';
 import Divider from '../Divider';
 import TriggerButton from '../TriggerButton';
+import Icon from '../Icon';
 
 import './PassangerSelector.scss';
+
 import {
   CabinClassTypes,
   PassangersNamesTypes,
@@ -92,9 +94,7 @@ const PassangerSelector = (): JSX.Element => {
         </span>
       </div>
 
-      <DownArrowicon
-        className={classNames('down-arrow', { 'down-arrow--opened': isOpen })}
-      />
+      <Icon icon={<DownArrowIcon />} className="down-arrow" isActive={isOpen} />
 
       {isOpen && (
         <Dropdown>
