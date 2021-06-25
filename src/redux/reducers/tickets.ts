@@ -1,4 +1,5 @@
 import { convertData, ConvertedTickets } from '../../utils/convertTickets';
+import trunsfersInTicket from '../../utils/ticketsUtils';
 
 import {
   ActionSearchTypes,
@@ -7,9 +8,14 @@ import {
   SET_TICKETS,
 } from '../actions/tickets/types';
 
+export type TransfersRange =
+  | Record<'min' | 'max', number>
+  | Record<string, never>;
+
 const initialState = {
   tickets: {},
   ticketsList: [],
+  transfersRange: {},
   loading: false,
   error: null,
 };
@@ -17,6 +23,7 @@ const initialState = {
 export type InitialSearchStateType = {
   tickets: ConvertedTickets;
   ticketsList: string[] | never[];
+  transfersRange: TransfersRange;
   loading: boolean;
   error: null | Error;
 };
@@ -30,9 +37,36 @@ export const ticketsReducer = (
       const { tickets: ticketsData, isMulti } = action.payload;
       const { tickets, ticketsList } = convertData(ticketsData, isMulti);
 
+      const transfersRange = ticketsList.reduce(
+        (acc: TransfersRange, currTicketId) => {
+          const { segments } = tickets[currTicketId];
+          const transfers = trunsfersInTicket(segments);
+
+          const min = Math.min(...transfers);
+          const max = Math.max(...transfers);
+
+          if (
+            !Object.prototype.hasOwnProperty.call(acc, 'min') &&
+            !Object.prototype.hasOwnProperty.call(acc, 'max')
+          ) {
+            acc.min = min;
+            acc.max = max;
+
+            return acc;
+          }
+
+          acc.min = acc.min > min ? min : acc.min;
+          acc.max = acc.max < max ? max : acc.max;
+
+          return acc;
+        },
+        {}
+      );
+
       return {
         ...state,
         loading: false,
+        transfersRange,
         tickets,
         ticketsList,
       };
@@ -48,6 +82,7 @@ export const ticketsReducer = (
       return {
         tickets: {},
         ticketsList: [],
+        transfersRange: {},
         loading: false,
         error: action.payload,
       };

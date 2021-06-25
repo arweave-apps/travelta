@@ -287,7 +287,7 @@ type Transfer = {
   id: string;
 };
 
-type Segment = {
+export type Segment = {
   id: string;
   flights: Flight[];
   transfers: Transfer[];
@@ -296,7 +296,7 @@ type Segment = {
   bags: Bags;
 };
 
-type TicketsWithSegments = {
+export type TicketsWithSegments = {
   segments: Segment[];
   price: number;
   airlines: string[];
