@@ -1,10 +1,18 @@
 import React from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
-import { useSelector } from 'react-redux';
 
-import { getCurrency } from '../../selectors/selectors';
+import { CurrencyType } from '../../redux/reducers/settings';
+
 import getNounDeclension from '../../utils/getNounDeclension';
+import { TicketsWithSegments } from '../../utils/convertTickets';
+import getCurrencySymbolCharCode from '../../utils/getCurrencySymbolCharCode';
+
+import {
+  getFormatedTimeFromSeconds,
+  getFormattedStringDate,
+  getFormattedStringTime,
+} from './helpers';
 
 import DownArrowIcon from '../../assets/images/icons/down-arrow.svg';
 import HandbagIcon from '../../assets/images/icons/handbag.svg';
@@ -15,64 +23,13 @@ import SuitcaseIcon from '../../assets/images/icons/suitcase.svg';
 import SimpleButton from '../SimpleButton';
 
 import './Ticket.scss';
-import { TicketsWithSegments } from '../../utils/convertTickets';
 
 type TicketProps = {
   ticket: TicketsWithSegments;
+  currency: CurrencyType;
 };
 
-const currencySymbolsCharCodes = { RUB: 8381, EUR: 8364, USD: 65284 };
-
-const getFormattedStringDate = (date: Date) => {
-  const shortWeekDays = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
-
-  const monthsNames = [
-    'Января',
-    'Февраля',
-    'Марта',
-    'Апреля',
-    'Мая',
-    'Июня',
-    'Июля',
-    'Августа',
-    'Сентября',
-    'Октября',
-    'Ноября',
-    'Декабря',
-  ];
-
-  const dateNum = date.getDate();
-  const month = monthsNames[date.getMonth()];
-  const year = date.getFullYear();
-  const day = shortWeekDays[date.getDay()];
-
-  return `${dateNum} ${month} ${year}, ${day}`;
-};
-
-const getFormattedStringTime = (date: Date) => {
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-
-  return minutes < 10 ? `${hours}:0${minutes}` : `${hours}:${minutes}`;
-};
-
-const getFormatedTimeFromSeconds = (seconds: number) => {
-  const hours = seconds / 3600;
-  const hour = Math.trunc(hours);
-  const decimal = hours - hour;
-
-  if (decimal === 0) {
-    return `${hour}ч`;
-  }
-
-  const minutes = Math.trunc((decimal * 3600) / 60);
-
-  return `${hour}ч ${minutes}мин`;
-};
-
-const Ticket = ({ ticket }: TicketProps): JSX.Element => {
-  const currency = useSelector(getCurrency);
-
+const Ticket = ({ ticket, currency }: TicketProps): JSX.Element => {
   return (
     <div className="ticket">
       <div className="ticket__left">
@@ -191,7 +148,7 @@ const Ticket = ({ ticket }: TicketProps): JSX.Element => {
         <div className="ticket__buy-btn">
           <SimpleButton link={ticket.deep_link} bg="accent">
             Купить {ticket.price}
-            {String.fromCharCode(currencySymbolsCharCodes[currency])}
+            {getCurrencySymbolCharCode(currency)}
           </SimpleButton>
         </div>
       </div>

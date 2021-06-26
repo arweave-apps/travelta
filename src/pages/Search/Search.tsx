@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import {
+  getCurrency,
   getTickets,
   getTicketsList,
   getTicketsLoading,
@@ -15,6 +16,7 @@ import Filters from '../../components/Filters';
 import './Search.scss';
 
 const Search = (): JSX.Element => {
+  const currency = useSelector(getCurrency);
   const ticketsList = useSelector(getTicketsList);
   const tickets = useSelector(getTickets);
   const isTicketsLoading = useSelector(getTicketsLoading);
@@ -41,6 +43,7 @@ const Search = (): JSX.Element => {
             ticketsList={ticketsList}
             tickets={tickets}
             onSetVisibleTicketList={setVisibleTicketList}
+            currency={currency}
           />
           <Prediction />
           <SearchAction totalTickets={visibleTicketList.length} />
@@ -48,7 +51,13 @@ const Search = (): JSX.Element => {
           <div className="tickets">
             {visibleTicketList.length > 0 ? (
               visibleTicketList.map((ticketId) => {
-                return <Ticket key={ticketId} ticket={tickets[ticketId]} />;
+                return (
+                  <Ticket
+                    key={ticketId}
+                    ticket={tickets[ticketId]}
+                    currency={currency}
+                  />
+                );
               })
             ) : (
               <div>Выберите хотябы один фильтр</div>
