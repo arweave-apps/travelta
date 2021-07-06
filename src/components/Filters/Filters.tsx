@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
 
-import { getTrunsfersNum } from '../../selectors/selectors';
+import { CurrencyType } from '../../redux/reducers/settings';
+import {
+  ConvertedTickets,
+  TicketsWithSegments,
+} from '../../utils/convertTickets';
 
-import getNounDeclension from '../../utils/getNounDeclension';
-import { ConvertedTickets } from '../../utils/convertTickets';
-import { FilterList, isContentArray } from './helpers';
-
-import Checkbox from '../Checkbox';
-import List from '../List';
-import ListItem from '../List/ListItem';
-import FilterItem from './FilterItem';
+import TransferFilter from './TransferFilter';
+import PriceFilter from './PriceFilter';
 
 import './Filters.scss';
 import trunsfersInTicket from '../../utils/ticketsUtils';
@@ -19,134 +16,81 @@ type FiltersProps = {
   ticketsList: string[];
   tickets: ConvertedTickets;
   onSetVisibleTicketList: (ticketList: string[]) => void;
+  currency: CurrencyType;
 };
+
+export type ActivePriceFilters = Record<'minPrice' | 'maxPrice', number>;
 
 const Filters = ({
   ticketsList,
   tickets,
   onSetVisibleTicketList,
+  currency,
 }: FiltersProps): JSX.Element => {
-  const { min, max } = useSelector(getTrunsfersNum);
-
-  const [filtersList, setFiltersList] = useState<FilterList[]>([]);
+  const [openFiltersList, setOpenFiltersList] = useState<string[]>([]);
 
   const [activeTransfersFilters, setActiveTransfersFilters] = useState<
     number[]
   >([]);
 
+  const [
+    activePriceFilters,
+    setActivePriceFilters,
+  ] = useState<ActivePriceFilters | null>(null);
+
   useEffect(() => {
-    if (
-      isContentArray(filtersList[0]?.content) &&
-      activeTransfersFilters.length === filtersList[0].content.length
-    ) {
-      onSetVisibleTicketList(ticketsList);
-    } else {
-      const filteredTicketList = ticketsList.filter((ticketId) => {
-        const { segments } = tickets[ticketId];
-        const maxTrunsfersInTicket = Math.max(...trunsfersInTicket(segments));
-        const minTrunsfersInTicket = Math.min(...trunsfersInTicket(segments));
+    const filterByTransfers = (ticket: TicketsWithSegments) => {
+      const { segments } = ticket;
 
-        return (
-          activeTransfersFilters.includes(maxTrunsfersInTicket) ||
-          activeTransfersFilters.includes(minTrunsfersInTicket)
-        );
-      });
+      const maxTrunsfersInTicket = Math.max(...trunsfersInTicket(segments));
+      const minTrunsfersInTicket = Math.min(...trunsfersInTicket(segments));
 
-      onSetVisibleTicketList(filteredTicketList);
-    }
+      return (
+        activeTransfersFilters.includes(maxTrunsfersInTicket) ||
+        activeTransfersFilters.includes(minTrunsfersInTicket)
+      );
+    };
+
+    const filterByPrice = (ticket: TicketsWithSegments) => {
+      const { price } = ticket;
+
+      return (
+        activePriceFilters &&
+        price <= activePriceFilters?.maxPrice &&
+        price >= activePriceFilters?.minPrice
+      );
+    };
+
+    const visibleTickets = ticketsList.filter((ticketId) => {
+      const ticket = tickets[ticketId];
+
+      return filterByTransfers(ticket) && filterByPrice(ticket);
+    });
+
+    onSetVisibleTicketList(visibleTickets);
   }, [
+    activePriceFilters,
     activeTransfersFilters,
-    activeTransfersFilters.length,
-    filtersList,
     onSetVisibleTicketList,
     tickets,
     ticketsList,
   ]);
 
-  useEffect(() => {
-    const checkboxesData = [];
+  const handleToggleActiveFilterItem = useCallback(
+    (id: string) => {
+      const idx = openFiltersList.indexOf(id);
 
-    for (let num = min; num <= max; num++) {
-      const label =
-        num === 0
-          ? 'без пересадок'
-          : `${num} ${getNounDeclension(num, [
-              'пересадка',
-              'пересадки',
-              'пересадок',
-            ])}`;
-
-      const checkboxData = {
-        contentId: `${num}-transfer-checkbox`,
-        label,
-      };
-
-      checkboxesData.push(checkboxData);
-    }
-
-    setActiveTransfersFilters(
-      checkboxesData.map((checkbox) => parseInt(checkbox.contentId, 10))
-    );
-
-    setFiltersList([
-      {
-        id: 'filters-transfersNum',
-        active: false,
-        title: 'Пересадки',
-        content: checkboxesData,
-      },
-      {
-        id: 'filters-price',
-        active: false,
-        title: 'Цена билета',
-        content: <span>asdads</span>,
-      },
-      {
-        id: 'filters-airlines',
-        active: false,
-        title: 'Авиакомпании',
-        content: <span>asdadsa</span>,
-      },
-    ]);
-  }, [max, min]);
-
-  const handleClickFilterItem = (id: string) => {
-    const newFiltersList = filtersList.map((list) => {
-      return list.id === id ? { ...list, active: !list.active } : list;
-    });
-
-    setFiltersList(newFiltersList);
-  };
-
-  const handleClickCheckbox = (checkboxId: string) => {
-    if (
-      checkboxId === 'all-transfer-checkbox' &&
-      isContentArray(filtersList[0].content)
-    ) {
-      if (activeTransfersFilters.length === filtersList[0].content.length) {
-        setActiveTransfersFilters([]);
+      if (idx === -1) {
+        setOpenFiltersList([...openFiltersList, id]);
       } else {
-        const newActiveTransfersFilters = filtersList[0].content.map(
-          (checkbox) => {
-            return parseInt(checkbox.contentId, 10);
-          }
-        );
-
-        setActiveTransfersFilters(newActiveTransfersFilters);
+        setOpenFiltersList([
+          ...openFiltersList.slice(0, idx),
+          ...openFiltersList.slice(idx + 1),
+        ]);
       }
-    } else if (activeTransfersFilters.includes(parseInt(checkboxId, 10))) {
-      const idx = activeTransfersFilters.indexOf(parseInt(checkboxId, 10));
-      setActiveTransfersFilters([
-        ...activeTransfersFilters.slice(0, idx),
-        ...activeTransfersFilters.slice(idx + 1),
-      ]);
-    } else {
-      setActiveTransfersFilters([
-        ...activeTransfersFilters,
-        parseInt(checkboxId, 10),
-      ]);
-    }
-  };
+    },
+    [openFiltersList]
+  );
 
   return (
     <div className="filters">
@@ -158,69 +102,19 @@ const Filters = ({
         </button>
       </div>
 
-      {filtersList.map((item) => {
-        const { id, active, title, content } = item;
+      <TransferFilter
+        isOpen={openFiltersList.includes('transferFilter')}
+        onToggle={handleToggleActiveFilterItem}
+        activeFilters={activeTransfersFilters}
+        onSetActiveFilters={setActiveTransfersFilters}
+      />
 
-        if (isContentArray(content)) {
-          if (content.length > 0) {
-            return (
-              <FilterItem
-                key={id}
-                title={title}
-                isActive={active}
-                onClick={() => handleClickFilterItem(id)}
-              >
-                <List>
-                  <ListItem>
-                    <Checkbox
-                      id="all-transfer-checkbox"
-                      label="Все"
-                      checked={
-                        isContentArray(filtersList[0].content) &&
-                        activeTransfersFilters.length ===
-                          filtersList[0].content.length
-                      }
-                      onChange={() =>
-                        handleClickCheckbox('all-transfer-checkbox')
-                      }
-                    />
-                  </ListItem>
-
-                  {content.map((checkbox) => {
-                    const { contentId, label } = checkbox;
-
-                    return (
-                      <ListItem key={contentId}>
-                        <Checkbox
-                          id={contentId}
-                          label={label}
-                          checked={activeTransfersFilters.includes(
-                            parseInt(contentId, 10)
-                          )}
-                          onChange={() => handleClickCheckbox(contentId)}
-                        />
-                      </ListItem>
-                    );
-                  })}
-                </List>
-              </FilterItem>
-            );
-          }
-
-          return null;
-        }
-
-        return (
-          <FilterItem
-            key={id}
-            title={title}
-            isActive={active}
-            onClick={() => handleClickFilterItem(id)}
-          >
-            {content}
-          </FilterItem>
-        );
-      })}
+      <PriceFilter
+        isOpen={openFiltersList.includes('priceFilter')}
+        onToggle={handleToggleActiveFilterItem}
+        onSetActiveFilters={setActivePriceFilters}
+        currency={currency}
+      />
     </div>
   );
 };
