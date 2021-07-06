@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { CurrencyType } from '../../redux/reducers/settings';
-import { ConvertedTickets } from '../../utils/convertTickets';
+import { ConvertedTickets, TicketsList } from '../../utils/convertTickets';
 
 import useFilters from './useFilters';
 
@@ -11,9 +11,9 @@ import PriceFilter from './PriceFilter';
 import './Filters.scss';
 
 type FiltersProps = {
-  ticketsList: string[];
+  ticketsList: TicketsList;
   tickets: ConvertedTickets;
-  onSetVisibleTicketList: (ticketList: string[]) => void;
+  onSetVisibleTicketList: (ticketList: TicketsList) => void;
   currency: CurrencyType;
 };
 
@@ -25,7 +25,7 @@ const Filters = ({
   onSetVisibleTicketList,
   currency,
 }: FiltersProps): JSX.Element => {
-  const [openFiltersList, setOpenFiltersList] = useState<string[]>([]);
+  const [openFiltersList, setOpenFiltersList] = useState<TicketsList>([]);
 
   const [activeTransfersFilters, setActiveTransfersFilters] = useState<
     number[]

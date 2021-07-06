@@ -1,4 +1,8 @@
-import { convertData, ConvertedTickets } from '../../utils/convertTickets';
+import {
+  convertData,
+  ConvertedTickets,
+  TicketsList,
+} from '../../utils/convertTickets';
 import trunsfersInTicket from '../../utils/ticketsUtils';
 
 import {
@@ -27,7 +31,7 @@ const initialState = {
 
 export type InitialSearchStateType = {
   tickets: ConvertedTickets;
-  ticketsList: string[] | never[];
+  ticketsList: TicketsList;
   transfersRange: TransfersRange;
   priceRange: PriceRange;
   loading: boolean;

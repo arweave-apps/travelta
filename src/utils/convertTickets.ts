@@ -21,7 +21,9 @@ function isTicketSearchId(ticket: Ticket): ticket is TicketSearch {
 const getIdFromMultiRoutes = (routes: RouteMulti[]) =>
   routes.map((currRoute) => currRoute.id).join('|');
 
-const getTicketIdList = (data: Ticket[], isMulti = false) =>
+export type TicketsList = string[];
+
+const getTicketIdList = (data: Ticket[], isMulti = false): TicketsList =>
   data.map((ticket) => {
     let id = '';
 

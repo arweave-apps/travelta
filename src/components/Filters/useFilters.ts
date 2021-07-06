@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   ConvertedTickets,
+  TicketsList,
   TicketsWithSegments,
 } from '../../utils/convertTickets';
 import trunsfersInTicket from '../../utils/ticketsUtils';
@@ -9,10 +10,10 @@ import { ActivePriceFilters } from './Filters';
 export default function useFilters(
   activeTransfersFilters: number[],
   activePriceFilters: ActivePriceFilters | null,
-  ticketsList: string[],
+  ticketsList: TicketsList,
   tickets: ConvertedTickets
-): string[] {
-  const [visibleTickets, setVisibleTickets] = useState<string[]>([]);
+): TicketsList {
+  const [visibleTickets, setVisibleTickets] = useState<TicketsList>([]);
 
   useEffect(() => {
     const filterByTransfers = (ticket: TicketsWithSegments) => {

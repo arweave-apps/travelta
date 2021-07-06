@@ -11,7 +11,7 @@ import {
   FormsType,
 } from '../redux/reducers/pageSettings';
 import { CurrencyType } from '../redux/reducers/settings';
-import { ConvertedTickets } from '../utils/convertTickets';
+import { ConvertedTickets, TicketsList } from '../utils/convertTickets';
 import { PriceRange, TransfersRange } from '../redux/reducers/tickets';
 
 export const getSegments = (state: RootStateType): SegmentType[] =>
@@ -44,7 +44,7 @@ export const getCurrency = (state: RootStateType): CurrencyType =>
 export const getTickets = (state: RootStateType): ConvertedTickets =>
   state.tickets.tickets;
 
-export const getTicketsList = (state: RootStateType): string[] =>
+export const getTicketsList = (state: RootStateType): TicketsList =>
   state.tickets.ticketsList;
 
 export const getTrunsfersNum = (state: RootStateType): TransfersRange =>
