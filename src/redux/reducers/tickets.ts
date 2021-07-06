@@ -12,10 +12,15 @@ export type TransfersRange =
   | Record<'min' | 'max', number>
   | Record<string, never>;
 
+export type PriceRange =
+  | Record<'minPrice' | 'maxPrice', number>
+  | Record<string, never>;
+
 const initialState = {
   tickets: {},
   ticketsList: [],
   transfersRange: {},
+  priceRange: {},
   loading: false,
   error: null,
 };
@@ -24,6 +29,7 @@ export type InitialSearchStateType = {
   tickets: ConvertedTickets;
   ticketsList: string[] | never[];
   transfersRange: TransfersRange;
+  priceRange: PriceRange;
   loading: boolean;
   error: null | Error;
 };
@@ -63,10 +69,30 @@ export const ticketsReducer = (
         {}
       );
 
+      const priceRange = ticketsList.reduce((acc: PriceRange, currTicketId) => {
+        const { price } = tickets[currTicketId];
+
+        if (
+          !Object.prototype.hasOwnProperty.call(acc, 'minPrice') &&
+          !Object.prototype.hasOwnProperty.call(acc, 'maxPrice')
+        ) {
+          acc.minPrice = price;
+          acc.maxPrice = price;
+
+          return acc;
+        }
+
+        acc.minPrice = acc.minPrice > price ? price : acc.minPrice;
+        acc.maxPrice = acc.maxPrice < price ? price : acc.maxPrice;
+
+        return acc;
+      }, {});
+
       return {
         ...state,
         loading: false,
         transfersRange,
+        priceRange,
         tickets,
         ticketsList,
       };
@@ -83,6 +109,7 @@ export const ticketsReducer = (
         tickets: {},
         ticketsList: [],
         transfersRange: {},
+        priceRange: {},
         loading: false,
         error: action.payload,
       };
