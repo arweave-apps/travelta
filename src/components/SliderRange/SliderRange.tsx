@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+/* eslint-disable no-param-reassign */
+import React, { useCallback, useEffect, useRef } from 'react';
 
 import classNames from 'classnames';
 
@@ -8,92 +9,106 @@ import getCurrencySymbolCharCode from '../../utils/getCurrencySymbolCharCode';
 
 import './SliderRange.scss';
 
-type SliderRangeProps = { min: number; max: number; currency: CurrencyType };
+type SliderRangeProps = {
+  minRange: number;
+  maxRange: number;
+  minValue: number;
+  maxValue: number;
+  currency: CurrencyType;
+  onChangeMinPice: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeMaxPrice: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
-const SliderRange = ({ max, min, currency }: SliderRangeProps): JSX.Element => {
-  const [minValue, setMinValue] = useState(min);
-  const [maxValue, setMaxValue] = useState(max);
-  const rangeRef = useRef<HTMLDivElement>(null);
-  const minValueRef = useRef(min);
-  const maxValueRef = useRef(max);
+const SliderRange = ({
+  maxRange,
+  minRange,
+  minValue,
+  maxValue,
+  currency,
+  onChangeMinPice,
+  onChangeMaxPrice,
+}: SliderRangeProps): JSX.Element => {
+  const sliderRangeRef = useRef<HTMLDivElement>(null);
 
-  const getPercent = (value: number) => {
-    return Math.round(((value - min) / (max - min)) * 100);
-  };
+  const getPercent = useCallback(
+    (value: number) => {
+      return Math.round(((value - minRange) / (maxRange - minRange)) * 100);
+    },
+    [maxRange, minRange]
+  );
+
+  useEffect(() => {
+    const minPercent = getPercent(minValue);
+    const maxPercent = getPercent(maxValue);
+
+    if (sliderRangeRef.current) {
+      sliderRangeRef.current.style.left = `${minPercent}%`;
+      sliderRangeRef.current.style.width = `${maxPercent - minPercent}%`;
+    }
+  }, [getPercent, maxValue, minValue, sliderRangeRef]);
+
+  useEffect(() => {
+    const minPercent = getPercent(minValue);
+    const maxPercent = getPercent(maxValue);
+
+    if (sliderRangeRef.current) {
+      sliderRangeRef.current.style.width = `${maxPercent - minPercent}%`;
+    }
+  }, [getPercent, maxValue, minValue, sliderRangeRef]);
 
   return (
-    <div className="slider-range">
-      <label className="slider-range__label" htmlFor="input-range-left">
-        <input
-          className={classNames(
-            'slider-range__input',
-            'slider-range__input--left',
-            {
-              'slider-range__input--above': minValue > max - 100,
-            }
-          )}
-          id="input-range-left"
-          type="range"
-          min={min}
-          max={max}
-          value={minValue}
-          onChange={(e) => {
-            const value = Math.min(+e.target.value, maxValue - 1);
+    <>
+      <div className="slider-info">
+        <span className="slider-info__value">
+          {`от ${minValue} ${getCurrencySymbolCharCode(currency)}`}
+        </span>
 
-            setMinValue(value);
+        <span className="slider-info__value">
+          {`от ${maxValue} ${getCurrencySymbolCharCode(currency)}`}
+        </span>
+      </div>
 
-            if (rangeRef.current) {
-              rangeRef.current.style.left = `${getPercent(minValue)}%`;
-              rangeRef.current.style.width = `${
-                getPercent(maxValueRef.current) - getPercent(minValue)
-              }%`;
-            }
+      <div className="slider-range">
+        <label className="slider-range__label" htmlFor="input-range-left">
+          <input
+            className={classNames(
+              'slider-range__input',
+              'slider-range__input--left',
+              {
+                'slider-range__input--above': minValue > maxRange - 100,
+              }
+            )}
+            id="input-range-left"
+            type="range"
+            min={minRange}
+            max={maxRange}
+            value={minValue}
+            onChange={(e) => {
+              onChangeMinPice(e);
+            }}
+          />
+        </label>
 
-            minValueRef.current = value;
-          }}
-        />
-      </label>
+        <label className="slider-range__label" htmlFor="input-range-right">
+          <input
+            className="slider-range__input slider-range__input--right"
+            id="input-range-right"
+            type="range"
+            min={minRange}
+            max={maxRange}
+            value={maxValue}
+            onChange={(e) => {
+              onChangeMaxPrice(e);
+            }}
+          />
+        </label>
 
-      <label className="slider-range__label" htmlFor="input-range-right">
-        <input
-          className="slider-range__input slider-range__input--right"
-          id="input-range-right"
-          type="range"
-          min={min}
-          max={max}
-          value={maxValue}
-          onChange={(e) => {
-            const value = Math.max(+e.target.value, minValue + 1);
-
-            setMaxValue(value);
-
-            if (rangeRef.current) {
-              rangeRef.current.style.width = `${
-                getPercent(maxValue) - getPercent(minValueRef.current)
-              }%`;
-            }
-
-            maxValueRef.current = value;
-          }}
-        />
-      </label>
-
-      <div className="slider">
-        <div className="slider__track" />
-        <div className="slider__range" ref={rangeRef} />
-
-        <div className="slider__info">
-          <div className="slider__info-value">
-            от {minValue}
-            {getCurrencySymbolCharCode(currency)}
-          </div>
-          <div className="slider__info-value">
-            до {maxValue}
-            {getCurrencySymbolCharCode(currency)}
-          </div>
+        <div className="slider">
+          <div className="slider__track" />
+          <div className="slider__interval" ref={sliderRangeRef} />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,5 +1,18 @@
 $input-width: 255;
 
+.slider-info {
+  @include display(flex, space-between, center);
+  width: 100%;
+
+  margin-bottom: rem(12);
+  margin-top: rem(9);
+  padding: 0 rem(20);
+
+  &__value {
+    @include font-roboto(rem(14), $primary-text-color, normal, normal, rem(16));
+  }
+}
+
 .slider-range {
   display: flex;
   justify-content: center;
@@ -79,7 +92,7 @@ $input-width: 255;
   width: rem($input-width);
 
   &__track,
-  &__range {
+  &__interval {
     position: absolute;
     width: 100%;
     height: rem(1);
@@ -91,17 +104,8 @@ $input-width: 255;
     z-index: 1;
   }
 
-  &__range {
+  &__interval {
     background: $active-color;
     z-index: 2;
-  }
-
-  &__info {
-    width: 100%;
-    @include display(flex, space-between, center);
-    @include font-roboto(rem(14), $primary-text-color, nurmal, normal, rem(16));
-
-    margin-bottom: 7px;
-    margin-top: 9px;
   }
 }
