@@ -1,16 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { CurrencyType } from '../../redux/reducers/settings';
-import {
-  ConvertedTickets,
-  TicketsWithSegments,
-} from '../../utils/convertTickets';
+import { ConvertedTickets } from '../../utils/convertTickets';
+
+import useFilters from './useFilters';
 
 import TransferFilter from './TransferFilter';
 import PriceFilter from './PriceFilter';
 
 import './Filters.scss';
-import trunsfersInTicket from '../../utils/ticketsUtils';
 
 type FiltersProps = {
   ticketsList: string[];
@@ -38,43 +36,16 @@ const Filters = ({
     setActivePriceFilters,
   ] = useState<ActivePriceFilters | null>(null);
 
-  useEffect(() => {
-    const filterByTransfers = (ticket: TicketsWithSegments) => {
-      const { segments } = ticket;
-
-      const maxTrunsfersInTicket = Math.max(...trunsfersInTicket(segments));
-      const minTrunsfersInTicket = Math.min(...trunsfersInTicket(segments));
-
-      return (
-        activeTransfersFilters.includes(maxTrunsfersInTicket) ||
-        activeTransfersFilters.includes(minTrunsfersInTicket)
-      );
-    };
-
-    const filterByPrice = (ticket: TicketsWithSegments) => {
-      const { price } = ticket;
-
-      return (
-        activePriceFilters &&
-        price <= activePriceFilters?.maxPrice &&
-        price >= activePriceFilters?.minPrice
-      );
-    };
-
-    const visibleTickets = ticketsList.filter((ticketId) => {
-      const ticket = tickets[ticketId];
-
-      return filterByTransfers(ticket) && filterByPrice(ticket);
-    });
-
-    onSetVisibleTicketList(visibleTickets);
-  }, [
-    activePriceFilters,
+  const visibleTickets = useFilters(
     activeTransfersFilters,
-    onSetVisibleTicketList,
-    tickets,
+    activePriceFilters,
     ticketsList,
-  ]);
+    tickets
+  );
+
+  useEffect(() => {
+    onSetVisibleTicketList(visibleTickets);
+  }, [onSetVisibleTicketList, visibleTickets]);
 
   const handleToggleActiveFilterItem = useCallback(
     (id: string) => {
