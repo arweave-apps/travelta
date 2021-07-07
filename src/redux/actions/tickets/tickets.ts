@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import {
+  airlinesConfig,
   searchMultiTicketsConfig,
   searchTicketsConfig,
 } from '../../../api/apiConfig';
@@ -19,6 +20,8 @@ import {
   SET_TICKETS,
   FETCH_TICKETS_REQUESTED,
   FETCH_TICKETS_ERROR,
+  SET_AIRLINES,
+  Carrier,
 } from './types';
 
 type ThunkType = ThunkAction<
@@ -53,6 +56,23 @@ export const setTickets = (
   payload: { tickets, isMulti },
 });
 
+export const setAirlines = (airlinesData: Carrier[]): ActionSearchTypes => ({
+  type: SET_AIRLINES,
+  payload: airlinesData,
+});
+
+export const fetchAirlines = (): ThunkType => async (dispatch) => {
+  const { url } = airlinesConfig;
+
+  try {
+    const response = await axios(url);
+
+    dispatch(setAirlines(response.data));
+  } catch (error) {
+    dispatch(ticketsError(error));
+  }
+};
+
 export const fetchTickets = (
   segments: SegmentType[],
   passengers: PassangersType,
@@ -66,7 +86,18 @@ export const fetchTickets = (
     const isMulti = activeForm === 'multiCity';
     dispatch(ticketsRequested());
 
-    if (isMulti) {
+    /*
+    If the request comes from a multi-form and the number of segments
+    is equal to one, then the data from the server does not correspond
+    to the expected ones.
+
+    To exclude this, make a request as from the standart form.
+    Passing the inverted value of isMulti.
+
+    See line 137 - 141
+    */
+
+    if (isMulti && segments.length > 1) {
       const { url, apikey } = searchMultiTicketsConfig;
 
       const requests = segments.reduce((acc, segment) => {
@@ -123,7 +154,11 @@ export const fetchTickets = (
         headers: { apikey },
       });
 
-      dispatch(setTickets(response.data.data, isMulti));
+      if (segments.length === 1 && isMulti) {
+        dispatch(setTickets(response.data.data, !isMulti));
+      } else {
+        dispatch(setTickets(response.data.data, isMulti));
+      }
     }
   } catch (error) {
     dispatch(ticketsError(error));

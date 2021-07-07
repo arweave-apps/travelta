@@ -3,7 +3,7 @@
   grid-area: action;
 
   &__total-tickets {
-    @include font-roboto(rem(14), $primary-text-color, normal, normal, rem(16));
+    @include font-roboto(rem(14), $primary-text-color, 500, normal, rem(16));
   }
 
   &__sort {

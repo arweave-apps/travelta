@@ -1,0 +1,15 @@
+.list__item {
+  @include display(flex, flex-start, center);
+
+  width: 100%;
+  height: 40px;
+
+  padding: 0 rem(20);
+
+  transition: bacground 0.2s linear;
+
+  &:hover {
+    background: #e8f7fc;
+    cursor: pointer;
+  }
+}

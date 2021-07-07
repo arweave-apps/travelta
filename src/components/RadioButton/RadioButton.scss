@@ -74,15 +74,3 @@
     }
   }
 }
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0px 0px 0px 1px rgba($active-color, 0);
-  }
-  50% {
-    box-shadow: 0px 0px 0px 10px rgba($active-color, 0.12);
-  }
-  100% {
-    box-shadow: 0px 0px 0px 10px rgba($active-color, 0);
-  }
-}

@@ -8,7 +8,7 @@ import {
   CountryTo,
   Route,
   RouteMulti,
-  Routes,
+  RoutesItem,
   Ticket,
   TicketMulti,
   TicketSearch,
@@ -21,7 +21,9 @@ function isTicketSearchId(ticket: Ticket): ticket is TicketSearch {
 const getIdFromMultiRoutes = (routes: RouteMulti[]) =>
   routes.map((currRoute) => currRoute.id).join('|');
 
-const getTicketIdList = (data: Ticket[], isMulti = false) =>
+export type TicketsList = string[];
+
+const getTicketIdList = (data: Ticket[], isMulti = false): TicketsList =>
   data.map((ticket) => {
     let id = '';
 
@@ -85,7 +87,7 @@ const createFlight = (route: Route): Flight => {
   };
 };
 
-const getFlights = (route: Route[], currRouteArr: Routes) => {
+const getFlights = (route: Route[], currRouteArr: RoutesItem) => {
   let routeStarted = false;
   const [fromCityCode, toCityCode] = currRouteArr;
 
@@ -106,7 +108,7 @@ const getFlights = (route: Route[], currRouteArr: Routes) => {
   }, []);
 };
 
-const getTransfers = (route: Route[], currRouteArr: Routes) => {
+const getTransfers = (route: Route[], currRouteArr: RoutesItem) => {
   let transfer = {} as Transfer;
   let routeStarted = false;
   let prevAirportCode = '';
@@ -287,7 +289,7 @@ type Transfer = {
   id: string;
 };
 
-type Segment = {
+export type Segment = {
   id: string;
   flights: Flight[];
   transfers: Transfer[];
@@ -296,7 +298,7 @@ type Segment = {
   bags: Bags;
 };
 
-type TicketsWithSegments = {
+export type TicketsWithSegments = {
   segments: Segment[];
   price: number;
   airlines: string[];
