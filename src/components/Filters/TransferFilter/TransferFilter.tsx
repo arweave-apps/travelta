@@ -14,6 +14,7 @@ type CheckboxsDataType = {
   label: string;
   value: number;
 };
+
 type ActiveTransferFilters = number[];
 
 type TransferFilterProps = {

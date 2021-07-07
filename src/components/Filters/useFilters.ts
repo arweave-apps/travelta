@@ -10,6 +10,7 @@ import { ActivePriceFilters } from './Filters';
 export default function useFilters(
   activeTransfersFilters: number[],
   activePriceFilters: ActivePriceFilters | null,
+  activeAirlinesFilters: string[],
   ticketsList: TicketsList,
   tickets: ConvertedTickets
 ): TicketsList {
@@ -38,14 +39,32 @@ export default function useFilters(
       );
     };
 
+    const filterByAirlines = (ticket: TicketsWithSegments) => {
+      const { airlines } = ticket;
+
+      return airlines.some((airline) =>
+        activeAirlinesFilters.includes(airline)
+      );
+    };
+
     const newTickets = ticketsList.filter((ticketId) => {
       const ticket = tickets[ticketId];
 
-      return filterByTransfers(ticket) && filterByPrice(ticket);
+      return (
+        filterByTransfers(ticket) &&
+        filterByPrice(ticket) &&
+        filterByAirlines(ticket)
+      );
     });
 
     setVisibleTickets(newTickets);
-  }, [activePriceFilters, activeTransfersFilters, tickets, ticketsList]);
+  }, [
+    activeAirlinesFilters,
+    activePriceFilters,
+    activeTransfersFilters,
+    tickets,
+    ticketsList,
+  ]);
 
   return visibleTickets;
 }

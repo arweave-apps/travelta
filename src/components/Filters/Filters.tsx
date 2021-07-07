@@ -7,6 +7,7 @@ import useFilters from './useFilters';
 
 import TransferFilter from './TransferFilter';
 import PriceFilter from './PriceFilter';
+import AirlineFilter from './AirlineFilter';
 
 import './Filters.scss';
 
@@ -36,9 +37,14 @@ const Filters = ({
     setActivePriceFilters,
   ] = useState<ActivePriceFilters | null>(null);
 
+  const [activeAirlinesFilters, setActiveAirlinesFilters] = useState<string[]>(
+    []
+  );
+
   const visibleTickets = useFilters(
     activeTransfersFilters,
     activePriceFilters,
+    activeAirlinesFilters,
     ticketsList,
     tickets
   );
@@ -85,6 +91,13 @@ const Filters = ({
         onToggle={handleToggleActiveFilterItem}
         onSetActiveFilters={setActivePriceFilters}
         currency={currency}
+      />
+
+      <AirlineFilter
+        isOpen={openFiltersList.includes('airlineFilter')}
+        onToggle={handleToggleActiveFilterItem}
+        activeFilters={activeAirlinesFilters}
+        onSetActiveFilters={setActiveAirlinesFilters}
       />
     </div>
   );

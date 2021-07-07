@@ -7,8 +7,10 @@ import trunsfersInTicket from '../../utils/ticketsUtils';
 
 import {
   ActionSearchTypes,
+  Carrier,
   FETCH_TICKETS_ERROR,
   FETCH_TICKETS_REQUESTED,
+  SET_AIRLINES,
   SET_TICKETS,
 } from '../actions/tickets/types';
 
@@ -24,6 +26,7 @@ export type FiltersLimits =
   | {
       transfersRange: TransfersRange;
       priceRange: PriceRange;
+      airlines: string[];
     }
   | Record<string, never>;
 
@@ -31,14 +34,18 @@ const initialState = {
   tickets: {},
   ticketsList: [],
   filtersLimits: {},
+  airlinesData: {},
   loading: false,
   error: null,
 };
+
+export type AirlinesData = Record<string, Carrier> | Record<string, never>;
 
 export type InitialSearchStateType = {
   tickets: ConvertedTickets;
   ticketsList: TicketsList;
   filtersLimits: FiltersLimits;
+  airlinesData: AirlinesData;
   loading: boolean;
   error: null | Error;
 };
@@ -54,7 +61,7 @@ export const ticketsReducer = (
 
       const filtersLimits = ticketsList.reduce(
         (acc: FiltersLimits, currTicketId) => {
-          const { segments, price } = tickets[currTicketId];
+          const { segments, price, airlines } = tickets[currTicketId];
           const transfers = trunsfersInTicket(segments);
 
           const min = Math.min(...transfers);
@@ -72,6 +79,7 @@ export const ticketsReducer = (
               minPrice: price,
               maxPrice: price,
             };
+            acc.airlines = airlines;
 
             return acc;
           }
@@ -81,6 +89,8 @@ export const ticketsReducer = (
 
           acc.priceRange.minPrice = Math.min(acc.priceRange.minPrice, price);
           acc.priceRange.maxPrice = Math.max(acc.priceRange.maxPrice, price);
+
+          acc.airlines = Array.from(new Set(acc.airlines.concat(airlines)));
 
           return acc;
         },
@@ -101,6 +111,23 @@ export const ticketsReducer = (
         ...state,
         loading: true,
       };
+
+    case SET_AIRLINES: {
+      const airlinesById = action.payload.reduce(
+        (acc: AirlinesData, currAirline) => {
+          const { id } = currAirline;
+          acc[id] = currAirline;
+
+          return acc;
+        },
+        {}
+      );
+
+      return {
+        ...state,
+        airlinesData: airlinesById,
+      };
+    }
 
     case FETCH_TICKETS_ERROR:
       return { ...initialState, loading: false, error: action.payload };

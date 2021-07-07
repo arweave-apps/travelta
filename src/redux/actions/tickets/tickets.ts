@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import {
+  airlinesConfig,
   searchMultiTicketsConfig,
   searchTicketsConfig,
 } from '../../../api/apiConfig';
@@ -19,6 +20,8 @@ import {
   SET_TICKETS,
   FETCH_TICKETS_REQUESTED,
   FETCH_TICKETS_ERROR,
+  SET_AIRLINES,
+  Carrier,
 } from './types';
 
 type ThunkType = ThunkAction<
@@ -52,6 +55,23 @@ export const setTickets = (
   type: SET_TICKETS,
   payload: { tickets, isMulti },
 });
+
+export const setAirlines = (airlinesData: Carrier[]): ActionSearchTypes => ({
+  type: SET_AIRLINES,
+  payload: airlinesData,
+});
+
+export const fetchAirlines = (): ThunkType => async (dispatch) => {
+  const { url } = airlinesConfig;
+
+  try {
+    const response = await axios(url);
+
+    dispatch(setAirlines(response.data));
+  } catch (error) {
+    dispatch(ticketsError(error));
+  }
+};
 
 export const fetchTickets = (
   segments: SegmentType[],
