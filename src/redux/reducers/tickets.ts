@@ -20,11 +20,17 @@ export type PriceRange =
   | Record<'minPrice' | 'maxPrice', number>
   | Record<string, never>;
 
+export type FiltersLimits =
+  | {
+      transfersRange: TransfersRange;
+      priceRange: PriceRange;
+    }
+  | Record<string, never>;
+
 const initialState = {
   tickets: {},
   ticketsList: [],
-  transfersRange: {},
-  priceRange: {},
+  filtersLimits: {},
   loading: false,
   error: null,
 };
@@ -32,8 +38,7 @@ const initialState = {
 export type InitialSearchStateType = {
   tickets: ConvertedTickets;
   ticketsList: TicketsList;
-  transfersRange: TransfersRange;
-  priceRange: PriceRange;
+  filtersLimits: FiltersLimits;
   loading: boolean;
   error: null | Error;
 };
@@ -47,56 +52,45 @@ export const ticketsReducer = (
       const { tickets: ticketsData, isMulti } = action.payload;
       const { tickets, ticketsList } = convertData(ticketsData, isMulti);
 
-      const transfersRange = ticketsList.reduce(
-        (acc: TransfersRange, currTicketId) => {
-          const { segments } = tickets[currTicketId];
+      const filtersLimits = ticketsList.reduce(
+        (acc: FiltersLimits, currTicketId) => {
+          const { segments, price } = tickets[currTicketId];
           const transfers = trunsfersInTicket(segments);
 
           const min = Math.min(...transfers);
           const max = Math.max(...transfers);
 
           if (
-            !Object.prototype.hasOwnProperty.call(acc, 'min') &&
-            !Object.prototype.hasOwnProperty.call(acc, 'max')
+            !Object.prototype.hasOwnProperty.call(acc, 'transfersRange') &&
+            !Object.prototype.hasOwnProperty.call(acc, 'priceRange')
           ) {
-            acc.min = min;
-            acc.max = max;
+            acc.transfersRange = {
+              min,
+              max,
+            };
+            acc.priceRange = {
+              minPrice: price,
+              maxPrice: price,
+            };
 
             return acc;
           }
 
-          acc.min = acc.min > min ? min : acc.min;
-          acc.max = acc.max < max ? max : acc.max;
+          acc.transfersRange.min = Math.min(acc.transfersRange.min, min);
+          acc.transfersRange.max = Math.max(acc.transfersRange.max, max);
+
+          acc.priceRange.minPrice = Math.min(acc.priceRange.minPrice, price);
+          acc.priceRange.maxPrice = Math.max(acc.priceRange.maxPrice, price);
 
           return acc;
         },
         {}
       );
 
-      const priceRange = ticketsList.reduce((acc: PriceRange, currTicketId) => {
-        const { price } = tickets[currTicketId];
-
-        if (
-          !Object.prototype.hasOwnProperty.call(acc, 'minPrice') &&
-          !Object.prototype.hasOwnProperty.call(acc, 'maxPrice')
-        ) {
-          acc.minPrice = price;
-          acc.maxPrice = price;
-
-          return acc;
-        }
-
-        acc.minPrice = acc.minPrice > price ? price : acc.minPrice;
-        acc.maxPrice = acc.maxPrice < price ? price : acc.maxPrice;
-
-        return acc;
-      }, {});
-
       return {
         ...state,
         loading: false,
-        transfersRange,
-        priceRange,
+        filtersLimits,
         tickets,
         ticketsList,
       };
@@ -109,14 +103,7 @@ export const ticketsReducer = (
       };
 
     case FETCH_TICKETS_ERROR:
-      return {
-        tickets: {},
-        ticketsList: [],
-        transfersRange: {},
-        priceRange: {},
-        loading: false,
-        error: action.payload,
-      };
+      return { ...initialState, loading: false, error: action.payload };
 
     default:
       return state;

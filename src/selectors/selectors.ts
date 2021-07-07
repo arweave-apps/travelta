@@ -12,7 +12,7 @@ import {
 } from '../redux/reducers/pageSettings';
 import { CurrencyType } from '../redux/reducers/settings';
 import { ConvertedTickets, TicketsList } from '../utils/convertTickets';
-import { PriceRange, TransfersRange } from '../redux/reducers/tickets';
+import { FiltersLimits } from '../redux/reducers/tickets';
 
 export const getSegments = (state: RootStateType): SegmentType[] =>
   state.aviaParams.segments;
@@ -47,11 +47,8 @@ export const getTickets = (state: RootStateType): ConvertedTickets =>
 export const getTicketsList = (state: RootStateType): TicketsList =>
   state.tickets.ticketsList;
 
-export const getTrunsfersNum = (state: RootStateType): TransfersRange =>
-  state.tickets.transfersRange;
+export const getFiltersLimits = (state: RootStateType): FiltersLimits =>
+  state.tickets.filtersLimits;
 
 export const getTicketsLoading = (state: RootStateType): boolean =>
   state.tickets.loading;
-
-export const getTicketsPriceRange = (state: RootStateType): PriceRange =>
-  state.tickets.priceRange;

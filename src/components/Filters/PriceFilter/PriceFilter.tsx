@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { CurrencyType } from '../../../redux/reducers/settings';
 
-import { getTicketsPriceRange } from '../../../selectors/selectors';
+import { getFiltersLimits } from '../../../selectors/selectors';
 
 import FilterItem from '../FilterItem';
 import SliderRange from '../../SliderRange';
@@ -22,7 +22,9 @@ const PriceFilter = ({
   currency,
   onSetActiveFilters,
 }: PriceFilterProps): JSX.Element => {
-  const { minPrice, maxPrice } = useSelector(getTicketsPriceRange);
+  const {
+    priceRange: { minPrice, maxPrice },
+  } = useSelector(getFiltersLimits);
 
   const [minCurrentPriceValue, setMinCurrentPriceValue] = useState<number>(
     minPrice

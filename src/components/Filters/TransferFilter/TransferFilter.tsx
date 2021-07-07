@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { getTrunsfersNum } from '../../../selectors/selectors';
+import { getFiltersLimits } from '../../../selectors/selectors';
 import getNounDeclension from '../../../utils/getNounDeclension';
 import Checkbox from '../../Checkbox';
 
@@ -29,7 +29,9 @@ const TransferFilter = ({
   activeFilters,
   onSetActiveFilters,
 }: TransferFilterProps): JSX.Element => {
-  const { min, max } = useSelector(getTrunsfersNum);
+  const {
+    transfersRange: { min, max },
+  } = useSelector(getFiltersLimits);
 
   const [checkboxes, setCheckboxes] = useState<CheckboxsDataType[]>([]);
 
