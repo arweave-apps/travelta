@@ -12,6 +12,7 @@ import Prediction from '../../components/Prediction';
 import SearchAction from '../../components/SearchAction';
 import Ticket from '../../components/Ticket';
 import Filters from '../../components/Filters';
+import Loader from '../../components/Loader';
 
 import './Search.scss';
 
@@ -27,12 +28,12 @@ const Search = (): JSX.Element => {
     setVisibleTicketList(ticketsList);
   }, [ticketsList]);
 
-  if (ticketsList.length === 0) {
-    return <div>Ничего не найдено =( Попробуйте изменить параметры поиска</div>;
+  if (isTicketsLoading) {
+    return <Loader />;
   }
 
-  if (isTicketsLoading) {
-    return <div>Loading . . . </div>;
+  if (ticketsList.length === 0) {
+    return <div>Ничего не найдено =( Попробуйте изменить параметры поиска</div>;
   }
 
   return (
