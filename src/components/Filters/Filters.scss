@@ -6,6 +6,8 @@
 
   box-shadow: $panel-shadow-search;
 
+  height: max-content;
+
   &__header {
     @include display(flex, space-between, center);
     margin-bottom: rem(45);
