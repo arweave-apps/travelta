@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import classNames from 'classnames';
@@ -60,16 +60,16 @@ const PassangerSelector = (): JSX.Element => {
     dispatch(setCabinClass(cabinClass));
   };
 
-  const handleClickCounter = (
-    changedValue: number,
-    passangerType: PassangersNamesTypes
-  ) => {
-    if (passangerType === 'infants' && changedValue > passangers.adults) {
-      return;
-    }
+  const handleClickCounter = useCallback(
+    (changedValue: number, passangerType: PassangersNamesTypes) => {
+      if (passangerType === 'infants' && changedValue > passangers.adults) {
+        return;
+      }
 
-    dispatch(setPassangers(changedValue, passangerType));
-  };
+      dispatch(setPassangers(changedValue, passangerType));
+    },
+    [dispatch, passangers.adults]
+  );
 
   return (
     <div

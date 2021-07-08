@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { CurrencyType } from '../../../redux/reducers/settings';
@@ -33,19 +33,21 @@ const PriceFilter = ({
     maxPrice
   );
 
-  const handleChangeMinPriceValue = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = Math.min(+e.target.value, maxCurrentPriceValue - 1);
-    setMinCurrentPriceValue(value);
-  };
+  const handleChangeMinPriceValue = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = Math.min(+e.target.value, maxCurrentPriceValue - 1);
+      setMinCurrentPriceValue(value);
+    },
+    [maxCurrentPriceValue]
+  );
 
-  const handleChangeMaxPriceValue = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = Math.max(+e.target.value, minCurrentPriceValue + 1);
-    setMaxCurrentPriceValue(value);
-  };
+  const handleChangeMaxPriceValue = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = Math.max(+e.target.value, minCurrentPriceValue + 1);
+      setMaxCurrentPriceValue(value);
+    },
+    [minCurrentPriceValue]
+  );
 
   useEffect(() => {
     onSetActiveFilters({

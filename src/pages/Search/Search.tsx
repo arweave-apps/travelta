@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import {
@@ -15,6 +15,7 @@ import Filters from '../../components/Filters';
 import Loader from '../../components/Loader';
 
 import './Search.scss';
+import { TicketsList } from '../../utils/convertTickets';
 
 const Search = (): JSX.Element => {
   const currency = useSelector(getCurrency);
@@ -23,6 +24,10 @@ const Search = (): JSX.Element => {
   const isTicketsLoading = useSelector(getTicketsLoading);
 
   const [visibleTicketList, setVisibleTicketList] = useState<string[]>([]);
+
+  const handleSetTickets = useCallback((ticketList: TicketsList) => {
+    setVisibleTicketList(ticketList);
+  }, []);
 
   if (isTicketsLoading) {
     return <Loader />;
@@ -39,7 +44,7 @@ const Search = (): JSX.Element => {
           <Filters
             ticketsList={ticketsList}
             tickets={tickets}
-            onSetVisibleTicketList={setVisibleTicketList}
+            onSetVisibleTicketList={handleSetTickets}
             currency={currency}
           />
           <Prediction />

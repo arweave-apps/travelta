@@ -116,5 +116,4 @@ const TransferFilter = ({
     </FilterItem>
   );
 };
-
 export default TransferFilter;
