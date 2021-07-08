@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import {
@@ -23,10 +23,6 @@ const Search = (): JSX.Element => {
   const isTicketsLoading = useSelector(getTicketsLoading);
 
   const [visibleTicketList, setVisibleTicketList] = useState<string[]>([]);
-
-  useEffect(() => {
-    setVisibleTicketList(ticketsList);
-  }, [ticketsList]);
 
   if (isTicketsLoading) {
     return <Loader />;
