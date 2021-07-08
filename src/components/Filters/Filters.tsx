@@ -8,6 +8,7 @@ import useFilters from './useFilters';
 import TransferFilter from './TransferFilter';
 import PriceFilter from './PriceFilter';
 import AirlineFilter from './AirlineFilter';
+import Panel from '../Panel';
 
 import './Filters.scss';
 
@@ -70,7 +71,7 @@ const Filters = ({
   );
 
   return (
-    <div className="filters">
+    <Panel className="filters">
       <div className="filters__header">
         <h3 className="filters__title">Фильтры</h3>
 
@@ -99,7 +100,7 @@ const Filters = ({
         activeFilters={activeAirlinesFilters}
         onSetActiveFilters={setActiveAirlinesFilters}
       />
-    </div>
+    </Panel>
   );
 };
 

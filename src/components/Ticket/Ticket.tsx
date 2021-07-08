@@ -21,6 +21,7 @@ import ShareIcon from '../../assets/images/icons/share.svg';
 import SuitcaseIcon from '../../assets/images/icons/suitcase.svg';
 
 import SimpleButton from '../SimpleButton';
+import Panel from '../Panel';
 
 import './Ticket.scss';
 
@@ -31,7 +32,7 @@ type TicketProps = {
 
 const Ticket = ({ ticket, currency }: TicketProps): JSX.Element => {
   return (
-    <div className="ticket">
+    <Panel className="ticket">
       <div className="ticket__left">
         <div className="ticket__body">
           <div className="ticket__airlines">
@@ -156,7 +157,7 @@ const Ticket = ({ ticket, currency }: TicketProps): JSX.Element => {
       <button type="button" className="ticket__expand-btn">
         <DownArrowIcon />
       </button>
-    </div>
+    </Panel>
   );
 };
 
