@@ -1,7 +1,9 @@
 import React from 'react';
 
-import './Prediction.scss';
 import PredictionItem from './PredictionItem/PredictionItem';
+import Panel from '../Panel';
+
+import './Prediction.scss';
 
 const items = [
   // eslint-disable-next-line sonarjs/no-duplicate-string
@@ -15,11 +17,11 @@ const items = [
 
 const Prediction = (): JSX.Element => {
   return (
-    <div className="prediction">
+    <Panel className="prediction">
       {items.map(({ id, price, date }) => {
         return <PredictionItem key={id} price={price} date={date} />;
       })}
-    </div>
+    </Panel>
   );
 };
 
