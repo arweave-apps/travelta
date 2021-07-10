@@ -6,7 +6,7 @@ import './Panel.scss';
 
 type PanelProps = { children: React.ReactNode; className?: string };
 
-const Panel = ({ children, className = ' ' }: PanelProps): JSX.Element => {
+const Panel = ({ children, className = '' }: PanelProps): JSX.Element => {
   return <div className={classNames(className, 'panel')}>{children}</div>;
 };
 
