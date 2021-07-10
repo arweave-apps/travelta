@@ -9,6 +9,7 @@ import CurrencySelector from '../CurrencySelector';
 import HeaderNav from './HeaderNav';
 import Logo from './Logo';
 import NavToggle from '../NavToggle';
+import Layout from '../Layout';
 
 import paths from '../Routes/paths';
 
@@ -19,20 +20,20 @@ const Header = (): JSX.Element => {
   const isSearchPage = pathname.includes('search');
 
   return (
-    <header
+    <Layout
       className={classNames('header', {
         'header--search': isSearchPage,
       })}
+      containerSize="big"
+      tag="header"
     >
-      <div className="container-big">
-        <div className="header__inner">
-          <Logo img={<LogoImg />} isSearchPage={isSearchPage} />
-          <HeaderNav items={paths} isSearchPage={isSearchPage} />
-          <CurrencySelector isSearchPage={isSearchPage} />
-          <NavToggle />
-        </div>
+      <div className="header__inner">
+        <Logo img={<LogoImg />} isSearchPage={isSearchPage} />
+        <HeaderNav items={paths} isSearchPage={isSearchPage} />
+        <CurrencySelector isSearchPage={isSearchPage} />
+        <NavToggle />
       </div>
-    </header>
+    </Layout>
   );
 };
 

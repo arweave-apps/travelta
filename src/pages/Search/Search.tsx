@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 import ErrorCard from '../../components/ErrorCard';
 import Filters from '../../components/Filters';
+import Layout from '../../components/Layout';
 import Loader from '../../components/Loader';
 import Prediction from '../../components/Prediction';
 import SearchAction from '../../components/SearchAction';
@@ -32,53 +33,53 @@ const Search = (): JSX.Element => {
   }, []);
 
   if (isTicketsLoading) {
-    return <Loader />;
+    return (
+      <Layout className="avia-search" containerSize="small" tag="section">
+        <Loader />
+      </Layout>
+    );
   }
 
   if (ticketsList.length === 0) {
     return (
-      <section className="avia-search">
-        <div className="container-small">
-          <ErrorCard
-            title="Ничего не найдено"
-            recommendation="Попробуйте изменить параметры поиска"
-          />
-        </div>
-      </section>
+      <Layout className="avia-search" containerSize="small" tag="section">
+        <ErrorCard
+          title="Ничего не найдено"
+          recommendation="Попробуйте изменить параметры поиска"
+        />
+      </Layout>
     );
   }
 
   return (
-    <section className="avia-search">
-      <div className="container-small">
-        <div className="avia-search__inner">
-          <Filters
-            ticketsList={ticketsList}
-            tickets={tickets}
-            onSetVisibleTicketList={handleSetTickets}
-            currency={currency}
-          />
-          <Prediction />
-          <SearchAction totalTickets={visibleTicketList.length} />
+    <Layout className="avia-search" containerSize="small" tag="section">
+      <div className="avia-search__inner">
+        <Filters
+          ticketsList={ticketsList}
+          tickets={tickets}
+          onSetVisibleTicketList={handleSetTickets}
+          currency={currency}
+        />
+        <Prediction />
+        <SearchAction totalTickets={visibleTicketList.length} />
 
-          <div className="tickets">
-            {visibleTicketList.length > 0 ? (
-              visibleTicketList.map((ticketId) => {
-                return (
-                  <Ticket
-                    key={ticketId}
-                    ticket={tickets[ticketId]}
-                    currency={currency}
-                  />
-                );
-              })
-            ) : (
-              <div>Выберите хотябы один фильтр</div>
-            )}
-          </div>
+        <div className="tickets">
+          {visibleTicketList.length > 0 ? (
+            visibleTicketList.map((ticketId) => {
+              return (
+                <Ticket
+                  key={ticketId}
+                  ticket={tickets[ticketId]}
+                  currency={currency}
+                />
+              );
+            })
+          ) : (
+            <div>Выберите хотябы один фильтр</div>
+          )}
         </div>
       </div>
-    </section>
+    </Layout>
   );
 };
 
