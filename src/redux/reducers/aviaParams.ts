@@ -10,6 +10,7 @@ import {
   FieldNameTypes,
   RESET_DATES,
   DELETE_SEGMENT,
+  SWITCH_CITIES,
 } from '../actions/aviaParams/types';
 
 const initialState: InitialAviaParamsStateType = {
@@ -95,6 +96,23 @@ export const aviaParamsReducer = (
     case SET_CITY: {
       const { name, code, segmentId, fieldName } = action.payload;
       return updateSegment(state, segmentId, fieldName, name, code);
+    }
+    case SWITCH_CITIES: {
+      const segmentId = action.payload;
+
+      const newSegments = state.segments.map((segment) => {
+        return segment.id === segmentId
+          ? {
+              ...segment,
+              origin: segment.destination,
+              originCode: segment.destinationCode,
+              destination: segment.origin,
+              destinationCode: segment.originCode,
+            }
+          : segment;
+      });
+
+      return { ...state, segments: newSegments };
     }
     case SET_CABIN_CLASS:
       return { ...state, selectedCabins: action.payload };
