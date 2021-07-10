@@ -1,6 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import ErrorCard from '../../components/ErrorCard';
+import Filters from '../../components/Filters';
+import Loader from '../../components/Loader';
+import Prediction from '../../components/Prediction';
+import SearchAction from '../../components/SearchAction';
+import Ticket from '../../components/Ticket';
+
 import {
   getCurrency,
   getTickets,
@@ -8,14 +15,9 @@ import {
   getTicketsLoading,
 } from '../../selectors/selectors';
 
-import Prediction from '../../components/Prediction';
-import SearchAction from '../../components/SearchAction';
-import Ticket from '../../components/Ticket';
-import Filters from '../../components/Filters';
-import Loader from '../../components/Loader';
+import { TicketsList } from '../../utils/convertTickets';
 
 import './Search.scss';
-import { TicketsList } from '../../utils/convertTickets';
 
 const Search = (): JSX.Element => {
   const currency = useSelector(getCurrency);
@@ -34,7 +36,16 @@ const Search = (): JSX.Element => {
   }
 
   if (ticketsList.length === 0) {
-    return <div>Ничего не найдено =( Попробуйте изменить параметры поиска</div>;
+    return (
+      <section className="avia-search">
+        <div className="container-small">
+          <ErrorCard
+            title="Ничего не найдено"
+            recommendation="Попробуйте изменить параметры поиска"
+          />
+        </div>
+      </section>
+    );
   }
 
   return (
