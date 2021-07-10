@@ -14,6 +14,7 @@ import {
   DateTypeTypes,
   RESET_DATES,
   DELETE_SEGMENT,
+  SWITCH_CITIES,
 } from './types';
 
 export const setDate = (
@@ -66,4 +67,9 @@ export const setCity = (
 ): ActionAviaParamsTypes => ({
   type: SET_CITY,
   payload: { name, code, segmentId, fieldName },
+});
+
+export const switchCities = (segmentId: string): ActionAviaParamsTypes => ({
+  type: SWITCH_CITIES,
+  payload: segmentId,
 });

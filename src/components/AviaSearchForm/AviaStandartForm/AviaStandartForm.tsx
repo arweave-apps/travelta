@@ -1,4 +1,7 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+
+import { switchCities } from '../../../redux/actions/aviaParams/aviaParams';
 
 import { SearchFormsPropsType } from '../helpers';
 
@@ -30,9 +33,14 @@ const AviaStandartForm = ({
   onSetFormikTouchedReturnDate,
 }: SearchFormsPropsType): JSX.Element => {
   const { id, returnDate, departureDate } = segments[0];
+  const dispatch = useDispatch();
 
   const origin = values[`origin-${id}`] as string;
   const destination = values[`destination-${id}`] as string;
+
+  const handleClickSwitchCities = () => {
+    dispatch(switchCities(id));
+  };
 
   return (
     <div className="search-form">
@@ -52,7 +60,8 @@ const AviaStandartForm = ({
           errorText={errors[`origin-${id}`]}
           hasError={!!touched[`origin-${id}`] && !!errors[`origin-${id}`]}
         />
-        <SwitchButton />
+
+        <SwitchButton onClick={handleClickSwitchCities} />
       </div>
 
       <div className="search-form__destination">

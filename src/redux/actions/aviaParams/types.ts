@@ -16,6 +16,8 @@ export const CLEAR_SEGMENTS = 'CLEAR_SEGMENTS';
 
 export const SET_CITY = 'SET_CITY';
 
+export const SWITCH_CITIES = 'SWITCH_CITIES';
+
 export type DateTypeTypes = 'departureDate' | 'returnDate';
 
 export type DatePayloadType = {
@@ -57,6 +59,11 @@ type ActionClearSegmentsType = {
   type: typeof CLEAR_SEGMENTS;
 };
 
+type ActionSwitchCitiesType = {
+  type: typeof SWITCH_CITIES;
+  payload: string;
+};
+
 export type FieldNameTypes = 'origin' | 'destination';
 
 export type CityPayloadType = {
@@ -79,4 +86,5 @@ export type ActionAviaParamsTypes =
   | ActionClearSegmentsType
   | ActionSetCityType
   | ActionResetDates
-  | ActionDeleteSegmentType;
+  | ActionDeleteSegmentType
+  | ActionSwitchCitiesType;
