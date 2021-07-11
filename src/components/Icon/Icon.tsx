@@ -6,7 +6,7 @@ import './Icon.scss';
 
 type IconProps = {
   icon: JSX.Element;
-  className: 'down-arrow';
+  className: string;
   isActive?: boolean;
 };
 
