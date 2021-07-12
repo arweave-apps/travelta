@@ -23,7 +23,7 @@ import './Home.scss';
 const Home = (): JSX.Element => {
   return (
     <>
-      <Layout containerSize="big" tag="section" className="site-info">
+      <Layout containerSize="small" tag="section" className="site-info">
         <div className="section-inner">
           <div className="site-info__items">
             <div className="site-info__item">
@@ -55,7 +55,7 @@ const Home = (): JSX.Element => {
       </Layout>
 
       <Layout
-        containerSize="big"
+        containerSize="small"
         tag="section"
         className="destinations bg-home"
       >
@@ -156,7 +156,7 @@ const Home = (): JSX.Element => {
         </div>
       </Layout>
 
-      <Layout containerSize="big" tag="section" className="offers">
+      <Layout containerSize="small" tag="section" className="offers">
         <div className="section-inner">
           <h2 className="section-title">Offers</h2>
 
