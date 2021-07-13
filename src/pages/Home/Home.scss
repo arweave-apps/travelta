@@ -14,15 +14,18 @@
 
   @include mq('tablet-wide') {
     font-size: rem(32);
+    line-height: rem(36);
   }
 
   @include mq('tablet-small') {
     font-size: rem(24);
+    line-height: rem(28);
     margin-bottom: rem(10);
   }
 
   @include mq('phone-wide') {
     font-size: rem(16);
+    line-height: rem(18);
   }
 }
 
@@ -374,6 +377,182 @@ $img-width: 37.5%;
     @include mq('tablet-small') {
       font-size: rem(14);
       line-height: rem(16);
+    }
+  }
+}
+
+.best-flights {
+  &__selector {
+    color: $accent-color;
+  }
+
+  &__bages {
+    @include display(flex, center, flex-start);
+    flex-wrap: wrap;
+
+    margin-bottom: rem(30);
+
+    @include mq('phablet') {
+      display: none;
+    }
+  }
+
+  &__bage {
+    @include font-roboto(rem(14), $primary-text-color, normal, normal, rem(16));
+    min-width: rem(100);
+
+    padding: rem(7) rem(28);
+
+    background: $pages-bg-color;
+
+    border: 1px solid rgba(71, 71, 71, 0.1);
+    border-radius: rem(50);
+
+    box-shadow: $panel-shadow;
+
+    margin: rem(10);
+
+    @include mq('tablet-wide') {
+      @include font-roboto(
+        rem(12),
+        $primary-text-color,
+        normal,
+        normal,
+        rem(14)
+      );
+
+      padding: rem(7) rem(20);
+    }
+
+    @include mq('tablet') {
+      padding: rem(7) rem(16);
+      margin: rem(7);
+    }
+
+    @include mq('tablet-small') {
+      margin: rem(5);
+    }
+  }
+
+  &__items {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 270px);
+    grid-gap: rem(20);
+
+    @include mq('tablet-wide') {
+      grid-template-rows: repeat(3, rem(221));
+    }
+
+    @include mq('tablet') {
+      grid-template-rows: repeat(3, rem(161));
+    }
+
+    @include mq('tablet-small') {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(6, rem(140));
+      grid-gap: rem(10);
+    }
+  }
+
+  &__item {
+    background: $panel-color;
+    border: 1px solid #b2b2b2;
+    border-radius: $radius;
+
+    overflow: hidden;
+  }
+
+  &__image {
+    object-fit: cover;
+    height: 66.6%;
+    width: 100%;
+
+    @include mq('tablet') {
+      height: 55%;
+    }
+
+    @include mq('tablet-wide') {
+      height: 60%;
+    }
+  }
+
+  &__content {
+    padding: rem(15);
+
+    @include mq('tablet-wide') {
+      padding: rem(10);
+    }
+
+    @include mq('tablet-small') {
+      padding: rem(5);
+    }
+  }
+
+  &__title {
+    @include font-roboto(rem(16), $primary-text-color, 500, normal, rem(19));
+
+    margin-bottom: rem(30);
+
+    @include mq('tablet-wide') {
+      font-size: rem(14);
+      line-height: rem(16);
+      margin-bottom: rem(20);
+    }
+
+    @include mq('tablet') {
+      font-size: rem(12);
+      line-height: rem(14);
+    }
+
+    @include mq('tablet-small') {
+      margin-bottom: rem(10);
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__action {
+    @include display(flex, space-between, flex-start);
+  }
+
+  &__route {
+    @include font-roboto(rem(12), $secondary-text-color, 500, normal, rem(14));
+
+    @include mq('tablet-wide') {
+      font-weight: normal;
+    }
+
+    @include mq('tablet-small') {
+      display: none;
+    }
+  }
+
+  &__price-link {
+    @include font-roboto(
+      rem(14),
+      $alternative-text-color,
+      500,
+      normal,
+      rem(16)
+    );
+
+    text-decoration: none;
+
+    &:hover {
+      cursor: pointer;
+      color: lighten($alternative-text-color, 9%);
+    }
+
+    @include mq('tablet-wide') {
+      font-weight: normal;
+    }
+
+    @include mq('tablet') {
+      font-size: rem(12);
+      line-height: rem(14);
     }
   }
 }
