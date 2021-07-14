@@ -23,19 +23,6 @@ const getIdFromMultiRoutes = (routes: RouteMulti[]) =>
 
 export type TicketsList = string[];
 
-const getTicketIdList = (data: Ticket[], isMulti = false): TicketsList =>
-  data.map((ticket) => {
-    let id = '';
-
-    if (isTicketSearchId(ticket) && !isMulti) {
-      id = ticket.id;
-    } else if (!isTicketSearchId(ticket) && isMulti) {
-      id = getIdFromMultiRoutes(ticket.route);
-    }
-
-    return id;
-  });
-
 type TicketsSearchArrangedById = Record<string, TicketSearch>;
 type TicketsMultiArrangedById = Record<string, TicketMulti>;
 
@@ -333,6 +320,7 @@ export const convertData = (
   }
 
   const tickets = ticketsArrangedById(data, isMulti);
+
   let newTickets = {};
 
   if (isMulti && !isTicketsSearchArrangedById(tickets)) {
@@ -341,8 +329,10 @@ export const convertData = (
     newTickets = getTicketsWithSegments(tickets);
   }
 
+  const ticketsList = Object.keys(tickets);
+
   return {
-    ticketsList: getTicketIdList(data, isMulti),
+    ticketsList,
     tickets: newTickets,
   };
 };
