@@ -12,10 +12,10 @@
     grid-template-columns: 1fr;
     grid-template-rows: 0fr 0fr 2fr 1.5fr;
     grid-template-areas:
-      "."
-      "info-titles"
-      "search-panel"
-      ".";
+      '.'
+      'info-titles'
+      'search-panel'
+      '.';
     grid-row-gap: 114px;
 
     &--search {
@@ -26,6 +26,11 @@
         '.'
         'search-panel'
         '.';
+    }
+
+    @include mq('desktop-wide') {
+      grid-template-rows: 0fr 0fr 2fr 1.19fr;
+      grid-row-gap: 80px;
     }
   }
 
