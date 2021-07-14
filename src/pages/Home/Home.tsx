@@ -1,5 +1,8 @@
+/* eslint-disable max-len */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
+
+import classNames from 'classnames';
 
 import DubaiImg from '../../assets/images/destinations/dubai.jpg';
 import GreeceImg from '../../assets/images/destinations/greece.jpg';
@@ -29,6 +32,10 @@ import PlaceSaintPetersburgImg from '../../assets/images/best-flights/saint-pete
 import PlaceTorontoImg from '../../assets/images/best-flights/toronto.jpg';
 import PlaceNewYorkImg from '../../assets/images/best-flights/new-york.jpg';
 import PlaceGizaImg from '../../assets/images/best-flights/giza.jpg';
+
+import ArticleImg1 from '../../assets/images/articles/article-1.jpg';
+import ArticleImg2 from '../../assets/images/articles/article-2.jpg';
+import ArticleImg3 from '../../assets/images/articles/article-3.jpg';
 
 import Icon from '../../components/Icon';
 import Layout from '../../components/Layout';
@@ -207,6 +214,36 @@ const bestFlightsPlaces = [
       to: 'SPX',
     },
     startprice: '78 557 ₽',
+  },
+];
+
+const articles = [
+  {
+    id: 'article-1',
+    image: ArticleImg1,
+    title: 'The best waves in the world for surf lovers',
+    preview:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Netus tristique amet sed vitae. Egestas luctus accumsan, suscipit blandit tortor nec ullamcorper. Morbi quis sed blandit tristique. Lectus in amet in nam eu.',
+    link: '',
+    date: new Date(),
+  },
+  {
+    id: 'article-2',
+    image: ArticleImg2,
+    title: 'Amazing Places for Your Photo Collections',
+    preview:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Netus tristique amet sed vitae. Egestas luctus accumsan, suscipit blandit tortor nec ullamcorper. Morbi quis sed blandit tristique. Lectus in amet in nam eu.2',
+    link: '',
+    date: new Date(),
+  },
+  {
+    id: 'article-3',
+    image: ArticleImg3,
+    title: 'List of countries that are open for travel',
+    preview:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Netus tristique amet sed vitae. Egestas luctus accumsan, suscipit blandit tortor nec ullamcorper. Morbi quis sed blandit tristique. Lectus in amet in nam eu.3',
+    link: '',
+    date: new Date(),
   },
 ];
 
@@ -398,7 +435,11 @@ const Home = (): JSX.Element => {
         </div>
       </Layout>
 
-      <Layout containerSize="small" tag="section" className="best-flights">
+      <Layout
+        containerSize="small"
+        tag="section"
+        className="best-flights bg-home"
+      >
         <div className="section-inner">
           <h2 className="section-title">
             Best Flight Deals of the Day{' '}
@@ -453,7 +494,99 @@ const Home = (): JSX.Element => {
         </div>
       </Layout>
 
-      <Layout />
+      <Layout containerSize="small" tag="section" className="members">
+        <div className="section-inner members__content">
+          <div className="members__right">
+            <h2 className="members__title">Members Exlusive</h2>
+            <p className="members__info">
+              Sign up to keep up to date with our latest updates and get the
+              best deals for your travelsup to stay{' '}
+            </p>
+          </div>
+
+          <form action="" className="members__form">
+            <label htmlFor="members-form" className="members__label">
+              <input
+                id="members-form"
+                type="email"
+                className="members__input"
+                placeholder="Enter Email"
+              />
+            </label>
+
+            <button type="submit" className="members__button">
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </Layout>
+
+      <Layout containerSize="small" tag="section" className="articles bg-home">
+        <div className="section-inner">
+          <h2 className="section-title">Tips & Articles</h2>
+
+          <div className="articles__items">
+            {articles.map(({ id, image, title, preview, link, date }, i) => {
+              return (
+                <div
+                  key={id}
+                  className={classNames(
+                    'articles__item',
+                    `articles__item--${id}`,
+                    { 'articles__item--horizontal': i !== 0 }
+                  )}
+                >
+                  <img src={image} alt="article" className="articles__image" />
+
+                  <div className="articles__content">
+                    <h3 className="articles__title">{title}</h3>
+                    <p className="articles__text">{preview}</p>
+
+                    <div className="articles__action">
+                      <time
+                        dateTime={date.toISOString()}
+                        className="articles__date"
+                      >
+                        {date.toLocaleDateString()}
+                      </time>
+
+                      <a href={link} className="articles__link">
+                        Read more
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </Layout>
+
+      <Layout containerSize="small" tag="footer" className="footer">
+        <div className="footer__items">
+          <span className="footer__author">
+            Created by{' '}
+            <a
+              className="footer__link"
+              href="https://github.com/websega/travelta"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Sergey Vakhramov
+            </a>
+          </span>
+
+          <span className="footer__desclaimer">
+            This is a tutorial project. It can contain errors. No guarantee of a
+            deal.{' '}
+            <b className="footer__warning">
+              You should not buy tickets using this site.
+            </b>{' '}
+            If you need to buy a ticket, use other search sites that work on an
+            ongoing basis
+          </span>
+        </div>
+      </Layout>
     </>
   );
 };

@@ -297,7 +297,7 @@ $img-width: 37.5%;
     height: rem(110);
 
     background: $panel-color;
-    box-shadow: 0px 0px 20px 1px rgba(96, 96, 96, 0.15);
+    box-shadow: 0px 0px rem(20) 1px rgba(96, 96, 96, 0.15);
     border-radius: $radius;
 
     overflow: hidden;
@@ -457,7 +457,7 @@ $img-width: 37.5%;
 
   &__item {
     background: $panel-color;
-    border: 1px solid #b2b2b2;
+    box-shadow: 0px 0px rem(20) 1px rgba(96, 96, 96, 0.15);
     border-radius: $radius;
 
     overflow: hidden;
@@ -554,5 +554,302 @@ $img-width: 37.5%;
       font-size: rem(12);
       line-height: rem(14);
     }
+  }
+}
+
+$self-width: calc(50% - 55px);
+
+.members {
+  background: $search-page-info-bg-color;
+
+  &__content {
+    @include display(flex, space-between, center);
+
+    @include mq('phablet') {
+      flex-direction: column;
+    }
+  }
+
+  &__right {
+    width: $self-width;
+
+    @include mq('tablet') {
+      width: 100%;
+    }
+
+    @include mq('phablet') {
+      margin-bottom: rem(20);
+    }
+  }
+
+  &__title {
+    @include font-roboto(rem(36), $main-text-color, 500, normal, rem(42));
+
+    margin-bottom: rem(18);
+
+    @include mq('tablet') {
+      font-size: rem(24);
+      line-height: rem(36);
+    }
+
+    @include mq('phablet') {
+      text-align: center;
+    }
+  }
+
+  &__info {
+    @include font-roboto(rem(16), $main-text-color, normal, normal, rem(19));
+
+    @include mq('tablet') {
+      font-size: rem(14);
+      line-height: rem(16);
+    }
+  }
+
+  &__form {
+    position: relative;
+    width: $self-width;
+
+    @include mq('tablet') {
+      width: 100%;
+    }
+  }
+
+  &__label {
+    width: 100%;
+  }
+
+  &__input {
+    @include font-roboto(rem(18), $main-text-color, normal, normal, rem(21));
+
+    width: inherit;
+
+    border: $border-width solid $panel-color;
+    border-radius: rem(100);
+    background: transparent;
+
+    padding: rem(15);
+
+    &::placeholder {
+      @include font-roboto(rem(18), $main-text-color, normal, normal, rem(21));
+
+      @include mq('tablet') {
+        font-size: rem(14);
+        line-height: rem(16);
+      }
+    }
+
+    @include mq('tablet') {
+      font-size: rem(16);
+      line-height: rem(18);
+
+      padding: rem(10);
+    }
+  }
+
+  &__button {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+
+    padding: 0 rem(16);
+
+    @include font-roboto(rem(18), $main-text-color, normal, normal, rem(21));
+
+    background: $accent-color;
+    border: 1px solid $panel-color;
+    border-radius: 0px rem(100) rem(100) 0px;
+
+    transition: background 0.2s linear;
+
+    &:hover {
+      background: lighten($accent-color, 6%);
+      cursor: pointer;
+    }
+
+    @include mq('tablet') {
+      font-size: rem(14);
+      line-height: rem(16);
+    }
+  }
+}
+
+.articles {
+  $self: &;
+
+  &__items {
+    display: grid;
+    grid-template-areas:
+      'article-1 article-2'
+      'article-1 article-3';
+    grid-template-rows: repeat(2, rem(195));
+    grid-gap: rem(20);
+
+    @include mq('tablet-small') {
+      grid-template-areas:
+        'article-1'
+        'article-2'
+        'article-3';
+      grid-template-rows: repeat(3, rem(195));
+    }
+  }
+
+  &__item {
+    $articlesId: 'article-1', 'article-2', 'article-3';
+
+    @each $articleId in $articlesId {
+      &--#{ $articleId } {
+        grid-area: #{$articleId};
+      }
+    }
+
+    background: $panel-color;
+    box-shadow: 0px 0px rem(20) 1px rgba(96, 96, 96, 0.15);
+    border-radius: $radius;
+
+    overflow: hidden;
+
+    &--horizontal {
+      @include display(flex, space-between, center);
+
+      & #{ $self }__image {
+        height: 100%;
+        width: 34%;
+      }
+
+      & #{ $self }__content {
+        height: 100%;
+      }
+    }
+
+    @include mq('tablet-small') {
+      @include display(flex, space-between, center);
+
+      & #{ $self }__image {
+        height: 100%;
+        width: 34%;
+      }
+
+      & #{ $self }__content {
+        height: 100%;
+      }
+    }
+  }
+
+  &__image {
+    object-fit: cover;
+    height: 51%;
+    width: 100%;
+
+    @include mq('phone-wide') {
+      display: none;
+    }
+  }
+
+  &__content {
+    @include display(flex, space-between, flex-start);
+    flex-direction: column;
+
+    width: 100%;
+    height: 49%;
+
+    padding: rem(15);
+  }
+
+  &__title {
+    @include font-roboto(rem(16), $primary-text-color, 700, normal, rem(19));
+
+    @include mq('phone') {
+      font-size: rem(12);
+      line-height: rem(14);
+      font-weight: 500;
+    }
+  }
+
+  &__text {
+    @include font-roboto(rem(14), $primary-text-color, normal, normal, rem(16));
+
+    @include mq('phone') {
+      font-size: rem(12);
+      line-height: rem(14);
+    }
+  }
+
+  &__date {
+    @include font-roboto(rem(12), $secondary-text-color, 500, normal, rem(14));
+  }
+
+  &__action {
+    width: 100%;
+    @include display(flex, space-between, flex-start);
+  }
+
+  &__link {
+    @include font-roboto(
+      rem(14),
+      $alternative-text-color,
+      normal,
+      normal,
+      rem(16)
+    );
+
+    text-decoration: none;
+
+    &:hover {
+      cursor: pointer;
+      color: lighten($alternative-text-color, 9%);
+    }
+
+    @include mq('tablet-wide') {
+      font-weight: normal;
+    }
+
+    @include mq('tablet') {
+      font-size: rem(12);
+      line-height: rem(14);
+    }
+  }
+}
+
+.footer {
+  height: rem(105);
+  padding: rem(25) 0;
+  background: $home-header-color;
+
+  &__items {
+    @include display(flex, space-between, center);
+    flex-direction: column;
+    height: 100%;
+
+    padding: 0 rem(40);
+  }
+
+  &__author,
+  &__code {
+    @include font-roboto(rem(14), $main-text-color, 500, normal, rem(16));
+  }
+
+  &__code {
+    @include font-roboto(rem(14), $main-text-color, 500, normal, rem(16));
+  }
+
+  &__link {
+    @include font-roboto(rem(14), $main-text-color, normal, normal, rem(16));
+
+    &:hover {
+      cursor: pointer;
+      color: lighten($main-text-color, 9%);
+    }
+  }
+
+  &__desclaimer {
+    @include font-roboto(rem(13), $main-text-color, normal, normal, rem(16));
+    text-align: center;
+  }
+
+  &__warning {
+    color: $accent-color;
   }
 }

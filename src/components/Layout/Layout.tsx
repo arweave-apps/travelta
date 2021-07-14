@@ -8,7 +8,7 @@ type LayoutProps = {
   className: string;
   children: React.ReactNode;
   containerSize: 'small' | 'big';
-  tag: 'section' | 'header';
+  tag: 'section' | 'header' | 'footer';
 };
 
 const Layout = ({
