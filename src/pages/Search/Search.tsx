@@ -1,5 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+
+import useFilters from './useFilters';
 
 import ErrorCard from '../../components/ErrorCard';
 import Filters from '../../components/Filters';
@@ -16,9 +18,9 @@ import {
   getTicketsLoading,
 } from '../../selectors/selectors';
 
-import { TicketsList } from '../../utils/convertTickets';
-
 import './Search.scss';
+
+export type ActivePriceFilters = Record<'minPrice' | 'maxPrice', number>;
 
 const Search = (): JSX.Element => {
   const currency = useSelector(getCurrency);
@@ -26,11 +28,26 @@ const Search = (): JSX.Element => {
   const tickets = useSelector(getTickets);
   const isTicketsLoading = useSelector(getTicketsLoading);
 
-  const [visibleTicketList, setVisibleTicketList] = useState<string[]>([]);
+  const [activeTransfersFilters, setActiveTransfersFilters] = useState<
+    number[]
+  >([]);
 
-  const handleSetTickets = useCallback((ticketList: TicketsList) => {
-    setVisibleTicketList(ticketList);
-  }, []);
+  const [
+    activePriceFilters,
+    setActivePriceFilters,
+  ] = useState<ActivePriceFilters | null>(null);
+
+  const [activeAirlinesFilters, setActiveAirlinesFilters] = useState<string[]>(
+    []
+  );
+
+  const visibleTickets = useFilters(
+    activeTransfersFilters,
+    activePriceFilters,
+    activeAirlinesFilters,
+    ticketsList,
+    tickets
+  );
 
   if (isTicketsLoading) {
     return (
@@ -55,17 +72,19 @@ const Search = (): JSX.Element => {
     <Layout className="avia-search" containerSize="small" tag="section">
       <div className="avia-search__inner">
         <Filters
-          ticketsList={ticketsList}
-          tickets={tickets}
-          onSetVisibleTicketList={handleSetTickets}
+          activeTransfersFilters={activeTransfersFilters}
+          activeAirlinesFilters={activeAirlinesFilters}
+          onActiveTransfersFilters={setActiveTransfersFilters}
+          onActivePriceFilters={setActivePriceFilters}
+          onActiveAirlinesFilters={setActiveAirlinesFilters}
           currency={currency}
         />
         <Prediction />
-        <SearchAction totalTickets={visibleTicketList.length} />
+        <SearchAction totalTickets={visibleTickets.length} />
 
         <div className="tickets">
-          {visibleTicketList.length > 0 ? (
-            visibleTicketList.map((ticketId) => {
+          {visibleTickets.length > 0 ? (
+            visibleTickets.map((ticketId) => {
               return (
                 <Ticket
                   key={ticketId}

@@ -1,6 +1,5 @@
 const getNounDeclension = (number: number, nouns: string[]): string => {
-  const str = String(number);
-  const lastNum = Number(str[str.length - 1]);
+  const lastNum = number % 10;
 
   if (lastNum === 1) {
     return nouns[0];

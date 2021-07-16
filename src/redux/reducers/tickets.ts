@@ -110,6 +110,10 @@ export const ticketsReducer = (
       return {
         ...state,
         loading: true,
+        tickets: {},
+        ticketsList: [],
+        filtersLimits: {},
+        error: null,
       };
 
     case SET_AIRLINES: {
