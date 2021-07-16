@@ -5,7 +5,7 @@ import {
   TicketsWithSegments,
 } from '../../utils/convertTickets';
 import trunsfersInTicket from '../../utils/ticketsUtils';
-import { ActivePriceFilters } from './Filters';
+import { ActivePriceFilters } from '../../components/Filters/Filters';
 
 export default function useFilters(
   activeTransfersFilters: number[],
