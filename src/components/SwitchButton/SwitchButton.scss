@@ -12,13 +12,13 @@
   border: $border-width solid $border-color;
   border-radius: 100%;
   padding: 0;
-  padding-top: 3px;
+  padding-top: rem(3);
 
   z-index: z('switch-btn');
 
   transition: border-color 0.2s linear, box-shadow 0.2s linear;
 
-  box-shadow: 0 0 9px 2px rgb($border-color, 0.7);
+  box-shadow: 0 0 rem(9) rem(2) rgb($border-color, 0.7);
 
   @include mq('phablet') {
     top: 100%;
@@ -51,6 +51,6 @@
   &:hover {
     cursor: pointer;
     border-color: $active-color;
-    box-shadow: 0 0 9px 2px rgb($active-color, 0.7);
+    box-shadow: 0 0 rem(9) rem(2) rgb($active-color, 0.7);
   }
 }

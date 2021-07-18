@@ -4,7 +4,7 @@
   padding: 0 rem(10);
 
   & > div {
-    height: 1px;
+    height: rem(1);
     background: $secondary-text-color;
   }
 }

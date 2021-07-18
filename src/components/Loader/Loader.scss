@@ -10,8 +10,8 @@
 .loader {
   position: relative;
 
-  width: 100px;
-  height: 100px;
+  width: rem(100);
+  height: rem(100);
 
   background: rgba(0, 0, 0, 0);
 
@@ -19,10 +19,10 @@
 
   &__airplane {
     position: absolute;
-    top: 6px;
-    left: 15px;
-    width: 20px;
-    height: 20px;
+    top: rem(6);
+    left: rem(15);
+    width: rem(20);
+    height: rem(20);
     background-image: url('../../assets/images/icons/plane.svg');
 
     border-radius: 50%;
@@ -37,51 +37,51 @@
   &__circle {
     position: absolute;
 
-    width: 4px;
-    height: 4px;
+    width: rem(4);
+    height: rem(4);
 
     background: $active-color;
 
     border-radius: 50%;
 
     &:nth-child(1) {
-      top: 26px;
-      left: 11px;
+      top: rem(26);
+      left: rem(11);
 
       transform: scale(1);
     }
 
     &:nth-child(2) {
-      top: 35px;
-      left: 6px;
+      top: rem(35);
+      left: rem(6);
 
       transform: scale(0.8);
     }
 
     &:nth-child(3) {
-      top: 45px;
-      left: 3px;
+      top: rem(45);
+      left: rem(3);
 
       transform: scale(0.7);
     }
 
     &:nth-child(4) {
-      top: 55px;
-      left: 3px;
+      top: rem(55);
+      left: rem(3);
 
       transform: scale(0.6);
     }
 
     &:nth-child(5) {
-      top: 65px;
-      left: 6px;
+      top: rem(65);
+      left: rem(6);
 
       transform: scale(0.5);
     }
 
     &:nth-child(6) {
-      top: 74px;
-      left: 12px;
+      top: rem(74);
+      left: rem(12);
 
       transform: scale(0.4);
     }

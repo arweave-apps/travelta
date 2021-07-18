@@ -1,6 +1,6 @@
 .month {
   width: rem(300);
-  padding: 0 25px;
+  padding: 0 rem(25);
 
   &__caption {
     @include font-roboto(
@@ -42,7 +42,7 @@
     @include display(grid, center, center);
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(6, $calendar-ceil-size);
-    row-gap: 6px;
+    row-gap: rem(6);
   }
 
   &__day {
@@ -54,8 +54,8 @@
 
     & > div {
       @include display(flex, center, center);
-      width: 34px;
-      height: 34px;
+      width: rem(34);
+      height: rem(34);
       border-radius: 100%;
     }
 

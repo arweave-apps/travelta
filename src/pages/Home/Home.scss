@@ -325,7 +325,7 @@ $img-width: 37.5%;
     height: 100%;
     width: $img-width;
 
-    border-right: $border-width * 2 solid $accent-color;
+    border-right: rem(4) solid $accent-color;
   }
 
   &__content {

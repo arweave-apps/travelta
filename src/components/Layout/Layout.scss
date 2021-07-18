@@ -1,15 +1,15 @@
 .container-big {
   width: 100%;
-  max-width: 1353px;
-  padding: 0 15px;
+  max-width: rem(1353);
+  padding: 0 rem(15);
   height: 100%;
   margin: 0 auto;
 }
 
 .container-small {
   width: 100%;
-  max-width: 1075px;
-  padding: 0 15px;
+  max-width: rem(1075);
+  padding: 0 rem(15);
   height: 100%;
   margin: 0 auto;
 }

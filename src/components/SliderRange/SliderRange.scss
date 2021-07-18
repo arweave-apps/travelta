@@ -6,7 +6,7 @@ $input-width: 255;
 
   margin-bottom: rem(12);
   margin-top: rem(9);
-  padding: 0 rem(20);
+  padding: 0 $gap;
 
   &__value {
     @include font-roboto(rem(14), $primary-text-color, normal, normal, rem(16));
@@ -16,7 +16,7 @@ $input-width: 255;
 .slider-range {
   display: flex;
   justify-content: center;
-  padding: 0 rem(20);
+  padding: 0 $gap;
 
   &__label {
     position: relative;

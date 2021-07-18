@@ -16,10 +16,10 @@
       'info-titles'
       'search-panel'
       '.';
-    grid-row-gap: 114px;
+    grid-row-gap: rem(114);
 
     &--search {
-      grid-row-gap: 70px;
+      grid-row-gap: rem(70);
       grid-template-columns: 1fr;
       grid-template-rows: 0fr 1fr 0fr;
       grid-template-areas:
@@ -30,7 +30,7 @@
 
     @include mq('desktop-wide') {
       grid-template-rows: 0fr 0fr 2fr 1.19fr;
-      grid-row-gap: 80px;
+      grid-row-gap: rem(80);
     }
   }
 

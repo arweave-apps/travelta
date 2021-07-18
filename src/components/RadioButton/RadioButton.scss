@@ -26,7 +26,7 @@
 
     &:before {
       left: 0;
-      top: -2px;
+      top: rem(-2);
       width: rem(20);
       height: rem(20);
 
@@ -42,8 +42,8 @@
     }
 
     &:after {
-      top: 3px;
-      left: 5px;
+      top: rem(3);
+      left: rem(5);
 
       width: rem(10);
       height: rem(10);

@@ -1,6 +1,6 @@
 .filters {
   position: sticky;
-  top: rem(20);
+  top: $gap;
 
   background-color: $panel-color;
   border-radius: $radius;
@@ -13,7 +13,7 @@
     @include display(flex, space-between, center);
     margin-bottom: rem(45);
 
-    padding: rem(20) rem(20) 0 rem(20);
+    padding: $gap $gap 0 $gap;
   }
 
   &__title {

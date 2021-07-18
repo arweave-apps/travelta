@@ -1,3 +1,5 @@
+$line-height: rem(2);
+
 .nav {
   &__lists {
     @include display(flex, center, center);
@@ -24,7 +26,7 @@
     &:after {
       @include pseudo();
       width: 0;
-      height: 2px;
+      height: $line-height;
       background: $main-text-color;
 
       transition: width 0.2s linear;
@@ -36,7 +38,7 @@
       &:after {
         @include pseudo();
         width: 0;
-        height: 2px;
+        height: $line-height;
         background: $primary-text-color;
 
         transition: width 0.2s linear;
@@ -51,7 +53,7 @@
       &:after {
         @include pseudo();
         width: 100%;
-        height: 2px;
+        height: $line-height;
         background: $main-text-color;
 
         transition: width 0.2s linear;

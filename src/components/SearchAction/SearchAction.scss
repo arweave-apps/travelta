@@ -20,17 +20,17 @@
       normal,
       rem(16)
     );
-    margin-right: 17px;
+    margin-right: rem(17);
   }
 
   &__selector {
     @include font-roboto(rem(14), $primary-text-color, 500, normal, rem(16));
-    margin-right: 14px;
+    margin-right: rem(14);
   }
 
   &__arrow {
-    width: 14px;
-    height: 9px;
+    width: rem(14);
+    height: rem(9);
     color: $primary-text-color;
   }
 }

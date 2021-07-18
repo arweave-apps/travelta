@@ -10,7 +10,7 @@
       'filters action'
       'filters tickets';
     grid-template-rows: repeat(2, max-content);
-    grid-gap: rem(20);
+    grid-gap: ($gap);
   }
 }
 
