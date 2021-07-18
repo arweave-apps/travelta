@@ -1,4 +1,7 @@
 .filters {
+  position: sticky;
+  top: rem(20);
+
   background-color: $panel-color;
   border-radius: $radius;
 
