@@ -9,10 +9,16 @@
       'filters prediction'
       'filters action'
       'filters tickets';
+    grid-template-rows: repeat(2, max-content);
     grid-gap: rem(20);
   }
 }
 
 .tickets {
   grid-area: tickets;
+
+  &__btn {
+    width: 100%;
+    height: rem(70);
+  }
 }

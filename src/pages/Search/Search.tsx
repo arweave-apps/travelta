@@ -10,6 +10,7 @@ import Loader from '../../components/Loader';
 import Prediction from '../../components/Prediction';
 import SearchAction from '../../components/SearchAction';
 import Ticket from '../../components/Ticket';
+import SimpleButton from '../../components/SimpleButton';
 
 import {
   getCurrency,
@@ -22,11 +23,15 @@ import './Search.scss';
 
 export type ActivePriceFilters = Record<'minPrice' | 'maxPrice', number>;
 
+const numberOfTicketsLoaded = 10;
+
 const Search = (): JSX.Element => {
   const currency = useSelector(getCurrency);
   const ticketsList = useSelector(getTicketsList);
   const tickets = useSelector(getTickets);
   const isTicketsLoading = useSelector(getTicketsLoading);
+
+  const [visibleTicketsCount, setVisibleTicketsCount] = useState<number>(1);
 
   const [activeTransfersFilters, setActiveTransfersFilters] = useState<
     number[]
@@ -68,6 +73,13 @@ const Search = (): JSX.Element => {
     );
   }
 
+  const handleCLickVisibleTicketsCount = () => {
+    setVisibleTicketsCount(visibleTicketsCount + 1);
+  };
+
+  const ticketsPerPage = numberOfTicketsLoaded * visibleTicketsCount;
+  const isButtonDisabled = visibleTickets.length <= ticketsPerPage;
+
   return (
     <Layout className="avia-search" containerSize="small" tag="section">
       <div className="avia-search__inner">
@@ -79,12 +91,14 @@ const Search = (): JSX.Element => {
           onActiveAirlinesFilters={setActiveAirlinesFilters}
           currency={currency}
         />
+
         <Prediction />
+
         <SearchAction totalTickets={visibleTickets.length} />
 
         <div className="tickets">
           {visibleTickets.length > 0 ? (
-            visibleTickets.map((ticketId) => {
+            visibleTickets.slice(0, ticketsPerPage).map((ticketId) => {
               return (
                 <Ticket
                   key={ticketId}
@@ -94,7 +108,24 @@ const Search = (): JSX.Element => {
               );
             })
           ) : (
-            <div>Выберите хотябы один фильтр</div>
+            <ErrorCard
+              title="Установлены слишком жесткие фильтры"
+              recommendation="Измените фильтры"
+            />
+          )}
+
+          {visibleTickets.length > 0 && (
+            <div className="tickets__btn">
+              <SimpleButton
+                bg="accent"
+                onClick={handleCLickVisibleTicketsCount}
+                disabled={isButtonDisabled}
+              >
+                {isButtonDisabled
+                  ? 'Показаны все доступные билеты'
+                  : `Показать еще ${numberOfTicketsLoaded} билетов`}
+              </SimpleButton>
+            </div>
           )}
         </div>
       </div>
