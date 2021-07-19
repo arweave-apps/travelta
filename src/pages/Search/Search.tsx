@@ -14,6 +14,7 @@ import SimpleButton from '../../components/SimpleButton';
 
 import {
   getCurrency,
+  getPredictions,
   getTickets,
   getTicketsList,
   getTicketsLoading,
@@ -30,6 +31,7 @@ const Search = (): JSX.Element => {
   const ticketsList = useSelector(getTicketsList);
   const tickets = useSelector(getTickets);
   const isTicketsLoading = useSelector(getTicketsLoading);
+  const predictions = useSelector(getPredictions);
 
   const [visibleTicketsCount, setVisibleTicketsCount] = useState<number>(1);
 
@@ -92,7 +94,9 @@ const Search = (): JSX.Element => {
           currency={currency}
         />
 
-        <Prediction />
+        {predictions.length > 0 && (
+          <Prediction items={predictions} currency={currency} />
+        )}
 
         <SearchAction totalTickets={visibleTickets.length} />
 

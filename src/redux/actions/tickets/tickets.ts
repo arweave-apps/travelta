@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import {
+  aggregationPriceConfig,
   airlinesConfig,
   searchMultiTicketsConfig,
   searchTicketsConfig,
@@ -15,6 +16,7 @@ import {
 } from '../../reducers/aviaParams';
 import { FormsType } from '../../reducers/pageSettings';
 import { CurrencyType } from '../../reducers/settings';
+import { Prediction } from '../../reducers/tickets';
 import {
   ActionSearchTypes,
   SET_TICKETS,
@@ -22,6 +24,7 @@ import {
   FETCH_TICKETS_ERROR,
   SET_AIRLINES,
   Carrier,
+  SET_PREDICTIONS,
 } from './types';
 
 type ThunkType = ThunkAction<
@@ -49,11 +52,18 @@ export const ticketsError = (error: Error): ActionSearchTypes => ({
 });
 
 export const setTickets = (
-  tickets: Ticket[] | [],
+  tickets: Ticket[],
   isMulti: boolean
 ): ActionSearchTypes => ({
   type: SET_TICKETS,
   payload: { tickets, isMulti },
+});
+
+export const setPredictions = (
+  predictions: Prediction[]
+): ActionSearchTypes => ({
+  type: SET_PREDICTIONS,
+  payload: predictions,
 });
 
 export const setAirlines = (airlinesData: Carrier[]): ActionSearchTypes => ({
@@ -91,10 +101,12 @@ export const fetchTickets = (
     is equal to one, then the data from the server does not correspond
     to the expected ones.
 
-    To exclude this, make a request as from the standart form.
-    Passing the inverted value of isMulti.
+    To exclude this, make a request as from the standard form.
+    And treat the result as a single search result
 
-    See line 137 - 141
+    Moreover, if a multi search is sent as a single search,
+    it is necessary to pass the inverted isMulti value to
+    the conversion function, since in this case it must be false.
     */
 
     if (isMulti && segments.length > 1) {
@@ -127,9 +139,12 @@ export const fetchTickets = (
         { headers }
       );
 
-      dispatch(setTickets(response.data, isMulti));
+      const { data } = response;
+
+      dispatch(setTickets(data, isMulti));
     } else {
       const { url, apikey } = searchTicketsConfig;
+      const { url: aggrUrl, apikey: aggrApiKey } = aggregationPriceConfig;
 
       const {
         originCode,
@@ -138,9 +153,13 @@ export const fetchTickets = (
         returnDate,
       } = segments[0];
 
-      let requestUrl = `${url}?fly_from=${originCode}&fly_to=${destinationCode}&date_from=${departureDate?.toLocaleDateString(
+      if (!departureDate) {
+        return;
+      }
+
+      let requestUrl = `${url}?fly_from=${originCode}&fly_to=${destinationCode}&date_from=${departureDate.toLocaleDateString(
         'en-GB'
-      )}&date_to=${departureDate?.toLocaleDateString(
+      )}&date_to=${departureDate.toLocaleDateString(
         'en-GB'
       )}&adults=${adults}&infants=${infants}&children=${children}&curr=${currency}&locale=${locale}&selected_cabins=${selectedCabins}`;
 
@@ -150,15 +169,42 @@ export const fetchTickets = (
         )}&return_to=${returnDate?.toLocaleDateString('en-GB')}`;
       }
 
-      const response = await axios.get(requestUrl, {
+      const responseTicket = axios.get(requestUrl, {
         headers: { apikey },
       });
 
+      const now = new Date();
+      const mileseconds = now.setDate(departureDate.getDate() + 7);
+      const afterWeekDate = new Date(mileseconds);
+      const limitAggreationPrce = 7;
+
+      const responseAggregationPrice = axios.get(
+        `${aggrUrl}?fly_from=${originCode}&fly_to=${destinationCode}&date_from=${departureDate.toLocaleDateString(
+          'en-GB'
+        )}&date_to=${afterWeekDate.toLocaleDateString(
+          'en-GB'
+        )}&adults=${adults}&infants=${infants}&children=${children}&curr=${currency}&locale=${locale}&limit=${limitAggreationPrce}`,
+        {
+          headers: { apikey: aggrApiKey },
+        }
+      );
+
+      const response = await Promise.all([
+        responseTicket,
+        responseAggregationPrice,
+      ]);
+
+      const [dataTickets, dataAggregationPrice] = response.map(
+        (res) => res.data.data
+      );
+
       if (segments.length === 1 && isMulti) {
-        dispatch(setTickets(response.data.data, !isMulti));
+        dispatch(setTickets(dataTickets, !isMulti));
       } else {
-        dispatch(setTickets(response.data.data, isMulti));
+        dispatch(setTickets(dataTickets, isMulti));
       }
+
+      dispatch(setPredictions(dataAggregationPrice));
     }
   } catch (error) {
     dispatch(ticketsError(error));

@@ -7,12 +7,11 @@ import { CurrencyType } from '../../redux/reducers/settings';
 import getNounDeclension from '../../utils/getNounDeclension';
 import { TicketsWithSegments } from '../../utils/convertTickets';
 import getCurrencySymbolCharCode from '../../utils/getCurrencySymbolCharCode';
-
 import {
   getFormatedTimeFromSeconds,
   getFormattedStringDate,
   getFormattedStringTime,
-} from './helpers';
+} from '../../utils/dateUtils';
 
 import DownArrowIcon from '../../assets/images/icons/down-arrow.svg';
 import HandbagIcon from '../../assets/images/icons/handbag.svg';

@@ -309,7 +309,7 @@ function isTicketsSearchArrangedById(
 }
 
 export const convertData = (
-  data: Ticket[] | [],
+  data: Ticket[],
   isMulti: boolean
 ): ConvertedData => {
   if (data.length === 0) {

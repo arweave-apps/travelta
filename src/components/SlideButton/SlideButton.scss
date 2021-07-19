@@ -1,5 +1,7 @@
 .slide-btn {
   $btn-size: rem(49);
+  $btn-shift: rem(49/2);
+
   position: absolute;
   top: 60%;
   transform: translateY(-60%);
@@ -44,10 +46,10 @@
   }
 
   &--prev {
-    left: -$btn-size/2;
+    left: -$btn-shift;
   }
 
   &--next {
-    right: -$btn-size/2;
+    right: -$btn-shift;
   }
 }

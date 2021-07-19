@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import {
   convertData,
   ConvertedTickets,
@@ -11,6 +13,7 @@ import {
   FETCH_TICKETS_ERROR,
   FETCH_TICKETS_REQUESTED,
   SET_AIRLINES,
+  SET_PREDICTIONS,
   SET_TICKETS,
 } from '../actions/tickets/types';
 
@@ -33,6 +36,7 @@ export type FiltersLimits =
 const initialState = {
   tickets: {},
   ticketsList: [],
+  predictions: [],
   filtersLimits: {},
   airlinesData: {},
   loading: false,
@@ -41,9 +45,21 @@ const initialState = {
 
 export type AirlinesData = Record<string, Carrier> | Record<string, never>;
 
+export type PredictionWithId = {
+  id: string;
+  date: string;
+  price: number;
+};
+
+export type Prediction = {
+  date: string;
+  price: number;
+};
+
 export type InitialSearchStateType = {
   tickets: ConvertedTickets;
   ticketsList: TicketsList;
+  predictions: PredictionWithId[];
   filtersLimits: FiltersLimits;
   airlinesData: AirlinesData;
   loading: boolean;
@@ -103,6 +119,20 @@ export const ticketsReducer = (
         filtersLimits,
         tickets,
         ticketsList,
+      };
+    }
+
+    case SET_PREDICTIONS: {
+      const predictionsWithId = action.payload.map((prediction) => {
+        return {
+          ...prediction,
+          id: uuidv4(),
+        };
+      });
+
+      return {
+        ...state,
+        predictions: predictionsWithId,
       };
     }
 
