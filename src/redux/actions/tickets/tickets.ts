@@ -91,10 +91,12 @@ export const fetchTickets = (
     is equal to one, then the data from the server does not correspond
     to the expected ones.
 
-    To exclude this, make a request as from the standart form.
-    Passing the inverted value of isMulti.
+    To exclude this, make a request as from the standard form.
+    And treat the result as a single search result
 
-    See line 137 - 141
+    Moreover, if a multi search is sent as a single search,
+    it is necessary to pass the inverted isMulti value to
+    the conversion function, since in this case it must be false.
     */
 
     if (isMulti && segments.length > 1) {
