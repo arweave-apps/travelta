@@ -12,7 +12,7 @@ import {
   Carrier,
   FETCH_TICKETS_ERROR,
   FETCH_TICKETS_REQUESTED,
-  SET_AIRLINES,
+  SET_CARRIERS,
   SET_PREDICTIONS,
   SET_TICKETS,
 } from '../actions/tickets/types';
@@ -38,12 +38,12 @@ const initialState = {
   ticketsList: [],
   predictions: [],
   filtersLimits: {},
-  airlinesData: {},
+  carriers: {},
   loading: false,
   error: null,
 };
 
-export type AirlinesData = Record<string, Carrier> | Record<string, never>;
+export type Carriers = Record<string, Carrier> | Record<string, never>;
 
 export type PredictionWithId = {
   id: string;
@@ -61,7 +61,7 @@ export type InitialSearchStateType = {
   ticketsList: TicketsList;
   predictions: PredictionWithId[];
   filtersLimits: FiltersLimits;
-  airlinesData: AirlinesData;
+  carriers: Carriers;
   loading: boolean;
   error: null | Error;
 };
@@ -146,9 +146,9 @@ export const ticketsReducer = (
         error: null,
       };
 
-    case SET_AIRLINES: {
-      const airlinesById = action.payload.reduce(
-        (acc: AirlinesData, currAirline) => {
+    case SET_CARRIERS: {
+      const carriersById = action.payload.reduce(
+        (acc: Carriers, currAirline) => {
           const { id } = currAirline;
           acc[id] = currAirline;
 
@@ -159,7 +159,7 @@ export const ticketsReducer = (
 
       return {
         ...state,
-        airlinesData: airlinesById,
+        carriers: carriersById,
       };
     }
 

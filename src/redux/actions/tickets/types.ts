@@ -6,7 +6,7 @@ export const SET_MULTI_TICKETS = 'SET_MULTI_TICKETS';
 export const FETCH_TICKETS_REQUESTED = 'FETCH_TICKETS_REQUESTED';
 export const FETCH_TICKETS_ERROR = 'FETCH_TICKETS_ERROR';
 
-export const SET_AIRLINES = 'SET_AIRLINES';
+export const SET_CARRIERS = 'SET_CARRIERS';
 
 export const SET_PREDICTIONS = 'SET_PREDICTIONS';
 
@@ -36,8 +36,8 @@ export type Carrier = {
   type: string;
 };
 
-export type ActionAirlinesType = {
-  type: typeof SET_AIRLINES;
+export type ActionCarriersType = {
+  type: typeof SET_CARRIERS;
   payload: Carrier[];
 };
 
@@ -45,5 +45,5 @@ export type ActionSearchTypes =
   | ActionSetTicketsType
   | ActionTicketsRequestedType
   | ActionTicketsErrorsType
-  | ActionAirlinesType
+  | ActionCarriersType
   | ActionSetPredictionsType;

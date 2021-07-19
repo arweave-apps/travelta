@@ -2,10 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import {
-  getAirlinesData,
-  getFiltersLimits,
-} from '../../../selectors/selectors';
+import { getCarriers, getFiltersLimits } from '../../../selectors/selectors';
 
 import List from '../../List';
 import ListItem from '../../List/ListItem';
@@ -28,7 +25,7 @@ const AirlineFilter = ({
   onSetActiveFilters,
 }: AirlineFilterProps): JSX.Element => {
   const { airlines } = useSelector(getFiltersLimits);
-  const airlinesData = useSelector(getAirlinesData);
+  const carriers = useSelector(getCarriers);
 
   const handleClickCheckbox = (airlineId: string) => {
     if (airlineId === 'all-airlines-checkbox') {
@@ -70,7 +67,7 @@ const AirlineFilter = ({
         </ListItem>
 
         {airlines.map((airline) => {
-          const { id, name } = airlinesData[airline];
+          const { id, name } = carriers[airline];
 
           return (
             <ListItem key={airline}>

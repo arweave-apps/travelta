@@ -3,7 +3,7 @@ import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import {
   aggregationPriceConfig,
-  airlinesConfig,
+  carriersConfig,
   searchMultiTicketsConfig,
   searchTicketsConfig,
 } from '../../../api/apiConfig';
@@ -22,7 +22,7 @@ import {
   SET_TICKETS,
   FETCH_TICKETS_REQUESTED,
   FETCH_TICKETS_ERROR,
-  SET_AIRLINES,
+  SET_CARRIERS,
   Carrier,
   SET_PREDICTIONS,
 } from './types';
@@ -66,18 +66,18 @@ export const setPredictions = (
   payload: predictions,
 });
 
-export const setAirlines = (airlinesData: Carrier[]): ActionSearchTypes => ({
-  type: SET_AIRLINES,
-  payload: airlinesData,
+export const setCarriers = (carriers: Carrier[]): ActionSearchTypes => ({
+  type: SET_CARRIERS,
+  payload: carriers,
 });
 
 export const fetchAirlines = (): ThunkType => async (dispatch) => {
-  const { url } = airlinesConfig;
+  const { url } = carriersConfig;
 
   try {
     const response = await axios(url);
 
-    dispatch(setAirlines(response.data));
+    dispatch(setCarriers(response.data));
   } catch (error) {
     dispatch(ticketsError(error));
   }

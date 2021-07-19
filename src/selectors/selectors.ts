@@ -13,7 +13,7 @@ import {
 import { CurrencyType } from '../redux/reducers/settings';
 import { ConvertedTickets, TicketsList } from '../utils/convertTickets';
 import {
-  AirlinesData,
+  Carriers,
   FiltersLimits,
   PredictionWithId,
 } from '../redux/reducers/tickets';
@@ -60,5 +60,5 @@ export const getFiltersLimits = (state: RootStateType): FiltersLimits =>
 export const getTicketsLoading = (state: RootStateType): boolean =>
   state.tickets.loading;
 
-export const getAirlinesData = (state: RootStateType): AirlinesData =>
-  state.tickets.airlinesData;
+export const getCarriers = (state: RootStateType): Carriers =>
+  state.tickets.carriers;

@@ -15,7 +15,7 @@ export const searchMultiTicketsConfig = {
   apikey: process.env.MULTI_SEARCH_API_KEY,
 };
 
-export const airlinesConfig = {
+export const carriersConfig = {
   url: 'https://api.skypicker.com/carriers',
 };
 
