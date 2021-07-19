@@ -147,8 +147,7 @@ const Ticket = ({ ticket, currency }: TicketProps): JSX.Element => {
 
         <div className="ticket__buy-btn">
           <SimpleButton link={ticket.deep_link} bg="accent">
-            Купить {ticket.price}
-            {getCurrencySymbolCharCode(currency)}
+            Купить {ticket.price} {getCurrencySymbolCharCode(currency)}
           </SimpleButton>
         </div>
       </div>
