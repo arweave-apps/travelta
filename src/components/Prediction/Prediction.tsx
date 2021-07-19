@@ -1,25 +1,30 @@
 import React from 'react';
 
+import { PredictionWithId } from '../../redux/reducers/tickets';
+import { CurrencyType } from '../../redux/reducers/settings';
+
 import PredictionItem from './PredictionItem/PredictionItem';
 import Panel from '../Panel';
 
 import './Prediction.scss';
 
-const items = [
-  // eslint-disable-next-line sonarjs/no-duplicate-string
-  { id: 1, price: '12 000 ₽', date: '01 мар, ср' },
-  { id: 2, price: '12 000 ₽', date: '01 мар, ср' },
-  { id: 3, price: '12 000 ₽', date: '01 мар, ср' },
-  { id: 4, price: '12 000 ₽', date: '01 мар, ср' },
-  { id: 5, price: '12 000 ₽', date: '01 мар, ср' },
-  { id: 6, price: '12 000 ₽', date: '01 мар, ср' },
-];
+type PredictionPropsType = {
+  items: PredictionWithId[];
+  currency: CurrencyType;
+};
 
-const Prediction = (): JSX.Element => {
+const Prediction = ({ items, currency }: PredictionPropsType): JSX.Element => {
   return (
     <Panel className="prediction">
       {items.map(({ id, price, date }) => {
-        return <PredictionItem key={id} price={price} date={date} />;
+        return (
+          <PredictionItem
+            key={id}
+            price={price}
+            date={date}
+            currency={currency}
+          />
+        );
       })}
     </Panel>
   );

@@ -12,7 +12,11 @@ import {
 } from '../redux/reducers/pageSettings';
 import { CurrencyType } from '../redux/reducers/settings';
 import { ConvertedTickets, TicketsList } from '../utils/convertTickets';
-import { AirlinesData, FiltersLimits } from '../redux/reducers/tickets';
+import {
+  AirlinesData,
+  FiltersLimits,
+  PredictionWithId,
+} from '../redux/reducers/tickets';
 
 export const getSegments = (state: RootStateType): SegmentType[] =>
   state.aviaParams.segments;
@@ -43,6 +47,9 @@ export const getCurrency = (state: RootStateType): CurrencyType =>
 
 export const getTickets = (state: RootStateType): ConvertedTickets =>
   state.tickets.tickets;
+
+export const getPredictions = (state: RootStateType): PredictionWithId[] =>
+  state.tickets.predictions;
 
 export const getTicketsList = (state: RootStateType): TicketsList =>
   state.tickets.ticketsList;
