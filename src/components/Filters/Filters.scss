@@ -1,0 +1,39 @@
+.filters {
+  position: sticky;
+  top: $gap;
+
+  background-color: $panel-color;
+  border-radius: $radius;
+
+  grid-area: filters;
+
+  height: max-content;
+
+  &__header {
+    @include display(flex, space-between, center);
+    margin-bottom: rem(45);
+
+    padding: $gap $gap 0 $gap;
+  }
+
+  &__title {
+    @include font-roboto(rem(14), $primary-text-color, 500, normal, rem(16));
+  }
+
+  &__button-clear-all {
+    @include font-roboto(
+      rem(12),
+      $alternative-text-color,
+      normal,
+      normal,
+      rem(14)
+    );
+    background: none;
+    border: none;
+
+    &:hover {
+      cursor: pointer;
+      color: lighten($alternative-text-color, 9%);
+    }
+  }
+}

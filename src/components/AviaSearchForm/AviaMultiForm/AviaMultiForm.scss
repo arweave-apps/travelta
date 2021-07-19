@@ -4,7 +4,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr) 0.9fr;
     grid-template-rows: $search-form-row-height;
-    margin-bottom: 10px;
+    margin-bottom: rem(10);
 
     @include mq('phablet') {
       grid-template-columns: 1fr;
@@ -101,13 +101,13 @@
     grid-template-rows: $search-form-row-height;
 
     @include mq('tablet') {
-      grid-template-rows: $search-form-row-height $search-form-row-height;
-      grid-row-gap: 10px;
+      grid-template-rows: repeat(2, $search-form-row-height);
+      grid-row-gap: rem(10);
     }
 
     @include mq('phablet') {
       grid-template-columns: 1fr;
-      grid-template-rows: $search-form-row-height $search-form-row-height $search-form-row-height;
+      grid-template-rows: repeat(3, $search-form-row-height);
     }
   }
 

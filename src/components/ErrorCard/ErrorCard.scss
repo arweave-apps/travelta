@@ -1,0 +1,14 @@
+.error-card {
+  margin: rem(20) auto;
+  padding: rem(30);
+  text-align: center;
+
+  &__title {
+    @include font-roboto(rem(18), $warning-color, 500, normal, rem(16));
+    margin-bottom: rem(20);
+  }
+
+  &__recommendation {
+    @include font-roboto(rem(16), $warning-color, normal, normal, rem(14));
+  }
+}

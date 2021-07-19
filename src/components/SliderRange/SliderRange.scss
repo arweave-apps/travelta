@@ -1,0 +1,111 @@
+$input-width: 255;
+
+.slider-info {
+  @include display(flex, space-between, center);
+  width: 100%;
+
+  margin-bottom: rem(12);
+  margin-top: rem(9);
+  padding: 0 $gap;
+
+  &__value {
+    @include font-roboto(rem(14), $primary-text-color, normal, normal, rem(16));
+  }
+}
+
+.slider-range {
+  display: flex;
+  justify-content: center;
+  padding: 0 $gap;
+
+  &__label {
+    position: relative;
+  }
+
+  &__input {
+    pointer-events: none;
+    position: absolute;
+    width: rem($input-width);
+    height: 0;
+    margin: 0;
+  }
+
+  &__input--left {
+    z-index: 3;
+  }
+
+  &__input--right {
+    z-index: 4;
+  }
+
+  &__input--above {
+    z-index: 5;
+  }
+
+  &__input,
+  &__input::-webkit-slider-thumb {
+    appearance: none;
+  }
+
+  &__input::-webkit-slider-thumb {
+    position: relative;
+
+    height: rem(16);
+    width: rem(16);
+
+    background-color: $panel-color;
+    border: 1px solid $active-color;
+    border-radius: 100%;
+
+    margin-top: rem(4);
+    pointer-events: all;
+
+    transition: background-color 0.2s linear;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $active-color;
+    }
+  }
+
+  &__input::-moz-range-thumb {
+    position: relative;
+
+    height: rem(16);
+    width: rem(16);
+
+    background-color: $panel-color;
+    border: 1px solid $active-color;
+    border-radius: 100%;
+
+    margin-top: rem(4);
+    pointer-events: all;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.slider {
+  position: relative;
+  width: rem($input-width);
+
+  &__track,
+  &__interval {
+    position: absolute;
+    width: 100%;
+    height: rem(1);
+    border-radius: rem(15);
+  }
+
+  &__track {
+    background: $disabled-color;
+    z-index: 1;
+  }
+
+  &__interval {
+    background: $active-color;
+    z-index: 2;
+  }
+}

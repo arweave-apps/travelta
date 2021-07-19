@@ -2,8 +2,8 @@
   @include display(flex, center, center);
   position: absolute;
   top: 35%;
-  right: -9px;
-  
+  right: rem(-9);
+
   width: rem(20);
   height: rem(20);
 

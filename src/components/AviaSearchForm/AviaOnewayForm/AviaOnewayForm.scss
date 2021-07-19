@@ -11,14 +11,14 @@
   @include mq('tablet') {
     grid-template-rows:
       repeat(2, $search-form-row-height)
-      #{$search-form-row-height + 5};
+      $search-form-row-height5;
   }
 
   @include mq('phablet') {
     grid-template-columns: 1fr 1fr;
     grid-template-rows:
       repeat(4, $search-form-row-height)
-      #{$search-form-row-height + 5};
+      $search-form-row-height5;
   }
 
   &__origin {
@@ -171,7 +171,7 @@
       grid-column: 1/6;
       grid-row: 3/3;
       margin-left: 0;
-      margin-top: rem(10);
+      margin-top: rem(5);
     }
 
     @include mq('phablet') {

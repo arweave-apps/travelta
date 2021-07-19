@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import useOutsideClick from '../../hooks/useOutsideClick';
 
 import { Cities } from '../../redux/reducers/locations';
@@ -53,31 +53,41 @@ const Autocomplete = ({
   const [activeSuggestion, setActiveSuggestion] = useState<number>(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const handleKeyDownCity = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (
-      (e.code === 'ArrowUp' && activeSuggestion === 0) ||
-      (e.code === 'ArrowDown' && activeSuggestion - 1 === locations?.length)
-    ) {
-      return;
-    }
-
-    if (e.code === 'ArrowUp') {
-      setActiveSuggestion(activeSuggestion - 1);
-    }
-
-    if (e.code === 'ArrowDown') {
-      setActiveSuggestion(activeSuggestion + 1);
-    }
-
-    if (e.code === 'Enter') {
-      if (locations) {
-        const { name, code } = locations[activeSuggestion];
-        onClickItem(name, segmentId, code, fieldName);
-        onSetFormikValue(`${fieldName}-${segmentId}`, name);
+  const handleKeyDownCity = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (
+        (e.code === 'ArrowUp' && activeSuggestion === 0) ||
+        (e.code === 'ArrowDown' && activeSuggestion - 1 === locations?.length)
+      ) {
+        return;
       }
-      setActiveSuggestion(0);
-    }
-  };
+
+      if (e.code === 'ArrowUp') {
+        setActiveSuggestion(activeSuggestion - 1);
+      }
+
+      if (e.code === 'ArrowDown') {
+        setActiveSuggestion(activeSuggestion + 1);
+      }
+
+      if (e.code === 'Enter') {
+        if (locations) {
+          const { name, code } = locations[activeSuggestion];
+          onClickItem(name, segmentId, code, fieldName);
+          onSetFormikValue(`${fieldName}-${segmentId}`, name);
+        }
+        setActiveSuggestion(0);
+      }
+    },
+    [
+      activeSuggestion,
+      fieldName,
+      locations,
+      onClickItem,
+      onSetFormikValue,
+      segmentId,
+    ]
+  );
 
   useOutsideClick(
     wrapperRef,

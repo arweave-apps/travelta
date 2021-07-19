@@ -49,34 +49,6 @@ svg {
   fill: currentColor;
 }
 
-.container-big {
-  width: 100%;
-  max-width: 1353px;
-  padding: 0 15px;
-  height: 100%;
-  margin: 0 auto;
-}
-
-.container-small {
-  width: 100%;
-  max-width: 1075px;
-  padding: 0 15px;
-  height: 100%;
-  margin: 0 auto;
-}
-
 .mb-8 {
   margin-bottom: rem(8);
-}
-
-.down-arrow {
-  width: rem(14);
-  height: rem(7);
-  color: $border-color;
-
-  transition: color 0.2s linear, transform 0.2s linear;
-
-  &--active {
-    transform: rotate(180deg);
-  }
 }

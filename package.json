@@ -10,7 +10,7 @@
     "start": "cross-env NODE_ENV=development webpack serve --mode development",
     "stats": "webpack --json > stats.json && webpack-bundle-analyzer stats.json",
     "lint": "eslint ./src",
-    "lint:fix": "eslint ./src --fix --color",
+    "lint:fix": "eslint --fix --color --ext .js,.jsx,.ts,.tsx ./src",
     "prepare": "husky install"
   },
   "author": "Sergey Vakhramov <vsa8813@gmail.com>",

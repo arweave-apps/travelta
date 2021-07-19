@@ -14,3 +14,12 @@ export const searchMultiTicketsConfig = {
   url: `${SITE_URL}/v2/flights_multi`,
   apikey: process.env.MULTI_SEARCH_API_KEY,
 };
+
+export const carriersConfig = {
+  url: 'https://api.skypicker.com/carriers',
+};
+
+export const aggregationPriceConfig = {
+  url: `${SITE_URL}/aggregation_search/price_per_date`,
+  apikey: process.env.API_KEY,
+};

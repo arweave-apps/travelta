@@ -23,7 +23,7 @@
     width: 100%;
     height: $header-hight;
     border-bottom: 1px solid $border-color;
-    padding: 0 rem(20);
+    padding: 0 $gap;
   }
 
   &__title {
@@ -32,6 +32,6 @@
 
   &__months {
     @include display(flex, space-between, center);
-    padding: rem(20);
+    padding: $gap;
   }
 }

@@ -1,20 +1,16 @@
 .ticket {
   display: grid;
   grid-template-columns: 73.19% 26.81%;
-  grid-template-rows: calc(100% - 25px) 25px;
+  grid-template-rows: calc(100% - 25px) rem(25);
   grid-template-areas:
     'ticket-left ticket-right'
     'ticket-expand ticket-expand';
-  min-height: 262px;
-
-  background-color: $panel-color;
-  border-radius: $radius;
-  box-shadow: $panel-shadow-search;
+  min-height: rem(262);
 
   margin-bottom: rem(30);
 
   &__left {
-    padding-left: rem(20);
+    padding-left: $gap;
     margin-right: rem(24);
     grid-area: ticket-left;
   }
@@ -125,9 +121,7 @@
     @include display(flex, flex-start, center);
     flex-direction: column;
     border-left: $border-width solid $ticket-devider-color;
-    padding-top: rem(20);
-    padding-right: rem(20);
-    padding-left: rem(20);
+    padding: $gap $gap 0 $gap;
 
     grid-area: ticket-right;
   }
@@ -179,7 +173,7 @@
       rem(14)
     );
 
-    margin-bottom: 5px;
+    margin-bottom: rem(5);
   }
 
   &__suitcase {

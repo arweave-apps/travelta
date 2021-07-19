@@ -9,19 +9,16 @@
       'filters prediction'
       'filters action'
       'filters tickets';
-    grid-gap: rem(20);
+    grid-template-rows: repeat(2, max-content);
+    grid-gap: ($gap);
   }
-}
-
-.filters {
-  background-color: $panel-color;
-  border-radius: $radius;
-
-  grid-area: filters;
-
-  box-shadow: $panel-shadow-search;
 }
 
 .tickets {
   grid-area: tickets;
+
+  &__btn {
+    width: 100%;
+    height: rem(70);
+  }
 }

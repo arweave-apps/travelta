@@ -8,7 +8,7 @@ import {
   CountryTo,
   Route,
   RouteMulti,
-  Routes,
+  RoutesItem,
   Ticket,
   TicketMulti,
   TicketSearch,
@@ -21,18 +21,7 @@ function isTicketSearchId(ticket: Ticket): ticket is TicketSearch {
 const getIdFromMultiRoutes = (routes: RouteMulti[]) =>
   routes.map((currRoute) => currRoute.id).join('|');
 
-const getTicketIdList = (data: Ticket[], isMulti = false) =>
-  data.map((ticket) => {
-    let id = '';
-
-    if (isTicketSearchId(ticket) && !isMulti) {
-      id = ticket.id;
-    } else if (!isTicketSearchId(ticket) && isMulti) {
-      id = getIdFromMultiRoutes(ticket.route);
-    }
-
-    return id;
-  });
+export type TicketsList = string[];
 
 type TicketsSearchArrangedById = Record<string, TicketSearch>;
 type TicketsMultiArrangedById = Record<string, TicketMulti>;
@@ -85,7 +74,7 @@ const createFlight = (route: Route): Flight => {
   };
 };
 
-const getFlights = (route: Route[], currRouteArr: Routes) => {
+const getFlights = (route: Route[], currRouteArr: RoutesItem) => {
   let routeStarted = false;
   const [fromCityCode, toCityCode] = currRouteArr;
 
@@ -106,7 +95,7 @@ const getFlights = (route: Route[], currRouteArr: Routes) => {
   }, []);
 };
 
-const getTransfers = (route: Route[], currRouteArr: Routes) => {
+const getTransfers = (route: Route[], currRouteArr: RoutesItem) => {
   let transfer = {} as Transfer;
   let routeStarted = false;
   let prevAirportCode = '';
@@ -287,7 +276,7 @@ type Transfer = {
   id: string;
 };
 
-type Segment = {
+export type Segment = {
   id: string;
   flights: Flight[];
   transfers: Transfer[];
@@ -296,7 +285,7 @@ type Segment = {
   bags: Bags;
 };
 
-type TicketsWithSegments = {
+export type TicketsWithSegments = {
   segments: Segment[];
   price: number;
   airlines: string[];
@@ -320,7 +309,7 @@ function isTicketsSearchArrangedById(
 }
 
 export const convertData = (
-  data: Ticket[] | [],
+  data: Ticket[],
   isMulti: boolean
 ): ConvertedData => {
   if (data.length === 0) {
@@ -331,6 +320,7 @@ export const convertData = (
   }
 
   const tickets = ticketsArrangedById(data, isMulti);
+
   let newTickets = {};
 
   if (isMulti && !isTicketsSearchArrangedById(tickets)) {
@@ -339,8 +329,10 @@ export const convertData = (
     newTickets = getTicketsWithSegments(tickets);
   }
 
+  const ticketsList = Object.keys(tickets);
+
   return {
-    ticketsList: getTicketIdList(data, isMulti),
+    ticketsList,
     tickets: newTickets,
   };
 };
