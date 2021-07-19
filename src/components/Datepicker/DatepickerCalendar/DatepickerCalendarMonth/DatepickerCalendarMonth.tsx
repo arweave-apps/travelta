@@ -74,11 +74,7 @@ const DatePickerCalendarMonth = ({
             const comparisonDate = new Date(year, month, monthDay);
 
             if (!monthDay) {
-              return (
-                <div className="month__day" key={uuidv4()}>
-                  {' '}
-                </div>
-              );
+              return <div className="month__day" key={uuidv4()} />;
             }
 
             if (isPastDay(comparisonDate, disabledDates)) {
