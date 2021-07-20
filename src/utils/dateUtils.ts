@@ -24,6 +24,31 @@ export const getFormattedStringDate = (date: Date): string => {
   return `${dateNum} ${month} ${year}, ${day}`;
 };
 
+export const getFormattedStringShortDate = (date: Date): string => {
+  const shortWeekDays = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+
+  const shortMonthsNames = [
+    'янв',
+    'фев',
+    'мар',
+    'апр',
+    'мая',
+    'июн',
+    'июл',
+    'авг',
+    'сен',
+    'окт',
+    'ноя',
+    'дек',
+  ];
+
+  const dateNum = date.getDate();
+  const month = shortMonthsNames[date.getMonth()];
+  const day = shortWeekDays[date.getDay()];
+
+  return `${dateNum} ${month}, ${day}`;
+};
+
 export const getFormattedStringTime = (date: Date): string => {
   const hours = date.getHours();
   const minutes = date.getMinutes();
