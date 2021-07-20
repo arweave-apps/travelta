@@ -204,7 +204,9 @@ export const fetchTickets = (
         dispatch(setTickets(dataTickets, isMulti));
       }
 
-      dispatch(setPredictions(dataAggregationPrice));
+      dispatch(
+        setPredictions(dataAggregationPrice.slice(0, limitAggreationPrce))
+      );
     }
   } catch (error) {
     dispatch(ticketsError(error));
