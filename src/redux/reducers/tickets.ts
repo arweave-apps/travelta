@@ -83,10 +83,7 @@ export const ticketsReducer = (
           const min = Math.min(...transfers);
           const max = Math.max(...transfers);
 
-          if (
-            !Object.prototype.hasOwnProperty.call(acc, 'transfersRange') &&
-            !Object.prototype.hasOwnProperty.call(acc, 'priceRange')
-          ) {
+          if (Object.keys(acc).length === 0) {
             acc.transfersRange = {
               min,
               max,
