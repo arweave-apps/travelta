@@ -1,12 +1,12 @@
 .calendar {
   position: absolute;
-  bottom: 109%;
+  top: 109%;
   left: 50%;
   transform: translateX(-50%);
   z-index: z('calendar');
 
   @include mq('tablet-wide') {
-    top: rem(-540);
+    top: rem(68);
     left: 100%;
   }
 

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { getCarriers, getFiltersLimits } from '../../../selectors/selectors';
+import { getCarriers } from '../../../selectors/selectors';
 
 import List from '../../List';
 import ListItem from '../../List/ListItem';
@@ -16,6 +16,7 @@ type AirlineFilterProps = {
   onToggle: (id: string) => void;
   activeFilters: ActiveAirlinesFilters;
   onSetActiveFilters: (filters: ActiveAirlinesFilters) => void;
+  airlines: string[];
 };
 
 const AirlineFilter = ({
@@ -23,8 +24,8 @@ const AirlineFilter = ({
   onToggle,
   activeFilters,
   onSetActiveFilters,
+  airlines,
 }: AirlineFilterProps): JSX.Element => {
-  const { airlines } = useSelector(getFiltersLimits);
   const carriers = useSelector(getCarriers);
 
   const handleClickCheckbox = (airlineId: string) => {
