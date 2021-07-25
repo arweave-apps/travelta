@@ -1,19 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
 
-import { getFiltersLimits } from '../../../selectors/selectors';
-import getNounDeclension from '../../../utils/getNounDeclension';
 import Checkbox from '../../Checkbox';
 
 import List from '../../List';
 import ListItem from '../../List/ListItem';
 import FilterItem from '../FilterItem';
-
-type CheckboxsDataType = {
-  id: string;
-  label: string;
-  value: number;
-};
+import { TransferCheckboxsDataType } from '../Filters';
 
 type ActiveTransferFilters = number[];
 
@@ -22,6 +14,7 @@ type TransferFilterProps = {
   onToggle: (id: string) => void;
   activeFilters: ActiveTransferFilters;
   onSetActiveFilters: (filters: ActiveTransferFilters) => void;
+  checkboxes: TransferCheckboxsDataType[];
 };
 
 const TransferFilter = ({
@@ -29,13 +22,8 @@ const TransferFilter = ({
   onToggle,
   activeFilters,
   onSetActiveFilters,
+  checkboxes,
 }: TransferFilterProps): JSX.Element => {
-  const {
-    transfersRange: { min, max },
-  } = useSelector(getFiltersLimits);
-
-  const [checkboxes, setCheckboxes] = useState<CheckboxsDataType[]>([]);
-
   const handleClickCheckbox = (checkboxId: string, value = -1) => {
     if (checkboxId === 'all-transfer-checkbox' && value === -1) {
       if (activeFilters.length === checkboxes.length) {
@@ -56,31 +44,8 @@ const TransferFilter = ({
   };
 
   useEffect(() => {
-    const checkboxesData = [];
-
-    for (let num = min; num <= max; num++) {
-      const label =
-        num === 0
-          ? 'без пересадок'
-          : `${num} ${getNounDeclension(num, [
-              'пересадка',
-              'пересадки',
-              'пересадок',
-            ])}`;
-
-      const checkboxData = {
-        id: `${num}-transfer-checkbox`,
-        label,
-        value: num,
-      };
-
-      checkboxesData.push(checkboxData);
-    }
-
-    setCheckboxes(checkboxesData);
-
-    onSetActiveFilters(checkboxesData.map((checkbox) => checkbox.value));
-  }, [max, min, onSetActiveFilters]);
+    onSetActiveFilters(checkboxes.map((checkbox) => checkbox.value));
+  }, [checkboxes, onSetActiveFilters]);
 
   return (
     <FilterItem
@@ -116,4 +81,5 @@ const TransferFilter = ({
     </FilterItem>
   );
 };
+
 export default TransferFilter;
