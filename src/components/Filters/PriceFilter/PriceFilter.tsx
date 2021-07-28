@@ -4,11 +4,11 @@ import { CurrencyType } from '../../../redux/reducers/settings';
 
 import FilterItem from '../FilterItem';
 import SliderRange from '../../SliderRange';
-import { ActivePriceFilters } from '../Filters';
+import { ActivePriceFilters, OpenFiltersType } from '../Filters';
 
 type PriceFilterProps = {
   isOpen: boolean;
-  onToggle: (id: string) => void;
+  onToggle: (id: OpenFiltersType) => void;
   currency: CurrencyType;
   onSetActiveFilters: (filters: ActivePriceFilters) => void;
   min: number;
