@@ -8,12 +8,13 @@ import List from '../../List';
 import ListItem from '../../List/ListItem';
 import FilterItem from '../FilterItem';
 import Checkbox from '../../Checkbox';
+import { OpenFiltersType } from '../Filters';
 
 type ActiveAirlinesFilters = string[];
 
 type AirlineFilterProps = {
   isOpen: boolean;
-  onToggle: (id: string) => void;
+  onToggle: (id: OpenFiltersType) => void;
   activeFilters: ActiveAirlinesFilters;
   onSetActiveFilters: (filters: ActiveAirlinesFilters) => void;
   airlines: string[];

@@ -5,13 +5,13 @@ import Checkbox from '../../Checkbox';
 import List from '../../List';
 import ListItem from '../../List/ListItem';
 import FilterItem from '../FilterItem';
-import { TransferCheckboxsDataType } from '../Filters';
+import { OpenFiltersType, TransferCheckboxsDataType } from '../Filters';
 
 type ActiveTransferFilters = number[];
 
 type TransferFilterProps = {
   isOpen: boolean;
-  onToggle: (id: string) => void;
+  onToggle: (id: OpenFiltersType) => void;
   activeFilters: ActiveTransferFilters;
   onSetActiveFilters: (filters: ActiveTransferFilters) => void;
   checkboxes: TransferCheckboxsDataType[];

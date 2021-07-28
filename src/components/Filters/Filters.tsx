@@ -2,7 +2,6 @@ import React, { SetStateAction, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { CurrencyType } from '../../redux/reducers/settings';
-import { TicketsList } from '../../utils/convertTickets';
 
 import TransferFilter from './TransferFilter';
 import PriceFilter from './PriceFilter';
@@ -32,6 +31,11 @@ export type TransferCheckboxsDataType = {
 
 export type ActivePriceFilters = Record<'minPrice' | 'maxPrice', number>;
 
+export type OpenFiltersType =
+  | 'transferFilter'
+  | 'priceFilter'
+  | 'airlineFilter';
+
 const Filters = ({
   activeTransfersFilters,
   activeAirlinesFilters,
@@ -40,7 +44,7 @@ const Filters = ({
   onActiveAirlinesFilters,
   currency,
 }: FiltersProps): JSX.Element => {
-  const [openFiltersList, setOpenFiltersList] = useState<TicketsList>([]);
+  const [openFiltersList, setOpenFiltersList] = useState<OpenFiltersType[]>([]);
   const { transfersRange, priceRange, airlines } = useSelector(
     getFiltersLimits
   );
@@ -83,7 +87,7 @@ const Filters = ({
   }, [transfersRange.max, transfersRange.min]);
 
   const handleToggleActiveFilterItem = useCallback(
-    (id: string) => {
+    (id: OpenFiltersType) => {
       const idx = openFiltersList.indexOf(id);
 
       if (idx === -1) {
