@@ -814,7 +814,7 @@ $self-width: calc(50% - 55px);
 }
 
 .footer {
-  height: rem(105);
+  min-height: rem(105);
   padding: rem(25) 0;
   background: $home-header-color;
 
@@ -829,6 +829,10 @@ $self-width: calc(50% - 55px);
   &__author,
   &__code {
     @include font-roboto(rem(14), $main-text-color, 500, normal, rem(16));
+  }
+
+  &__author {
+    margin-bottom: rem(5);
   }
 
   &__code {
