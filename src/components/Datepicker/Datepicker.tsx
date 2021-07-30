@@ -128,6 +128,7 @@ const Datepicker = ({
           id={`departureDate-${segmentId}`}
           value={departureDate?.toLocaleDateString()}
           readonly
+          onBlur={onBlur}
           inputRef={inputDepartRef}
           errorText={errors[`departureDate-${segmentId}`]}
           hasError={
