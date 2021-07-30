@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormikErrors, FormikTouched } from 'formik';
 
@@ -128,6 +128,7 @@ const Datepicker = ({
           id={`departureDate-${segmentId}`}
           value={departureDate?.toLocaleDateString()}
           readonly
+          onBlur={onBlur}
           inputRef={inputDepartRef}
           errorText={errors[`departureDate-${segmentId}`]}
           hasError={

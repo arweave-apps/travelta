@@ -89,8 +89,19 @@ const DatepickerCalendar = ({
     const month = now.getMonth();
     const year = now.getFullYear();
 
-    setPrevMonthDate(new Date(year, month));
-    setNextMonthDate(new Date(year, month + 1));
+    if (segments.length === 1) {
+      if (segments[0].departureDate !== null) {
+        const startDate = new Date(segments[0].departureDate);
+        const startYear = startDate.getFullYear();
+        const startMonth = startDate.getMonth();
+
+        setPrevMonthDate(new Date(startYear, startMonth));
+        setNextMonthDate(new Date(startYear, startMonth + 1));
+      } else {
+        setPrevMonthDate(new Date(year, month));
+        setNextMonthDate(new Date(year, month + 1));
+      }
+    }
 
     if (segments.length > 1) {
       const activeSegmentIndex = segments.findIndex(
@@ -101,13 +112,26 @@ const DatepickerCalendar = ({
 
       if (prevSegmentIndex === -1) {
         dispatch(setBeforeDisabledDates(new Date(year, month, day)));
+
+        setPrevMonthDate(new Date(year, month));
+        setNextMonthDate(new Date(year, month + 1));
       } else {
         const prevSegment = segments[prevSegmentIndex];
         const prevDepartureDate = prevSegment.departureDate;
 
         if (!prevDepartureDate) {
           dispatch(setBeforeDisabledDates(new Date(year, month, day)));
+
+          setPrevMonthDate(new Date(year, month));
+          setNextMonthDate(new Date(year, month + 1));
         } else {
+          const startDate = new Date(prevDepartureDate);
+          const startYear = startDate.getFullYear();
+          const startMonth = startDate.getMonth();
+
+          setPrevMonthDate(new Date(startYear, startMonth));
+          setNextMonthDate(new Date(startYear, startMonth + 1));
+
           dispatch(setBeforeDisabledDates(prevDepartureDate));
         }
       }
