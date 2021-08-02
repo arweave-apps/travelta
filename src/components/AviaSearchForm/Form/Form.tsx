@@ -18,7 +18,7 @@ import PassangerSelector from '../../PassangerSelector';
 import SimpleButton from '../../SimpleButton';
 import SwitchButton from '../../SwitchButton';
 
-import { initialValues, InitialValues } from '../helpers';
+import { InitialValues } from '../helpers';
 
 import './Form.scss';
 
@@ -32,6 +32,7 @@ const Form = (): JSX.Element => {
     errors,
     isValid,
     handleSubmit,
+    resetForm,
   } = useFormikContext<InitialValues>();
 
   const dispatch = useDispatch();
@@ -53,8 +54,8 @@ const Form = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    setValues(initialValues);
-  }, [activeForm, setValues]);
+    resetForm();
+  }, [activeForm, resetForm]);
 
   const handleSwitchCities = (
     formikValues: InitialValues,
