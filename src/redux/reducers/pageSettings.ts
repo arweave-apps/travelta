@@ -9,7 +9,7 @@ import {
 
 const initialState: InitialPageSettingsStateType = {
   activeForm: 'roundtrip',
-  activeInputDate: null,
+  activeInputDate: null, // delete
   activeSegmentId: null,
   disabledDates: {
     before: null,

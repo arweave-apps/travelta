@@ -6,13 +6,14 @@ import './TextField.scss';
 
 type TextFieldProps = {
   id: string;
+  name: string;
   value: string | undefined;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
   readonly?: boolean;
   inputRef?: React.RefObject<HTMLInputElement>;
-  errorText: string | undefined;
+  errorText: unknown;
   onFocus?: (e: React.FormEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   hasError: boolean;
@@ -20,6 +21,7 @@ type TextFieldProps = {
 
 const TextField = ({
   id,
+  name,
   value = '',
   onChange,
   placeholder,
@@ -41,7 +43,7 @@ const TextField = ({
     >
       <input
         id={id}
-        name={id}
+        name={name}
         type="text"
         placeholder={placeholder}
         className={classNames('input', {

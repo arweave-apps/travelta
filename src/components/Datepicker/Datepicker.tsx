@@ -1,23 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormikErrors, FormikTouched } from 'formik';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 
 import {
   getActiveForm,
-  getActiveInputDate,
   getActiveSegmentId,
   getDisabledDates,
 } from '../../selectors/selectors';
 
-import {
-  setActiveInputDate,
-  setActiveSegmentId,
-} from '../../redux/actions/pageSettings/pageSettings';
-import { ActiveInputType } from '../../redux/reducers/pageSettings';
+// eslint-disable-next-line max-len
+import { setActiveSegmentId } from '../../redux/actions/pageSettings/pageSettings';
 
-import { InitialValues } from '../AviaSearchForm/helpers';
+import { SegmentType } from '../AviaSearchForm/helpers';
 
 import DatepickerCalendar from './DatepickerCalendar';
 import TextField from '../TextField';
@@ -26,51 +21,46 @@ import './Datepicker.scss';
 
 type DatepickerPropsType = {
   segmentId: string;
+  inputNameReturn: string;
+  inputNameDeparture: string;
   returnDate: Date | null;
   departureDate: Date | null;
-  errors: FormikErrors<InitialValues>;
-  touched: FormikTouched<InitialValues>;
-  onBlur: (e: React.FormEvent<HTMLInputElement>) => void;
-  onSetFormikDepartureDate: (
-    field: string,
-    value: string,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikReturnDate: (
-    field: string,
-    value: string,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikTouchedDepartureDate: (
-    field: string,
-    isTouched?: boolean,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikTouchedReturnDate: (
-    field: string,
-    isTouched?: boolean,
-    shouldValidate?: boolean
-  ) => void;
+  segments: SegmentType[];
+  errorTextReturn: string;
+  errorTextDeparture: string;
+  hasErrorReturn: boolean;
+  hasErrorDeparture: boolean;
+  onBlurDeparture: () => void;
+  onBlurReturn: () => void;
+  onSetFormikDepartureDate: (date: Date | null) => void;
+  onSetFormikReturnDate: (date: Date | null) => void;
 };
+
+export type ActiveInputType = 'departure' | 'return' | null;
 
 const Datepicker = ({
   segmentId,
+  inputNameReturn,
+  inputNameDeparture,
   returnDate,
   departureDate,
-  errors,
-  touched,
-  onBlur,
+  segments,
+  errorTextReturn,
+  errorTextDeparture,
+  hasErrorReturn,
+  hasErrorDeparture,
+  onBlurDeparture,
+  onBlurReturn,
   onSetFormikDepartureDate,
   onSetFormikReturnDate,
-  onSetFormikTouchedDepartureDate,
-  onSetFormikTouchedReturnDate,
 }: DatepickerPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
   const activeForm = useSelector(getActiveForm);
-  const activeInputDate = useSelector(getActiveInputDate);
   const activeSegmentId = useSelector(getActiveSegmentId);
   const disabledDates = useSelector(getDisabledDates);
+
+  const [activeInputDate, setActiveInputDate] = useState<ActiveInputType>(null);
 
   const inputDepartRef = useRef<HTMLInputElement>(null);
   const inputReturnRef = useRef<HTMLInputElement>(null);
@@ -93,7 +83,7 @@ const Datepicker = ({
     wrapperRef,
     () => {
       setIsCalendarOpen(false);
-      dispatch(setActiveInputDate(null));
+      setActiveInputDate(null);
     },
     isCalendarOpen
   );
@@ -107,7 +97,7 @@ const Datepicker = ({
   };
 
   const handleClickInputDate = (inputType: ActiveInputType) => {
-    dispatch(setActiveInputDate(inputType));
+    setActiveInputDate(inputType);
     dispatch(setActiveSegmentId(segmentId));
   };
 
@@ -125,16 +115,14 @@ const Datepicker = ({
       >
         <TextField
           placeholder="Когда"
-          id={`departureDate-${segmentId}`}
+          id={inputNameDeparture}
+          name={inputNameDeparture}
           value={departureDate?.toLocaleDateString()}
           readonly
-          onBlur={onBlur}
+          onBlur={onBlurDeparture}
           inputRef={inputDepartRef}
-          errorText={errors[`departureDate-${segmentId}`]}
-          hasError={
-            !!touched[`departureDate-${segmentId}`] &&
-            !!errors[`departureDate-${segmentId}`]
-          }
+          errorText={errorTextDeparture}
+          hasError={hasErrorDeparture}
         />
       </div>
 
@@ -146,16 +134,14 @@ const Datepicker = ({
         >
           <TextField
             placeholder="Обратно"
-            id={`returnDate-${segmentId}`}
+            id={inputNameReturn}
+            name={inputNameReturn}
             value={returnDate?.toLocaleDateString()}
             readonly
-            onBlur={onBlur}
+            onBlur={onBlurReturn}
             inputRef={inputReturnRef}
-            errorText={errors[`returnDate-${segmentId}`]}
-            hasError={
-              !!touched[`returnDate-${segmentId}`] &&
-              !!errors[`departureDate-${segmentId}`]
-            }
+            errorText={errorTextReturn}
+            hasError={hasErrorReturn}
           />
         </div>
       )}
@@ -165,13 +151,13 @@ const Datepicker = ({
           segmentId={segmentId}
           returnDate={returnDate}
           departureDate={departureDate}
+          segments={segments}
           activeInputDate={activeInputDate}
+          onSetActiveInputDate={setActiveInputDate}
           activeForm={activeForm}
           disabledDates={disabledDates}
           onSetFormikDepartureDate={onSetFormikDepartureDate}
           onSetFormikReturnDate={onSetFormikReturnDate}
-          onSetFormikTouchedDepartureDate={onSetFormikTouchedDepartureDate}
-          onSetFormikTouchedReturnDate={onSetFormikTouchedReturnDate}
         />
       )}
     </div>

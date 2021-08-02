@@ -1,8 +1,4 @@
-import {
-  CabinClassTypes,
-  PassangersType,
-  SegmentType,
-} from '../redux/reducers/aviaParams';
+import { CabinClassTypes, PassangersType } from '../redux/reducers/aviaParams';
 import { RootStateType } from '../redux/reducers';
 import { Cities } from '../redux/reducers/locations';
 import {
@@ -17,9 +13,6 @@ import {
   FiltersLimits,
   PredictionWithId,
 } from '../redux/reducers/tickets';
-
-export const getSegments = (state: RootStateType): SegmentType[] =>
-  state.aviaParams.segments;
 
 export const getPassangers = (state: RootStateType): PassangersType =>
   state.aviaParams.passangers;
