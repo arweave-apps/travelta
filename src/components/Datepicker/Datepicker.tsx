@@ -23,8 +23,8 @@ type DatepickerPropsType = {
   errorTextDeparture: string;
   hasErrorReturn: boolean;
   hasErrorDeparture: boolean;
-  onBlurDeparture: () => void;
-  onBlurReturn: () => void;
+  onBlurDeparture: (e: React.FormEvent<HTMLInputElement>) => void;
+  onBlurReturn: (e: React.FormEvent<HTMLInputElement>) => void;
   onSetFormikDepartureDate: (date: Date | null) => void;
   onSetFormikReturnDate: (date: Date | null) => void;
   onResetFormikDate: (segmentId: string) => void;

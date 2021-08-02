@@ -32,7 +32,6 @@ const Form = (): JSX.Element => {
   const {
     values,
     setFieldValue,
-    setFieldTouched,
     setValues,
     touched,
     errors,
@@ -40,6 +39,7 @@ const Form = (): JSX.Element => {
     handleSubmit,
     resetForm,
     handleChange,
+    handleBlur,
   } = useFormikContext<InitialValues>();
 
   const { segments } = values;
@@ -113,7 +113,7 @@ const Form = (): JSX.Element => {
                     placeholder="Откуда"
                     onChange={handleChangeInput}
                     onFocus={handleFocus}
-                    onBlur={() => setFieldTouched(`segments.${i}.origin`)}
+                    onBlur={handleBlur}
                     onClickItem={(cityName, cityCode) =>
                       handleClickCity(
                         cityName,
@@ -144,7 +144,7 @@ const Form = (): JSX.Element => {
                     placeholder="Куда"
                     onChange={handleChangeInput}
                     onFocus={handleFocus}
-                    onBlur={() => setFieldTouched(`segments.${i}.destination`)}
+                    onBlur={handleBlur}
                     onClickItem={(cityName, cityCode) =>
                       handleClickCity(
                         cityName,
@@ -177,12 +177,8 @@ const Form = (): JSX.Element => {
                     )}
                     hasErrorDeparture={isError(`segments.${i}.departureDate`)}
                     hasErrorReturn={isError(`segments.${i}.returnDate`)}
-                    onBlurReturn={() =>
-                      setFieldTouched(`segments.${i}.returnDate`)
-                    }
-                    onBlurDeparture={() =>
-                      setFieldTouched(`segments.${i}.departureDate`)
-                    }
+                    onBlurReturn={handleBlur}
+                    onBlurDeparture={handleBlur}
                     onSetFormikDepartureDate={(date: Date | null) => {
                       setFieldValue(`segments.${i}.departureDate`, date);
                     }}
