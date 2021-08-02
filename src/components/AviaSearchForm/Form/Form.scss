@@ -1,0 +1,442 @@
+.search-form {
+  $self: &;
+  display: grid;
+
+  &--roundtrip,
+  &--oneWay,
+  &--multiCity {
+    grid-template-columns: 2fr 1fr;
+
+    @include mq('tablet-wide') {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, $search-form-row-height);
+    }
+
+    @include mq('tablet') {
+      grid-template-rows: repeat(3, $search-form-row-height);
+    }
+
+    @include mq('phablet') {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows:
+        repeat(4, $search-form-row-height)
+        $search-form-row-height-mt10;
+    }
+
+    #{$self}__segment {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: $search-form-row-height;
+
+      @include mq('tablet-wide') {
+        grid-column: 1/5;
+        grid-row: 1/1;
+        grid-template-rows: repeat(2, $search-form-row-height);
+      }
+
+      @include mq('tablet') {
+        grid-template-rows: repeat(3, $search-form-row-height);
+      }
+
+      @include mq('phablet') {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(4, $search-form-row-height);
+        grid-column: 1/3;
+        grid-row: 1/3;
+      }
+    }
+
+    #{$self}__origin {
+      position: relative;
+
+      grid-column: 1/2;
+      grid-row: 1/1;
+
+      & input {
+        border-radius: $radius 0 0 $radius;
+        border-right: none;
+      }
+
+      & label:after {
+        border-radius: $radius 0 0 0;
+      }
+
+      @include mq('tablet-wide') {
+        grid-column: 1/3;
+
+        & input {
+          border-radius: $radius 0 0 0;
+        }
+      }
+
+      @include mq('phablet') {
+        grid-column: 1/3;
+        grid-row: 1/1;
+
+        & input {
+          border-radius: $radius $radius 0 0;
+          border-right: $border-width solid $border-color;
+        }
+
+        & label:after {
+          border-radius: $radius $radius 0 0;
+        }
+      }
+    }
+
+    #{$self}__destination {
+      position: relative;
+
+      grid-column: 2/3;
+      grid-row: 1/1;
+
+      & input {
+        border-right: none;
+      }
+
+      @include mq('tablet-wide') {
+        grid-column: 3/5;
+
+        & input {
+          border-radius: 0 $radius 0 0;
+          border-right: $border-width solid $border-color;
+        }
+
+        & label:after {
+          border-radius: 0 $radius 0 0;
+        }
+      }
+
+      @include mq('phablet') {
+        grid-column: 1/3;
+        grid-row: 2/2;
+
+        & input {
+          border-radius: 0;
+          border-right: $border-width solid $border-color;
+          border-top: none;
+        }
+
+        & label:after {
+          border-radius: 0;
+        }
+      }
+    }
+
+    #{$self}__datepicker {
+      grid-column: 3/5;
+      grid-row: 1/1;
+
+      & .input--depart {
+        border-right: none;
+
+        @include mq('tablet-wide') {
+          border-radius: 0 0 0 $radius;
+          border-top: none;
+        }
+
+        @include mq('phablet') {
+          border-radius: 0;
+        }
+      }
+
+      & .input--return {
+        border-right: none;
+
+        @include mq('tablet-wide') {
+          border-radius: 0;
+          border-top: none;
+        }
+
+        @include mq('phablet') {
+          border-right: $border-width solid $border-color;
+        }
+      }
+
+      @include mq('tablet-wide') {
+        grid-column: 1/3;
+        grid-row: 2/2;
+      }
+
+      @include mq('phablet') {
+        grid-column: 1/3;
+        grid-row: 3/3;
+      }
+    }
+
+    #{$self}__action {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: $search-form-row-height;
+
+      @include mq('tablet-wide') {
+        grid-template-columns: repeat(2, 1fr);
+        grid-column: 3/5;
+        grid-row: 2/2;
+      }
+
+      @include mq('tablet') {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: $search-form-row-height $search-form-row-height-mt10;
+        grid-column: 1/5;
+        grid-row: 2/3;
+      }
+
+      @include mq('phablet') {
+        grid-template-columns: repeat(2, 1fr);
+        grid-column: 1/3;
+        grid-row: 4/5;
+      }
+    }
+
+    #{$self}__select {
+      border-radius: 0 $radius $radius 0;
+
+      @include mq('tablet-wide') {
+        grid-column: 1/2;
+
+        & > div {
+          border-radius: 0 0 $radius 0;
+          border-top: none;
+        }
+      }
+
+      @include mq('tablet') {
+        grid-column: 3/5;
+        grid-row: 1/1;
+      }
+
+      @include mq('phablet') {
+        grid-column: 1/3;
+        grid-row: 1/1;
+
+        & > div {
+          border-radius: 0 0 $radius $radius;
+        }
+      }
+    }
+
+    #{$self}__search-btn {
+      margin-left: rem(20);
+
+      @include mq('tablet-wide') {
+        grid-column: 2/3;
+      }
+
+      @include mq('tablet') {
+        grid-column: 1/5;
+        grid-row: 2/2;
+
+        margin-left: 0;
+        margin-top: 10px;
+      }
+
+      @include mq('phablet') {
+        grid-column: 1/3;
+        grid-row: 2/2;
+      }
+    }
+  }
+
+  &--oneWay {
+    #{$self}__segment {
+      grid-template-columns: repeat(3, 1fr);
+
+      @include mq('tablet-wide') {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      @include mq('phablet') {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    #{$self}__datepicker {
+      & .input--depart {
+        @include mq('phablet') {
+          border-right: $border-width solid $border-color;
+        }
+      }
+    }
+  }
+
+  &--multiCity {
+    @include display(flex, center, flex-start);
+    flex-direction: column;
+
+    #{$self}__segment {
+      grid-template-columns: repeat(3, 1fr);
+      margin-bottom: rem(10);
+      width: 100%;
+
+      @include mq('tablet-wide') {
+        grid-template-rows: $search-form-row-height;
+      }
+
+      @include mq('phablet') {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, $search-form-row-height);
+      }
+    }
+
+    #{$self}__origin {
+      grid-column: 1/2;
+      grid-row: 1/1;
+
+      & input {
+        border-radius: $radius 0 0 $radius;
+        border-right: none;
+      }
+
+      & label:after {
+        border-radius: $radius 0 0 0;
+      }
+
+      @include mq('phablet') {
+        grid-column: 1/1;
+        grid-row: 1/1;
+
+        & input {
+          border-radius: $radius $radius 0 0;
+          border-right: $border-width solid $border-color;
+        }
+
+        & label:after {
+          border-radius: $radius $radius 0 0;
+        }
+      }
+    }
+
+    #{$self}__destination {
+      grid-column: 2/3;
+      grid-row: 1/1;
+
+      & input {
+        border-right: none;
+        border-radius: 0;
+      }
+
+      & label:after {
+        border-radius: 0;
+      }
+
+      @include mq('phablet') {
+        grid-column: 1/1;
+        grid-row: 2/2;
+
+        & input {
+          border-radius: 0;
+          border-right: $border-width solid $border-color;
+          border-top: none;
+        }
+
+        & label:after {
+          border-radius: 0;
+        }
+      }
+    }
+
+    #{$self}__datepicker {
+      grid-column: 3/4;
+      grid-row: 1/1;
+
+      & label:after {
+        border-radius: 0 $radius 0 0;
+      }
+
+      & .input--depart {
+        border-radius: 0 $radius $radius 0;
+        border-top: $border-width solid $border-color;
+        border-right: $border-width solid $border-color;
+
+        @include mq('phablet') {
+          border-radius: 0 0 $radius $radius;
+          border-top: none;
+        }
+      }
+
+      @include mq('phablet') {
+        grid-column: 1/3;
+        grid-row: 3/3;
+
+        & label:after {
+          border-radius: 0;
+        }
+      }
+    }
+
+    #{$self}__action {
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: rem(10);
+      width: 100%;
+
+      @include mq('tablet-wide') {
+        grid-template-rows: repeat(2, $search-form-row-height);
+      }
+
+      @include mq('phablet') {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, $search-form-row-height);
+      }
+    }
+
+    #{$self}__select {
+      grid-column: 1/2;
+      grid-row: 1/1;
+
+      & > div {
+        border-radius: $radius;
+        border-top: $border-width solid $border-color;
+      }
+
+      @include mq('tablet') {
+        grid-column: 1/3;
+      }
+
+      @include mq('phablet') {
+        grid-column: 1/1;
+        grid-row: 1/1;
+      }
+    }
+
+    #{$self}__add-btn {
+      grid-column: 2/3;
+      grid-row: 1/1;
+
+      & > button {
+        text-transform: uppercase;
+      }
+
+      @include mq('tablet') {
+        grid-column: 3/4;
+
+        & > button {
+          font-size: rem(14);
+        }
+      }
+
+      @include mq('phablet') {
+        grid-column: 1/1;
+        grid-row: 2/2;
+      }
+    }
+
+    #{$self}__search-btn {
+      grid-row: 1/1;
+      grid-column: 3/4;
+      margin-top: 0;
+      margin-left: 0;
+
+      @include mq('tablet') {
+        grid-row: 2/2;
+        grid-column: 1/4;
+      }
+
+      @include mq('phablet') {
+        grid-column: 1/1;
+        grid-row: 3/3;
+      }
+    }
+  }
+}

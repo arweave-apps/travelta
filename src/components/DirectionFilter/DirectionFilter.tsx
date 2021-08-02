@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getActiveForm } from '../../selectors/selectors';
 
-import { clearSegments } from '../../redux/actions/aviaParams/aviaParams';
 import { setActiveForm } from '../../redux/actions/pageSettings/pageSettings';
 import { FormsType } from '../../redux/reducers/pageSettings';
 
@@ -37,7 +36,6 @@ const DirectionFilter = (): JSX.Element => {
 
   const handleChangeRadioButton = (id: FormsType) => {
     dispatch(setActiveForm(id));
-    dispatch(clearSegments());
   };
 
   return (

@@ -1,12 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import {
-  resetDates,
-  setDate,
-} from '../../../redux/actions/aviaParams/aviaParams';
-import {
-  setActiveInputDate,
   setAfterDisabledDates,
   setBeforeDisabledDates,
 } from '../../../redux/actions/pageSettings/pageSettings';
@@ -15,14 +10,14 @@ import {
   FormsType,
 } from '../../../redux/reducers/pageSettings';
 
-import { getSegments } from '../../../selectors/selectors';
-
 import NextIcon from '../../../assets/images/icons/right-arrow.svg';
 import PrevIcon from '../../../assets/images/icons/left-arrow.svg';
 import DatepickerCalendarMonth from './DatepickerCalendarMonth';
 import SlideButton from '../../SlideButton';
+import { ActiveInputType } from '../Datepicker';
 
 import { getMonthDates } from './helpers';
+import { SegmentType } from '../../AviaSearchForm/helpers';
 
 import './DatepickerCalendar.scss';
 
@@ -30,46 +25,30 @@ type DatepickerCalendarPropsType = {
   segmentId: string;
   returnDate: Date | null;
   departureDate: Date | null;
+  segments: SegmentType[];
   activeInputDate: string | null;
+  onSetActiveInputDate: (activeInput: ActiveInputType) => void;
   activeForm: FormsType;
   disabledDates: DisabledDatesType;
-  onSetFormikDepartureDate: (
-    field: string,
-    value: string,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikReturnDate: (
-    field: string,
-    value: string,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikTouchedDepartureDate: (
-    field: string,
-    isTouched?: boolean,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikTouchedReturnDate: (
-    field: string,
-    isTouched?: boolean,
-    shouldValidate?: boolean
-  ) => void;
+  onSetFormikDepartureDate: (date: Date | null) => void;
+  onSetFormikReturnDate: (date: Date | null) => void;
+  onResetFormikDate: (segmentId: string) => void;
 };
 
 const DatepickerCalendar = ({
   segmentId,
   departureDate,
   returnDate,
+  segments,
   activeInputDate,
+  onSetActiveInputDate,
   activeForm,
   disabledDates,
   onSetFormikDepartureDate,
   onSetFormikReturnDate,
-  onSetFormikTouchedDepartureDate,
-  onSetFormikTouchedReturnDate,
+  onResetFormikDate,
 }: DatepickerCalendarPropsType): JSX.Element => {
   const dispatch = useDispatch();
-
-  const segments = useSelector(getSegments);
 
   const [prevMonthData, setPrevMonthData] = useState<Array<
     number | undefined
@@ -192,22 +171,13 @@ const DatepickerCalendar = ({
           const nextDepartureDate = nextSegment.departureDate;
 
           if (nextDepartureDate && date > nextDepartureDate) {
-            dispatch(resetDates(segmentId));
+            onResetFormikDate(segmentId);
           }
         }
       }
 
       if (activeForm !== 'roundtrip' && activeInputDate === 'departure') {
-        dispatch(setDate(date, segmentId, 'departureDate'));
-        onSetFormikDepartureDate(
-          `departureDate-${segmentId}`,
-          date.toLocaleDateString()
-        );
-        onSetFormikTouchedDepartureDate(
-          `departureDate-${segmentId}`,
-          true,
-          false
-        );
+        onSetFormikDepartureDate(date);
         return;
       }
 
@@ -216,54 +186,26 @@ const DatepickerCalendar = ({
       }
 
       if (departureDate && hoverDate < departureDate) {
-        dispatch(setDate(date, segmentId, 'departureDate'));
-        dispatch(setActiveInputDate('return'));
-        onSetFormikReturnDate(
-          `returnDate-${segmentId}`,
-          date.toLocaleDateString()
-        );
-        onSetFormikTouchedReturnDate(`returnDate-${segmentId}`, true, false);
+        onSetActiveInputDate('return');
+        onSetFormikDepartureDate(date);
         return;
       }
 
       if (returnDate && hoverDate > returnDate) {
-        dispatch(setDate(date, segmentId, 'returnDate'));
-        dispatch(setActiveInputDate('departure'));
-        onSetFormikDepartureDate(
-          `departureDate-${segmentId}`,
-          date.toLocaleDateString()
-        );
-        onSetFormikTouchedDepartureDate(
-          `departureDate-${segmentId}`,
-          true,
-          false
-        );
+        onSetActiveInputDate('departure');
+        onSetFormikReturnDate(date);
         return;
       }
 
       if (activeInputDate === 'departure') {
-        dispatch(setDate(date, segmentId, 'departureDate'));
-        dispatch(setActiveInputDate('return'));
-        onSetFormikReturnDate(
-          `returnDate-${segmentId}`,
-          date.toLocaleDateString()
-        );
-        onSetFormikTouchedReturnDate(`returnDate-${segmentId}`, true, false);
+        onSetActiveInputDate('return');
+        onSetFormikDepartureDate(date);
         return;
       }
 
       if (activeInputDate === 'return') {
-        dispatch(setDate(date, segmentId, 'returnDate'));
-        dispatch(setActiveInputDate('departure'));
-        onSetFormikDepartureDate(
-          `departureDate-${segmentId}`,
-          date.toLocaleDateString()
-        );
-        onSetFormikTouchedDepartureDate(
-          `departureDate-${segmentId}`,
-          true,
-          false
-        );
+        onSetActiveInputDate('departure');
+        onSetFormikReturnDate(date);
       }
     },
     [
@@ -274,11 +216,10 @@ const DatepickerCalendar = ({
       departureDate,
       returnDate,
       segmentId,
-      dispatch,
+      onResetFormikDate,
       onSetFormikDepartureDate,
-      onSetFormikTouchedDepartureDate,
+      onSetActiveInputDate,
       onSetFormikReturnDate,
-      onSetFormikTouchedReturnDate,
     ]
   );
 

@@ -1,113 +1,44 @@
-import { FormikErrors, FormikTouched } from 'formik';
-import { SegmentType } from '../../redux/reducers/aviaParams';
-import { Cities } from '../../redux/reducers/locations';
-import { FormsType } from '../../redux/reducers/pageSettings';
+import * as Yup from 'yup';
 
-export type InitialValues = {
-  [key: string]: string | Date | null;
+export const validationSchema = Yup.object().shape({
+  segments: Yup.array().of(
+    Yup.object().shape({
+      origin: Yup.string().required('Укажите город отправления'),
+      destination: Yup.string().required('Укажите город прибытия'),
+      departureDate: Yup.string()
+        .required('Укажите дату отправления')
+        .nullable(),
+      returnDate: Yup.string().required('Укажите дату возвращения').nullable(),
+    })
+  ),
+});
+
+export type SegmentType = {
+  id: string;
+  origin: string;
+  originCode: string;
+
+  destination: string;
+  destinationCode: string;
+
+  departureDate: Date | null;
+  returnDate: Date | null;
 };
 
-export type ErrorsType = {
-  [key: string]: string;
-};
+export type InitialValues = Record<'segments', SegmentType[]>;
 
-type Keys<T> = Array<keyof T>;
+export const initialValues: InitialValues = {
+  segments: [
+    {
+      id: 'segment-1',
+      origin: '',
+      originCode: '',
 
-export type ErrorMessagesType =
-  | 'departureDate'
-  | 'returnDate'
-  | 'destination'
-  | 'origin';
+      destination: '',
+      destinationCode: '',
 
-const errorMessages: Record<ErrorMessagesType, string> = {
-  departureDate: 'Укажите дату отправления',
-  returnDate: 'Укажите дату возвращения',
-  destination: 'Укажите город прибытия',
-  origin: 'Укажите город отправления',
-};
-
-export const getInitialValues = (
-  segments: SegmentType[],
-  activeForm: FormsType
-): InitialValues => {
-  return segments.reduce((acc, currSegment) => {
-    const { id } = currSegment;
-    const segmentKeys = Object.keys(currSegment) as Keys<typeof currSegment>;
-
-    segmentKeys.forEach((key) => {
-      if (activeForm === 'multiCity' || activeForm === 'oneWay') {
-        if (
-          key !== 'id' &&
-          key !== 'originCode' &&
-          key !== 'destinationCode' &&
-          key !== 'returnDate'
-        ) {
-          acc[`${key}-${id}`] = currSegment[key];
-        }
-      } else if (
-        key !== 'id' &&
-        key !== 'originCode' &&
-        key !== 'destinationCode'
-      ) {
-        acc[`${key}-${id}`] = currSegment[key];
-      }
-    });
-    return acc;
-  }, {} as InitialValues);
-};
-
-export const validate = (values: InitialValues): ErrorsType => {
-  return Object.entries(values).reduce((acc, [key, value]) => {
-    if (!value) {
-      const error = key.split('-')[0] as ErrorMessagesType;
-      acc[key] = errorMessages[error];
-    }
-    return acc;
-  }, {} as ErrorsType);
-};
-
-export type SearchFormsPropsType = {
-  type?: FormsType;
-  segments: SegmentType[];
-  values: InitialValues;
-  errors: FormikErrors<InitialValues>;
-  touched: FormikTouched<InitialValues>;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onClickItem: (
-    name: string,
-    segmentId: string,
-    code: string,
-    fieldType: string
-  ) => void;
-  onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
-  onBlur: (e: React.FormEvent<HTMLInputElement>) => void;
-  isDisabledSubmit: boolean;
-  isOpenDropdown: boolean;
-  locations: Cities[] | null;
-  activeInputName: string;
-  onSetFormikValue: (
-    field: string,
-    value: string,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikDepartureDate: (
-    field: string,
-    value: string,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikReturnDate: (
-    field: string,
-    value: string,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikTouchedDepartureDate: (
-    field: string,
-    isTouched?: boolean,
-    shouldValidate?: boolean
-  ) => void;
-  onSetFormikTouchedReturnDate: (
-    field: string,
-    isTouched?: boolean,
-    shouldValidate?: boolean
-  ) => void;
+      departureDate: null,
+      returnDate: null,
+    },
+  ],
 };

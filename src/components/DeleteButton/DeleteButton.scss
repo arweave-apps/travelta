@@ -1,7 +1,8 @@
 .delete-button {
   @include display(flex, center, center);
   position: absolute;
-  top: 35%;
+  top: 50%;
+  transform: translate(0, -50%);
   right: rem(-9);
 
   width: rem(20);
