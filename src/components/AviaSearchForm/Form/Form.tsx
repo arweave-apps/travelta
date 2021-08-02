@@ -20,6 +20,12 @@ import SwitchButton from '../../SwitchButton';
 
 import { InitialValues } from '../helpers';
 
+import {
+  handleAddSegment,
+  handleResetDate,
+  handleSwitchCities,
+} from './helpers';
+
 import './Form.scss';
 
 const Form = (): JSX.Element => {
@@ -34,6 +40,8 @@ const Form = (): JSX.Element => {
     handleSubmit,
     resetForm,
   } = useFormikContext<InitialValues>();
+
+  const { segments } = values;
 
   const dispatch = useDispatch();
 
@@ -57,28 +65,32 @@ const Form = (): JSX.Element => {
     resetForm();
   }, [activeForm, resetForm]);
 
-  const handleSwitchCities = (
-    formikValues: InitialValues,
-    formikSetValues: (
-      formikValuesFromInput: React.SetStateAction<InitialValues>,
-      shouldValidate?: boolean | undefined
-    ) => void,
-    segmentId: string
+  const handleClickCity = (
+    cityName: string,
+    cityCode: string,
+    fieldNameCity: string,
+    fieldNameCode: string
   ) => {
-    const newSegments = formikValues.segments.map((segment) => {
-      return segment.id === segmentId
-        ? {
-            ...segment,
-            origin: segment.destination,
-            originCode: segment.destinationCode,
-            destination: segment.origin,
-            destinationCode: segment.originCode,
-          }
-        : segment;
-    });
+    setFieldValue(fieldNameCity, cityName);
+    setFieldValue(fieldNameCode, cityCode);
 
-    formikSetValues({ ...formikValues, segments: newSegments });
+    dispatch(setLocations(null));
+    setIsOpenDropdown(false);
+    setActiveInputName('');
   };
+
+  const handleChange = (enteredValue: string, fieldName: string) => {
+    setFieldValue(fieldName, enteredValue);
+
+    debounсe(enteredValue);
+    setIsOpenDropdown(true);
+  };
+
+  const isError = (fieldName: string): boolean =>
+    getIn(touched, fieldName) && getIn(errors, fieldName);
+
+  const isOpenLocationsDropdown = (fieldName: string): boolean =>
+    isOpenDropdown && activeInputName === fieldName;
 
   return (
     <form
@@ -88,46 +100,37 @@ const Form = (): JSX.Element => {
       <FieldArray
         name="segments"
         render={(arrayHelpers) => {
-          return values.segments.map((segment, i) => {
+          return segments.map((segment, i) => {
             return (
               <div className="search-form__segment" key={segment.id}>
                 <div className="search-form__origin">
                   <Autocomplete
                     inputName={`segments.${i}.origin`}
-                    fieldValue={values.segments[i].origin}
+                    fieldValue={segments[i].origin}
                     placeholder="Откуда"
-                    onChange={(e) => {
-                      setFieldValue(`segments.${i}.origin`, e.target.value);
-
-                      setIsOpenDropdown(true);
-                      debounсe(e.target.value);
-                    }}
+                    onChange={(e) =>
+                      handleChange(`segments.${i}.origin`, e.target.value)
+                    }
                     onFocus={handleFocus}
                     onBlur={() => setFieldTouched(`segments.${i}.origin`)}
-                    onClickItem={(name, code) => {
-                      setFieldValue(`segments.${i}.origin`, name);
-                      setFieldValue(`segments.${i}.originCode`, code);
-
-                      dispatch(setLocations(null));
-                      setIsOpenDropdown(false);
-                      setActiveInputName('');
-                    }}
-                    isOpen={
-                      isOpenDropdown &&
-                      activeInputName === `segments.${i}.origin`
+                    onClickItem={(cityName, cityCode) =>
+                      handleClickCity(
+                        cityName,
+                        cityCode,
+                        `segments.${i}.origin`,
+                        `segments.${i}.originCode`
+                      )
                     }
+                    isOpen={isOpenLocationsDropdown(`segments.${i}.origin`)}
                     locations={locations}
                     errorText={getIn(errors, `segments.${i}.origin`)}
-                    hasError={
-                      getIn(touched, `segments.${i}.origin`) &&
-                      getIn(errors, `segments.${i}.origin`)
-                    }
+                    hasError={isError(`segments.${i}.origin`)}
                   />
 
                   {activeForm !== 'multiCity' && (
                     <SwitchButton
                       onClick={() =>
-                        handleSwitchCities(values, setValues, segment.id)
+                        handleSwitchCities(segments, setValues, segment.id)
                       }
                     />
                   )}
@@ -136,37 +139,25 @@ const Form = (): JSX.Element => {
                 <div className="search-form__destination">
                   <Autocomplete
                     inputName={`segments.${i}.destination`}
-                    fieldValue={values.segments[i].destination}
+                    fieldValue={segments[i].destination}
                     placeholder="Куда"
-                    onChange={(e) => {
-                      setFieldValue(
-                        `segments.${i}.destination`,
-                        e.target.value
-                      );
-
-                      debounсe(e.target.value);
-                      setIsOpenDropdown(true);
-                    }}
+                    onChange={(e) =>
+                      handleChange(`segments.${i}.destination`, e.target.value)
+                    }
                     onFocus={handleFocus}
                     onBlur={() => setFieldTouched(`segments.${i}.destination`)}
-                    onClickItem={(name, code) => {
-                      setFieldValue(`segments.${i}.destination`, name);
-                      setFieldValue(`segments.${i}.destinationCode`, code);
-
-                      dispatch(setLocations(null));
-                      setIsOpenDropdown(false);
-                      setActiveInputName('');
-                    }}
-                    isOpen={
-                      isOpenDropdown &&
-                      activeInputName === `segments.${i}.destination`
+                    onClickItem={(cityName, cityCode) =>
+                      handleClickCity(
+                        cityName,
+                        cityCode,
+                        `segments.${i}.destination`,
+                        `segments.${i}.destinationCode`
+                      )
                     }
+                    isOpen={isOpenLocationsDropdown(`segments.${i}.origin`)}
                     locations={locations}
                     errorText={getIn(errors, `segments.${i}.destination`)}
-                    hasError={
-                      getIn(touched, `segments.${i}.destination`) &&
-                      getIn(errors, `segments.${i}.destination`)
-                    }
+                    hasError={isError(`segments.${i}.destination`)}
                   />
                 </div>
 
@@ -177,20 +168,14 @@ const Form = (): JSX.Element => {
                     inputNameDeparture={`segments.${i}.departureDate`}
                     returnDate={segment.returnDate}
                     departureDate={segment.departureDate}
-                    segments={values.segments}
+                    segments={segments}
                     errorTextReturn={getIn(errors, `segments.${i}.returnDate`)}
                     errorTextDeparture={getIn(
                       errors,
                       `segments.${i}.departureDate`
                     )}
-                    hasErrorDeparture={
-                      getIn(touched, `segments.${i}.departureDate`) &&
-                      getIn(errors, `segments.${i}.departureDate`)
-                    }
-                    hasErrorReturn={
-                      getIn(touched, `segments.${i}.returnDate`) &&
-                      getIn(errors, `segments.${i}.returnDate`)
-                    }
+                    hasErrorDeparture={isError(`segments.${i}.departureDate`)}
+                    hasErrorReturn={isError(`segments.${i}.returnDate`)}
                     onBlurReturn={() =>
                       setFieldTouched(`segments.${i}.returnDate`)
                     }
@@ -203,19 +188,21 @@ const Form = (): JSX.Element => {
                     onSetFormikReturnDate={(date: Date | null) => {
                       setFieldValue(`segments.${i}.returnDate`, date);
                     }}
+                    onResetFormikDate={(segmentId: string) =>
+                      handleResetDate(segments, setValues, segmentId)
+                    }
                   />
                 </div>
 
-                {values.segments.length > 1 &&
-                  values.segments[values.segments.length - 1] ===
-                    values.segments[i] && (
+                {segments.length > 1 &&
+                  segments[segments.length - 1] === segments[i] && (
                     <DeleteButton
                       onClick={() => {
-                        if (values.segments.length === 1) {
+                        if (segments.length === 1) {
                           return;
                         }
 
-                        arrayHelpers.remove(values.segments.length - 1);
+                        arrayHelpers.remove(segments.length - 1);
                       }}
                     />
                   )}
@@ -234,27 +221,8 @@ const Form = (): JSX.Element => {
           <div className="search-form__add-btn">
             <SimpleButton
               bg="second"
-              disabled={values.segments.length > 5}
-              onClick={() => {
-                if (values.segments.length > 5) {
-                  return;
-                }
-
-                const newSegment = {
-                  id: `segment-${values.segments.length + 1}`,
-                  origin: '',
-                  originCode: '',
-                  destination: '',
-                  destinationCode: '',
-                  departureDate: null,
-                  returnDate: null,
-                };
-
-                setValues({
-                  ...values,
-                  segments: [...values.segments, newSegment],
-                });
-              }}
+              disabled={segments.length > 5}
+              onClick={() => handleAddSegment(segments, setValues)}
             >
               + добавить перелёт
             </SimpleButton>
