@@ -39,6 +39,7 @@ const Form = (): JSX.Element => {
     isValid,
     handleSubmit,
     resetForm,
+    handleChange,
   } = useFormikContext<InitialValues>();
 
   const { segments } = values;
@@ -79,8 +80,10 @@ const Form = (): JSX.Element => {
     setActiveInputName('');
   };
 
-  const handleChange = (enteredValue: string, fieldName: string) => {
-    setFieldValue(fieldName, enteredValue);
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const enteredValue = e.target.value;
+
+    handleChange(e);
 
     debounсe(enteredValue);
     setIsOpenDropdown(true);
@@ -90,7 +93,7 @@ const Form = (): JSX.Element => {
     getIn(touched, fieldName) && getIn(errors, fieldName);
 
   const isOpenLocationsDropdown = (fieldName: string): boolean =>
-    isOpenDropdown && activeInputName === fieldName;
+    isOpenDropdown && activeInputName === fieldName && !!locations;
 
   return (
     <form
@@ -108,9 +111,7 @@ const Form = (): JSX.Element => {
                     inputName={`segments.${i}.origin`}
                     fieldValue={segments[i].origin}
                     placeholder="Откуда"
-                    onChange={(e) =>
-                      handleChange(`segments.${i}.origin`, e.target.value)
-                    }
+                    onChange={handleChangeInput}
                     onFocus={handleFocus}
                     onBlur={() => setFieldTouched(`segments.${i}.origin`)}
                     onClickItem={(cityName, cityCode) =>
@@ -141,9 +142,7 @@ const Form = (): JSX.Element => {
                     inputName={`segments.${i}.destination`}
                     fieldValue={segments[i].destination}
                     placeholder="Куда"
-                    onChange={(e) =>
-                      handleChange(`segments.${i}.destination`, e.target.value)
-                    }
+                    onChange={handleChangeInput}
                     onFocus={handleFocus}
                     onBlur={() => setFieldTouched(`segments.${i}.destination`)}
                     onClickItem={(cityName, cityCode) =>
@@ -154,7 +153,9 @@ const Form = (): JSX.Element => {
                         `segments.${i}.destinationCode`
                       )
                     }
-                    isOpen={isOpenLocationsDropdown(`segments.${i}.origin`)}
+                    isOpen={isOpenLocationsDropdown(
+                      `segments.${i}.destination`
+                    )}
                     locations={locations}
                     errorText={getIn(errors, `segments.${i}.destination`)}
                     hasError={isError(`segments.${i}.destination`)}
