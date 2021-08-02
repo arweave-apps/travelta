@@ -52,3 +52,21 @@ svg {
 .mb-8 {
   margin-bottom: rem(8);
 }
+
+::-webkit-scrollbar-track {
+  background-color: #edeff1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(151, 151, 151, 0.45);
+  border-radius: 1000px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(151, 151, 151, 0.85);
+  border-radius: 1000px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
