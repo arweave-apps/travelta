@@ -34,6 +34,7 @@ type DatepickerPropsType = {
   onBlurReturn: () => void;
   onSetFormikDepartureDate: (date: Date | null) => void;
   onSetFormikReturnDate: (date: Date | null) => void;
+  onResetFormikDate: (segmentId: string) => void;
 };
 
 export type ActiveInputType = 'departure' | 'return' | null;
@@ -53,6 +54,7 @@ const Datepicker = ({
   onBlurReturn,
   onSetFormikDepartureDate,
   onSetFormikReturnDate,
+  onResetFormikDate,
 }: DatepickerPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -158,6 +160,7 @@ const Datepicker = ({
           disabledDates={disabledDates}
           onSetFormikDepartureDate={onSetFormikDepartureDate}
           onSetFormikReturnDate={onSetFormikReturnDate}
+          onResetFormikDate={onResetFormikDate}
         />
       )}
     </div>

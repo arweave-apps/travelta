@@ -32,6 +32,7 @@ type DatepickerCalendarPropsType = {
   disabledDates: DisabledDatesType;
   onSetFormikDepartureDate: (date: Date | null) => void;
   onSetFormikReturnDate: (date: Date | null) => void;
+  onResetFormikDate: (segmentId: string) => void;
 };
 
 const DatepickerCalendar = ({
@@ -45,6 +46,7 @@ const DatepickerCalendar = ({
   disabledDates,
   onSetFormikDepartureDate,
   onSetFormikReturnDate,
+  onResetFormikDate,
 }: DatepickerCalendarPropsType): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -169,7 +171,7 @@ const DatepickerCalendar = ({
           const nextDepartureDate = nextSegment.departureDate;
 
           if (nextDepartureDate && date > nextDepartureDate) {
-            onSetFormikDepartureDate(null);
+            onResetFormikDate(segmentId);
           }
         }
       }
@@ -214,6 +216,7 @@ const DatepickerCalendar = ({
       departureDate,
       returnDate,
       segmentId,
+      onResetFormikDate,
       onSetFormikDepartureDate,
       onSetActiveInputDate,
       onSetFormikReturnDate,
