@@ -3,7 +3,11 @@ import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { initialValues, validationSchema } from './helpers';
+import {
+  initialValues,
+  validationSchema,
+  validationSchemaOneDate,
+} from './helpers';
 
 import {
   getActiveForm,
@@ -24,10 +28,13 @@ const AviaSearchForm = (): JSX.Element => {
   const selectedCabins = useSelector(getSelectedCabins);
   const activeForm = useSelector(getActiveForm);
 
+  const currentValidationSchema =
+    activeForm === 'roundtrip' ? validationSchema : validationSchemaOneDate;
+
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={validationSchema}
+      validationSchema={currentValidationSchema}
       onSubmit={({ segments }) => {
         if (!history.location.pathname.includes('search')) {
           history.push(`${history.location.pathname}/search`);
