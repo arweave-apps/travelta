@@ -11,32 +11,21 @@ import TextField from '../TextField';
 import './Autocomplete.scss';
 
 type AutocompleteProps = {
-  segmentId: string;
+  inputName: string;
   fieldValue: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onFocus: (e: React.FormEvent<HTMLInputElement>) => void;
   onBlur: (e: React.FormEvent<HTMLInputElement>) => void;
-  onClickItem: (
-    name: string,
-    segmentId: string,
-    code: string,
-    fieldType: string
-  ) => void;
+  onClickItem: (name: string, code: string) => void;
   isOpen: boolean;
   locations: Cities[] | null;
   placeholder: string;
-  fieldName: string;
-  onSetFormikValue: (
-    field: string,
-    value: string,
-    shouldValidate?: boolean
-  ) => void;
-  errorText: string | undefined;
+  errorText: unknown;
   hasError: boolean;
 };
 
 const Autocomplete = ({
-  segmentId,
+  inputName,
   fieldValue,
   onChange,
   onFocus,
@@ -45,8 +34,6 @@ const Autocomplete = ({
   isOpen,
   locations,
   placeholder,
-  fieldName,
-  onSetFormikValue,
   errorText,
   hasError,
 }: AutocompleteProps): JSX.Element => {
@@ -73,20 +60,12 @@ const Autocomplete = ({
       if (e.code === 'Enter') {
         if (locations) {
           const { name, code } = locations[activeSuggestion];
-          onClickItem(name, segmentId, code, fieldName);
-          onSetFormikValue(`${fieldName}-${segmentId}`, name);
+          onClickItem(name, code);
         }
         setActiveSuggestion(0);
       }
     },
-    [
-      activeSuggestion,
-      fieldName,
-      locations,
-      onClickItem,
-      onSetFormikValue,
-      segmentId,
-    ]
+    [activeSuggestion, locations, onClickItem]
   );
 
   useOutsideClick(
@@ -94,8 +73,7 @@ const Autocomplete = ({
     () => {
       if (locations) {
         const { name, code } = locations[0];
-        onClickItem(name, segmentId, code, fieldName);
-        onSetFormikValue(`${fieldName}-${segmentId}`, name);
+        onClickItem(name, code);
       }
     },
     isOpen
@@ -104,7 +82,8 @@ const Autocomplete = ({
   return (
     <div className="autocomplete" ref={wrapperRef}>
       <TextField
-        id={`${fieldName}-${segmentId}`}
+        id={inputName}
+        name={inputName}
         value={fieldValue}
         onChange={onChange}
         placeholder={placeholder}
@@ -127,8 +106,7 @@ const Autocomplete = ({
                   hasMargin
                   isActive={activeSuggestion === i}
                   onClick={() => {
-                    onClickItem(name, segmentId, code, fieldName);
-                    onSetFormikValue(`${fieldName}-${segmentId}`, name);
+                    onClickItem(name, code);
                   }}
                 >
                   <TextBlock text={`${name}, ${country}`} />
