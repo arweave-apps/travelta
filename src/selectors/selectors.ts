@@ -1,11 +1,7 @@
 import { CabinClassTypes, PassangersType } from '../redux/reducers/aviaParams';
 import { RootStateType } from '../redux/reducers';
 import { Cities } from '../redux/reducers/locations';
-import {
-  ActiveInputType,
-  DisabledDatesType,
-  FormsType,
-} from '../redux/reducers/pageSettings';
+import { DisabledDatesType, FormsType } from '../redux/reducers/pageSettings';
 import { CurrencyType } from '../redux/reducers/settings';
 import { ConvertedTickets, TicketsList } from '../utils/convertTickets';
 import {
@@ -25,12 +21,6 @@ export const getLocations = (state: RootStateType): Cities[] | null =>
 
 export const getActiveForm = (state: RootStateType): FormsType =>
   state.pageSettings.activeForm;
-
-export const getActiveInputDate = (state: RootStateType): ActiveInputType =>
-  state.pageSettings.activeInputDate;
-
-export const getActiveSegmentId = (state: RootStateType): null | string =>
-  state.pageSettings.activeSegmentId;
 
 export const getDisabledDates = (state: RootStateType): DisabledDatesType =>
   state.pageSettings.disabledDates;

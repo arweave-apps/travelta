@@ -43,6 +43,11 @@
     @include font-roboto(rem(16), $secondary-text-color, normal, normal, (19));
   }
 
+  &--active {
+    border: $border-width solid $accent-color !important;
+    z-index: z('input-focus');
+  }
+
   &--pointer {
     cursor: pointer !important;
   }

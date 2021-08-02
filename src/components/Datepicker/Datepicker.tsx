@@ -1,16 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 
-import {
-  getActiveForm,
-  getActiveSegmentId,
-  getDisabledDates,
-} from '../../selectors/selectors';
-
-// eslint-disable-next-line max-len
-import { setActiveSegmentId } from '../../redux/actions/pageSettings/pageSettings';
+import { getActiveForm, getDisabledDates } from '../../selectors/selectors';
 
 import { SegmentType } from '../AviaSearchForm/helpers';
 
@@ -38,6 +31,7 @@ type DatepickerPropsType = {
 };
 
 export type ActiveInputType = 'departure' | 'return' | null;
+export type ActiveSegmentIdType = string | null;
 
 const Datepicker = ({
   segmentId,
@@ -56,30 +50,17 @@ const Datepicker = ({
   onSetFormikReturnDate,
   onResetFormikDate,
 }: DatepickerPropsType): JSX.Element => {
-  const dispatch = useDispatch();
-
   const activeForm = useSelector(getActiveForm);
-  const activeSegmentId = useSelector(getActiveSegmentId);
   const disabledDates = useSelector(getDisabledDates);
 
   const [activeInputDate, setActiveInputDate] = useState<ActiveInputType>(null);
+  const [activeSegmentId, setActiveSegmentId] = useState<ActiveSegmentIdType>(
+    null
+  );
 
-  const inputDepartRef = useRef<HTMLInputElement>(null);
-  const inputReturnRef = useRef<HTMLInputElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (activeInputDate === 'departure' && segmentId === activeSegmentId) {
-      inputDepartRef.current?.focus();
-      return;
-    }
-
-    if (activeInputDate === 'return' && segmentId === activeSegmentId) {
-      inputReturnRef.current?.focus();
-    }
-  }, [activeInputDate, activeSegmentId, segmentId]);
 
   useOutsideClick(
     wrapperRef,
@@ -100,7 +81,7 @@ const Datepicker = ({
 
   const handleClickInputDate = (inputType: ActiveInputType) => {
     setActiveInputDate(inputType);
-    dispatch(setActiveSegmentId(segmentId));
+    setActiveSegmentId(segmentId);
   };
 
   return (
@@ -122,9 +103,11 @@ const Datepicker = ({
           value={departureDate?.toLocaleDateString()}
           readonly
           onBlur={onBlurDeparture}
-          inputRef={inputDepartRef}
           errorText={errorTextDeparture}
           hasError={hasErrorDeparture}
+          isActive={
+            activeInputDate === 'departure' && segmentId === activeSegmentId
+          }
         />
       </div>
 
@@ -141,9 +124,11 @@ const Datepicker = ({
             value={returnDate?.toLocaleDateString()}
             readonly
             onBlur={onBlurReturn}
-            inputRef={inputReturnRef}
             errorText={errorTextReturn}
             hasError={hasErrorReturn}
+            isActive={
+              activeInputDate === 'return' && segmentId === activeSegmentId
+            }
           />
         </div>
       )}

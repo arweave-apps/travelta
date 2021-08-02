@@ -12,11 +12,11 @@ type TextFieldProps = {
   placeholder: string;
   onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
   readonly?: boolean;
-  inputRef?: React.RefObject<HTMLInputElement>;
   errorText: unknown;
   onFocus?: (e: React.FormEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   hasError: boolean;
+  isActive?: boolean;
 };
 
 const TextField = ({
@@ -27,11 +27,11 @@ const TextField = ({
   placeholder,
   onBlur,
   readonly = false,
-  inputRef,
   onFocus,
   onKeyDown,
   errorText,
   hasError,
+  isActive = false,
 }: TextFieldProps): JSX.Element => {
   return (
     <label
@@ -50,6 +50,7 @@ const TextField = ({
           'input--depart': id.includes('departureDate'),
           'input--return': id.includes('returnDate'),
           'input--pointer': readonly,
+          'input--active': isActive,
           'input--error': hasError,
         })}
         value={value}
@@ -58,7 +59,6 @@ const TextField = ({
         onBlur={onBlur}
         onKeyDown={onKeyDown}
         readOnly={readonly}
-        ref={inputRef}
       />
     </label>
   );
