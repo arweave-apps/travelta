@@ -58,7 +58,7 @@ const SearchAction = ({ totalTickets }: SearchActionsProps): JSX.Element => {
 
       <div className="action__sort">
         <TriggerButton onClick={toggleDropdownMenu}>
-          <span className="action__label">Сортировка сначала</span>
+          <span className="action__label">Показать сначала</span>
           <span className="action__selector">{selectedItemText}</span>
 
           <Icon
