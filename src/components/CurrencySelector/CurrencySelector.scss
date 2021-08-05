@@ -1,6 +1,5 @@
 .currency-selector {
   @include display(flex, center, center);
-  @include font-roboto(rem(14), $main-text-color, 400, normal, rem(21));
 
   position: relative;
 
@@ -20,8 +19,14 @@
     background: lighten($home-header-color, 10%);
   }
 
+  & > button {
+    @include font-roboto(rem(14), $main-text-color, 400, normal, rem(21));
+  }
+
   &--search {
-    color: $primary-text-color;
+    & > button {
+      color: $primary-text-color;
+    }
 
     &:hover {
       cursor: pointer;
