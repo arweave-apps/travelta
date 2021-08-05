@@ -8,6 +8,7 @@ import {
   Carriers,
   FiltersLimits,
   PredictionWithId,
+  PriceSortTypes,
 } from '../redux/reducers/tickets';
 
 export const getPassangers = (state: RootStateType): PassangersType =>
@@ -45,3 +46,6 @@ export const getTicketsLoading = (state: RootStateType): boolean =>
 
 export const getCarriers = (state: RootStateType): Carriers =>
   state.tickets.carriers;
+
+export const getSortTicketBy = (state: RootStateType): PriceSortTypes =>
+  state.tickets.sortByPrice;
