@@ -8,17 +8,20 @@ type IconProps = {
   icon: JSX.Element;
   className: string;
   isActive?: boolean;
+  isDark?: boolean;
 };
 
 const Icon = ({
   icon,
   className,
   isActive = false,
+  isDark = false,
 }: IconProps): JSX.Element => {
   return (
     <div
       className={classNames(className, {
         [`${className}--active`]: isActive,
+        [`${className}--dark`]: isDark,
       })}
     >
       {icon}

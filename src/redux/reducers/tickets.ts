@@ -15,6 +15,7 @@ import {
   SET_CARRIERS,
   SET_PREDICTIONS,
   SET_TICKETS,
+  SORT_TICKETS_BY_PRICE,
 } from '../actions/tickets/types';
 
 export type TransfersRange =
@@ -33,16 +34,18 @@ export type FiltersLimits =
     }
   | Record<string, never>;
 
-const initialState = {
+const initialState: InitialSearchStateType = {
   tickets: {},
   ticketsList: [],
   predictions: [],
   filtersLimits: {},
   carriers: {},
+  sortByPrice: 'lowPrice',
   loading: false,
   error: null,
 };
 
+export type PriceSortTypes = 'lowPrice' | 'heighPrice' | null;
 export type Carriers = Record<string, Carrier> | Record<string, never>;
 
 export type PredictionWithId = {
@@ -61,9 +64,24 @@ export type InitialSearchStateType = {
   ticketsList: TicketsList;
   predictions: PredictionWithId[];
   filtersLimits: FiltersLimits;
+  sortByPrice: PriceSortTypes;
   carriers: Carriers;
   loading: boolean;
   error: null | Error;
+};
+
+const getSortedTicketsByPrice = (
+  state: InitialSearchStateType,
+  sortBy: PriceSortTypes
+) => {
+  const modifier = sortBy === 'lowPrice' ? 1 : -1;
+
+  return [...state.ticketsList].sort((a, b) => {
+    const ticketA = state.tickets[a];
+    const ticketB = state.tickets[b];
+
+    return modifier * (ticketA.price - ticketB.price);
+  });
 };
 
 export const ticketsReducer = (
@@ -160,8 +178,26 @@ export const ticketsReducer = (
       };
     }
 
-    case FETCH_TICKETS_ERROR:
-      return { ...initialState, loading: false, error: action.payload };
+    case FETCH_TICKETS_ERROR: {
+      return {
+        ...state,
+        tickets: {},
+        ticketsList: [],
+        predictions: [],
+        filtersLimits: {},
+        sortByPrice: 'lowPrice',
+        loading: false,
+        error: action.payload,
+      };
+    }
+
+    case SORT_TICKETS_BY_PRICE: {
+      return {
+        ...state,
+        ticketsList: getSortedTicketsByPrice(state, action.payload),
+        sortByPrice: action.payload,
+      };
+    }
 
     default:
       return state;
