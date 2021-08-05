@@ -11,4 +11,8 @@
   &--active > svg {
     transform: rotate(180deg);
   }
+
+  &--dark > svg {
+    color: $primary-text-color;
+  }
 }

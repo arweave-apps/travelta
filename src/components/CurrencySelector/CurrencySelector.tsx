@@ -46,9 +46,13 @@ const CurrencySelector = ({
 
   const handleClickDropdownItem = useCallback(
     (value: CurrencyType) => {
+      if (currency === value) {
+        return;
+      }
+
       dispatch(setCurrency(value));
     },
-    [dispatch]
+    [currency, dispatch]
   );
 
   return (
@@ -58,9 +62,7 @@ const CurrencySelector = ({
       })}
       ref={wrapperRef}
     >
-      <TriggerButton onClick={toggleDropdownMenu} />
-
-      <span>{currency}</span>
+      <TriggerButton onClick={toggleDropdownMenu}>{currency}</TriggerButton>
 
       {isOpen && (
         <Dropdown>

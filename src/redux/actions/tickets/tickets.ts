@@ -13,7 +13,7 @@ import { RootStateType } from '../../reducers';
 import { CabinClassTypes, PassangersType } from '../../reducers/aviaParams';
 import { FormsType } from '../../reducers/pageSettings';
 import { CurrencyType } from '../../reducers/settings';
-import { Prediction } from '../../reducers/tickets';
+import { Prediction, PriceSortTypes } from '../../reducers/tickets';
 import {
   ActionSearchTypes,
   SET_TICKETS,
@@ -22,6 +22,7 @@ import {
   SET_CARRIERS,
   Carrier,
   SET_PREDICTIONS,
+  SORT_TICKETS_BY_PRICE,
 } from './types';
 
 type ThunkType = ThunkAction<
@@ -38,6 +39,13 @@ type PointType = {
   dateFrom: string | undefined;
   dateTo: string | undefined;
 };
+
+export const sortTicketsByPrice = (
+  sortBy: PriceSortTypes
+): ActionSearchTypes => ({
+  type: SORT_TICKETS_BY_PRICE,
+  payload: sortBy,
+});
 
 export const ticketsRequested = (): ActionSearchTypes => ({
   type: FETCH_TICKETS_REQUESTED,
