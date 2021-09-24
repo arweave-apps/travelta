@@ -18,6 +18,7 @@ import {
 
 import Form from './Form';
 import { fetchTickets } from '../../redux/actions/tickets/tickets';
+import { setSegments } from '../../redux/actions/aviaParams/aviaParams';
 
 const AviaSearchForm = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ const AviaSearchForm = (): JSX.Element => {
           history.push(`${history.location.pathname}/search`);
         }
 
+        dispatch(setSegments(segments));
         dispatch(
           fetchTickets(
             segments,
