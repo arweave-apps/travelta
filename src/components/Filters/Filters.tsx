@@ -11,6 +11,7 @@ import Panel from '../Panel';
 import './Filters.scss';
 import { getFiltersLimits } from '../../selectors/selectors';
 import getNounDeclension from '../../utils/getNounDeclension';
+import TicketTimeFilter from './TicketTimeFilter';
 
 type FiltersProps = {
   activeTransfersFilters: number[];
@@ -34,7 +35,9 @@ export type ActivePriceFilters = Record<'minPrice' | 'maxPrice', number>;
 export type OpenFiltersType =
   | 'transferFilter'
   | 'priceFilter'
-  | 'airlineFilter';
+  | 'airlineFilter'
+  | 'ticketDepartureTime'
+  | 'ticketReturnTime';
 
 const Filters = ({
   activeTransfersFilters,
@@ -156,6 +159,36 @@ const Filters = ({
         activeFilters={activeAirlinesFilters}
         onSetActiveFilters={onActiveAirlinesFilters}
         airlines={airlines}
+      />
+
+      <TicketTimeFilter
+        title="Вылет в Москву"
+        isOpen={openFiltersList.includes('ticketDepartureTime')}
+        id="ticketDepartureTime"
+        onToggle={handleToggleActiveFilterItem}
+        onSetActiveFilters={onActivePriceFilters}
+        currency={currency}
+        min={priceRange.minPrice}
+        max={priceRange.maxPrice}
+        minCurrentPriceValue={minCurrentPriceValue}
+        maxCurrentPriceValue={maxCurrentPriceValue}
+        onMinCurrentPriceValue={setMinCurrentPriceValue}
+        onMaxCurrentPriceValue={setMaxCurrentPriceValue}
+      />
+
+      <TicketTimeFilter
+        title="Обратно в Екатеринбург"
+        isOpen={openFiltersList.includes('ticketReturnTime')}
+        id="ticketReturnTime"
+        onToggle={handleToggleActiveFilterItem}
+        onSetActiveFilters={onActivePriceFilters}
+        currency={currency}
+        min={priceRange.minPrice}
+        max={priceRange.maxPrice}
+        minCurrentPriceValue={minCurrentPriceValue}
+        maxCurrentPriceValue={maxCurrentPriceValue}
+        onMinCurrentPriceValue={setMinCurrentPriceValue}
+        onMaxCurrentPriceValue={setMaxCurrentPriceValue}
       />
     </Panel>
   );

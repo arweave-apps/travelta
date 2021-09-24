@@ -3,18 +3,16 @@ import React, { useCallback, useEffect, useRef } from 'react';
 
 import classNames from 'classnames';
 
-import { CurrencyType } from '../../redux/reducers/settings';
-
-import getCurrencySymbolCharCode from '../../utils/getCurrencySymbolCharCode';
-
 import './SliderRange.scss';
+import SliderRangeHeader from './SliderRangeHeader';
 
 type SliderRangeProps = {
   minRange: number;
   maxRange: number;
   minValue: number;
   maxValue: number;
-  currency: CurrencyType;
+  leftValue: string;
+  rightValue: string;
   onChangeMinPice: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeMaxPrice: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
@@ -24,7 +22,8 @@ const SliderRange = ({
   minRange,
   minValue,
   maxValue,
-  currency,
+  leftValue,
+  rightValue,
   onChangeMinPice,
   onChangeMaxPrice,
 }: SliderRangeProps): JSX.Element => {
@@ -58,15 +57,7 @@ const SliderRange = ({
 
   return (
     <>
-      <div className="slider-info">
-        <span className="slider-info__value">
-          {`от ${minValue} ${getCurrencySymbolCharCode(currency)}`}
-        </span>
-
-        <span className="slider-info__value">
-          {`от ${maxValue} ${getCurrencySymbolCharCode(currency)}`}
-        </span>
-      </div>
+      <SliderRangeHeader leftValue={leftValue} rightValue={rightValue} />
 
       <div className="slider-range">
         <label className="slider-range__label" htmlFor="input-range-left">

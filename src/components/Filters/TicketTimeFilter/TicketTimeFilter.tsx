@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect } from 'react';
-
 import { CurrencyType } from '../../../redux/reducers/settings';
-
 import getCurrencySymbolCharCode from '../../../utils/getCurrencySymbolCharCode';
-import FilterItem from '../FilterItem';
 import SliderRange from '../../SliderRange';
+import FilterItem from '../FilterItem';
 import { ActivePriceFilters, OpenFiltersType } from '../Filters';
 
-type PriceFilterProps = {
+type TicketTimeFilterProps = {
+  title: string;
+  id: OpenFiltersType;
   isOpen: boolean;
   onToggle: (id: OpenFiltersType) => void;
   currency: CurrencyType;
@@ -20,7 +20,9 @@ type PriceFilterProps = {
   onMaxCurrentPriceValue: (value: number) => void;
 };
 
-const PriceFilter = ({
+const TicketTimeFilter = ({
+  title,
+  id,
   isOpen,
   onToggle,
   currency,
@@ -31,7 +33,7 @@ const PriceFilter = ({
   maxCurrentPriceValue,
   onMinCurrentPriceValue,
   onMaxCurrentPriceValue,
-}: PriceFilterProps): JSX.Element => {
+}: TicketTimeFilterProps): JSX.Element => {
   const handleChangeMinPriceValue = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = Math.min(+e.target.value, maxCurrentPriceValue - 1);
@@ -56,11 +58,7 @@ const PriceFilter = ({
   }, [maxCurrentPriceValue, minCurrentPriceValue, onSetActiveFilters]);
 
   return (
-    <FilterItem
-      title="Цена билета"
-      isActive={isOpen}
-      onClick={() => onToggle('priceFilter')}
-    >
+    <FilterItem title={title} isActive={isOpen} onClick={() => onToggle(id)}>
       <SliderRange
         minRange={min}
         maxRange={max}
@@ -68,9 +66,20 @@ const PriceFilter = ({
         maxValue={maxCurrentPriceValue}
         onChangeMinPice={handleChangeMinPriceValue}
         onChangeMaxPrice={handleChangeMaxPriceValue}
-        leftValue={`от ${minCurrentPriceValue} ${getCurrencySymbolCharCode(
+        leftValue="Отправление"
+        rightValue={`от ${maxCurrentPriceValue} ${getCurrencySymbolCharCode(
           currency
         )}`}
+      />
+
+      <SliderRange
+        minRange={min}
+        maxRange={max}
+        minValue={minCurrentPriceValue}
+        maxValue={maxCurrentPriceValue}
+        onChangeMinPice={handleChangeMinPriceValue}
+        onChangeMaxPrice={handleChangeMaxPriceValue}
+        leftValue="Прибытие"
         rightValue={`от ${maxCurrentPriceValue} ${getCurrencySymbolCharCode(
           currency
         )}`}
@@ -79,4 +88,4 @@ const PriceFilter = ({
   );
 };
 
-export default PriceFilter;
+export default TicketTimeFilter;
