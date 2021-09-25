@@ -1,8 +1,8 @@
-import { Segments } from '../../../redux/reducers/aviaParams';
+import { FormSegments } from '../../../redux/reducers/aviaParams';
 import { InitialValues } from '../helpers';
 
 export const handleSwitchCities = (
-  segments: Segments,
+  segments: FormSegments,
   formikSetValues: (
     formikValuesFromInput: React.SetStateAction<InitialValues>,
     shouldValidate?: boolean | undefined
@@ -21,11 +21,11 @@ export const handleSwitchCities = (
       : segment;
   });
 
-  formikSetValues({ segments: newSegments });
+  formikSetValues({ formSegments: newSegments });
 };
 
 export const handleResetDate = (
-  segments: Segments,
+  segments: FormSegments,
   formikSetValues: (
     formikValuesFromInput: React.SetStateAction<InitialValues>,
     shouldValidate?: boolean | undefined
@@ -42,11 +42,11 @@ export const handleResetDate = (
     return segment;
   });
 
-  formikSetValues({ segments: newSegments });
+  formikSetValues({ formSegments: newSegments });
 };
 
 export const handleAddSegment = (
-  segments: Segments,
+  segments: FormSegments,
   formikSetValues: (
     formikValuesFromInput: React.SetStateAction<InitialValues>,
     shouldValidate?: boolean | undefined
@@ -67,6 +67,6 @@ export const handleAddSegment = (
   };
 
   formikSetValues({
-    segments: [...segments, newSegment],
+    formSegments: [...segments, newSegment],
   });
 };

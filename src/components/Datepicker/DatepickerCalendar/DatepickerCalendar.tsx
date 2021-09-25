@@ -9,7 +9,7 @@ import {
   DisabledDatesType,
   FormsType,
 } from '../../../redux/reducers/pageSettings';
-import { Segments } from '../../../redux/reducers/aviaParams';
+import { FormSegments } from '../../../redux/reducers/aviaParams';
 
 import NextIcon from '../../../assets/images/icons/right-arrow.svg';
 import PrevIcon from '../../../assets/images/icons/left-arrow.svg';
@@ -25,7 +25,7 @@ type DatepickerCalendarPropsType = {
   segmentId: string;
   returnDate: Date | null;
   departureDate: Date | null;
-  segments: Segments;
+  segments: FormSegments;
   activeInputDate: string | null;
   onSetActiveInputDate: (activeInput: ActiveInputType) => void;
   activeForm: FormsType;

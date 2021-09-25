@@ -12,7 +12,7 @@ import { RootStateType } from '../../reducers';
 import {
   CabinClassTypes,
   PassangersType,
-  Segments,
+  FormSegments,
 } from '../../reducers/aviaParams';
 import { FormsType } from '../../reducers/pageSettings';
 import { CurrencyType } from '../../reducers/settings';
@@ -92,7 +92,7 @@ export const fetchAirlines = (): ThunkType => async (dispatch) => {
 };
 
 export const fetchTickets = (
-  segments: Segments,
+  segments: FormSegments,
   passengers: PassangersType,
   selectedCabins: CabinClassTypes,
   currency: CurrencyType,

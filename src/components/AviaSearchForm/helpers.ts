@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { Segments } from '../../redux/reducers/aviaParams';
+import { FormSegments } from '../../redux/reducers/aviaParams';
 
 export const validationSchema = Yup.object().shape({
   segments: Yup.array().of(
@@ -26,10 +26,10 @@ export const validationSchemaOneDate = Yup.object().shape({
   ),
 });
 
-export type InitialValues = Record<'segments', Segments>;
+export type InitialValues = Record<'formSegments', FormSegments>;
 
 export const initialValues: InitialValues = {
-  segments: [
+  formSegments: [
     {
       id: 'segment-1',
       origin: '',
