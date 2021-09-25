@@ -1,4 +1,8 @@
-import { CabinClassTypes, PassangersType } from '../redux/reducers/aviaParams';
+import {
+  CabinClassTypes,
+  FormSegments,
+  PassangersType,
+} from '../redux/reducers/aviaParams';
 import { RootStateType } from '../redux/reducers';
 import { Cities } from '../redux/reducers/locations';
 import { DisabledDatesType, FormsType } from '../redux/reducers/pageSettings';
@@ -49,3 +53,6 @@ export const getCarriers = (state: RootStateType): Carriers =>
 
 export const getSortTicketBy = (state: RootStateType): PriceSortTypes =>
   state.tickets.sortByPrice;
+
+export const getFormSegments = (state: RootStateType): FormSegments =>
+  state.aviaParams.formSegments;
