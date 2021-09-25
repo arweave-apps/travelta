@@ -69,3 +69,13 @@ export const getFormatedTimeFromSeconds = (seconds: number): string => {
 
   return `${hour}ч ${minutes}мин`;
 };
+
+export const msToTime = (ms: number): string => {
+  const minutes = Math.floor((ms / (1000 * 60)) % 60);
+  const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
+
+  const formatedHours = hours < 10 ? `0${hours}` : `${hours}`;
+  const formatedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+
+  return `${formatedHours}:${formatedMinutes}`;
+};
