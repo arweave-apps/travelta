@@ -66,14 +66,15 @@ const PriceFilter = ({
         maxRange={max}
         minValue={minCurrentPriceValue}
         maxValue={maxCurrentPriceValue}
-        onChangeMinPice={handleChangeMinPriceValue}
-        onChangeMaxPrice={handleChangeMaxPriceValue}
+        onChangeMinValue={handleChangeMinPriceValue}
+        onChangeMaxValue={handleChangeMaxPriceValue}
         leftValue={`от ${minCurrentPriceValue} ${getCurrencySymbolCharCode(
           currency
         )}`}
         rightValue={`от ${maxCurrentPriceValue} ${getCurrencySymbolCharCode(
           currency
         )}`}
+        step={10}
       />
     </FilterItem>
   );

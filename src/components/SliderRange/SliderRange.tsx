@@ -13,8 +13,9 @@ type SliderRangeProps = {
   maxValue: number;
   leftValue: string;
   rightValue: string;
-  onChangeMinPice: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangeMaxPrice: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeMinValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeMaxValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  step: number;
 };
 
 const SliderRange = ({
@@ -24,8 +25,9 @@ const SliderRange = ({
   maxValue,
   leftValue,
   rightValue,
-  onChangeMinPice,
-  onChangeMaxPrice,
+  onChangeMinValue,
+  onChangeMaxValue,
+  step,
 }: SliderRangeProps): JSX.Element => {
   const sliderRangeRef = useRef<HTMLDivElement>(null);
 
@@ -75,8 +77,9 @@ const SliderRange = ({
             max={maxRange}
             value={minValue}
             onChange={(e) => {
-              onChangeMinPice(e);
+              onChangeMinValue(e);
             }}
+            step={step}
           />
         </label>
 
@@ -89,8 +92,9 @@ const SliderRange = ({
             max={maxRange}
             value={maxValue}
             onChange={(e) => {
-              onChangeMaxPrice(e);
+              onChangeMaxValue(e);
             }}
+            step={step}
           />
         </label>
 
