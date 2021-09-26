@@ -157,6 +157,10 @@ const getTicketsWithSegments = (tickets: TicketsSearchArrangedById) => {
         deep_link,
         bags_price,
         baglimit,
+        cityCodeFrom,
+        cityCodeTo,
+        cityFrom,
+        cityTo,
       } = ticket;
 
       const segments = routes.map((currRouteArr, i) => {
@@ -164,9 +168,16 @@ const getTicketsWithSegments = (tickets: TicketsSearchArrangedById) => {
         const transfers = getTransfers(route, currRouteArr);
 
         const flightDuration = i === 0 ? duration.departure : duration.return;
+        const departureCityCode = i === 0 ? cityCodeFrom : cityCodeTo;
+        const arrivalCityCode = i === 0 ? cityCodeTo : cityCodeFrom;
+
+        const departureCityName = i === 0 ? cityFrom : cityTo;
+        const arrivalCityName = i === 0 ? cityTo : cityFrom;
 
         return {
           id: uuidv4(),
+          cityCodes: { departureCityCode, arrivalCityCode },
+          cityNames: { departureCityName, arrivalCityName },
           flights,
           transfers,
           duration: flightDuration,
@@ -194,7 +205,7 @@ const getMultiTicketsWithSegments = (tickets: TicketsMultiArrangedById) => {
       const { price, route, deep_link } = ticket;
       const airlines: string[][] = [];
 
-      const segments = route.map((currRoute) => {
+      const segments = route.map((currRoute, i) => {
         const {
           duration,
           countryFrom,
@@ -205,6 +216,10 @@ const getMultiTicketsWithSegments = (tickets: TicketsMultiArrangedById) => {
           airlines: routeAirlines,
           bags_price,
           baglimit,
+          cityCodeFrom,
+          cityCodeTo,
+          cityFrom,
+          cityTo,
         } = currRoute;
 
         airlines.push(routeAirlines);
@@ -213,9 +228,16 @@ const getMultiTicketsWithSegments = (tickets: TicketsMultiArrangedById) => {
         const transfers = getTransfers(route, routes[0]);
 
         const flightDuration = duration.departure;
+        const departureCityCode = i === 0 ? cityCodeFrom : cityCodeTo;
+        const arrivalCityCode = i === 0 ? cityCodeTo : cityCodeFrom;
+
+        const departureCityName = i === 0 ? cityFrom : cityTo;
+        const arrivalCityName = i === 0 ? cityTo : cityFrom;
 
         return {
           id: uuidv4(),
+          cityCodes: { departureCityCode, arrivalCityCode },
+          cityNames: { departureCityName, arrivalCityName },
           flights,
           transfers,
           duration: flightDuration,
@@ -276,12 +298,23 @@ type Transfer = {
   id: string;
 };
 
+type CityNames = {
+  departureCityName: string;
+  arrivalCityName: string;
+};
+type CityCodes = {
+  departureCityCode: string;
+  arrivalCityCode: string;
+};
+
 export type Segment = {
   id: string;
   flights: Flight[];
   transfers: Transfer[];
   duration: number;
   country: Country;
+  cityCodes: CityCodes;
+  cityNames: CityNames;
   bags: Bags;
 };
 
