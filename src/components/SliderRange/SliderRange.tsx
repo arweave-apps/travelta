@@ -58,7 +58,7 @@ const SliderRange = ({
   }, [getPercent, maxValue, minValue, sliderRangeRef]);
 
   return (
-    <>
+    <div className="slider-wrapper">
       <SliderRangeHeader leftValue={leftValue} rightValue={rightValue} />
 
       <div className="slider-range">
@@ -103,7 +103,7 @@ const SliderRange = ({
           <div className="slider__interval" ref={sliderRangeRef} />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
