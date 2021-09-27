@@ -1,4 +1,5 @@
 import React, { SetStateAction, useCallback, useEffect, useState } from 'react';
+
 import { useSelector } from 'react-redux';
 
 import { CurrencyType } from '../../redux/reducers/settings';
@@ -9,9 +10,14 @@ import AirlineFilter from './AirlineFilter';
 import Panel from '../Panel';
 
 import './Filters.scss';
-import { getFiltersLimits } from '../../selectors/selectors';
+import {
+  getActiveForm,
+  getFiltersLimits,
+  getFormSegments,
+} from '../../selectors/selectors';
 import getNounDeclension from '../../utils/getNounDeclension';
 import TicketTimeFilter from './TicketTimeFilter';
+import { ActiveTicketTimeFilters } from '../../pages/Search/Search';
 
 type FiltersProps = {
   activeTransfersFilters: number[];
@@ -21,6 +27,9 @@ type FiltersProps = {
     SetStateAction<ActivePriceFilters | null>
   >;
   onActiveAirlinesFilters: React.Dispatch<SetStateAction<string[]>>;
+  onActiveTicketTimeFilter: React.Dispatch<
+    SetStateAction<ActiveTicketTimeFilters | null>
+  >;
   currency: CurrencyType;
 };
 
@@ -36,8 +45,17 @@ export type OpenFiltersType =
   | 'transferFilter'
   | 'priceFilter'
   | 'airlineFilter'
-  | 'ticketDepartureTime'
-  | 'ticketReturnTime';
+  | string;
+
+export type TicketTimeValues = {
+  [key: string]: {
+    departureTime: number[];
+    arrivalTime: number[];
+  };
+};
+
+const TICKET_TIME_MIN = 0; // start ms
+const TICKET_TIME_MAX = 86400000; // ms in 24 hours
 
 const Filters = ({
   activeTransfersFilters,
@@ -45,12 +63,15 @@ const Filters = ({
   onActiveTransfersFilters,
   onActivePriceFilters,
   onActiveAirlinesFilters,
+  onActiveTicketTimeFilter,
   currency,
 }: FiltersProps): JSX.Element => {
   const [openFiltersList, setOpenFiltersList] = useState<OpenFiltersType[]>([]);
   const { transfersRange, priceRange, airlines } = useSelector(
     getFiltersLimits
   );
+  const formSegments = useSelector(getFormSegments);
+  const activeForm = useSelector(getActiveForm);
 
   const [minCurrentPriceValue, setMinCurrentPriceValue] = useState<number>(
     priceRange.minPrice
@@ -59,6 +80,11 @@ const Filters = ({
   const [maxCurrentPriceValue, setMaxCurrentPriceValue] = useState<number>(
     priceRange.maxPrice
   );
+
+  const [
+    ticketTimeValues,
+    setTicketTimeValues,
+  ] = useState<TicketTimeValues | null>(null);
 
   const [transferCheckboxes, setTransferCheckboxes] = useState<
     TransferCheckboxsDataType[]
@@ -88,6 +114,28 @@ const Filters = ({
 
     setTransferCheckboxes(checkboxesData);
   }, [transfersRange.max, transfersRange.min]);
+
+  useEffect(() => {
+    const res: TicketTimeValues = {};
+
+    for (let i = 0; i < formSegments.length; i++) {
+      const segment = formSegments[i];
+
+      res[`${segment.originCode}-${segment.destinationCode}`] = {
+        departureTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
+        arrivalTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
+      };
+
+      if (activeForm === 'roundtrip') {
+        res[`${segment.destinationCode}-${segment.originCode}`] = {
+          departureTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
+          arrivalTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
+        };
+      }
+    }
+
+    setTicketTimeValues(res);
+  }, [activeForm, formSegments]);
 
   const handleToggleActiveFilterItem = useCallback(
     (id: OpenFiltersType) => {
@@ -161,35 +209,76 @@ const Filters = ({
         airlines={airlines}
       />
 
-      <TicketTimeFilter
-        title="Вылет в Москву"
-        isOpen={openFiltersList.includes('ticketDepartureTime')}
-        id="ticketDepartureTime"
-        onToggle={handleToggleActiveFilterItem}
-        onSetActiveFilters={onActivePriceFilters}
-        currency={currency}
-        min={priceRange.minPrice}
-        max={priceRange.maxPrice}
-        minCurrentPriceValue={minCurrentPriceValue}
-        maxCurrentPriceValue={maxCurrentPriceValue}
-        onMinCurrentPriceValue={setMinCurrentPriceValue}
-        onMaxCurrentPriceValue={setMaxCurrentPriceValue}
-      />
+      {ticketTimeValues &&
+        formSegments.length > 0 &&
+        formSegments.map((formSegment) => {
+          const routeKey = `${formSegment.originCode}-${formSegment.destinationCode}`;
+          const returnRouteKey = `${formSegment.destinationCode}-${formSegment.originCode}`;
 
-      <TicketTimeFilter
-        title="Обратно в Екатеринбург"
-        isOpen={openFiltersList.includes('ticketReturnTime')}
-        id="ticketReturnTime"
-        onToggle={handleToggleActiveFilterItem}
-        onSetActiveFilters={onActivePriceFilters}
-        currency={currency}
-        min={priceRange.minPrice}
-        max={priceRange.maxPrice}
-        minCurrentPriceValue={minCurrentPriceValue}
-        maxCurrentPriceValue={maxCurrentPriceValue}
-        onMinCurrentPriceValue={setMinCurrentPriceValue}
-        onMaxCurrentPriceValue={setMaxCurrentPriceValue}
-      />
+          return (
+            <React.Fragment key={`ticketTime-${formSegment.id}`}>
+              <TicketTimeFilter
+                route={routeKey}
+                ticketTimeValues={ticketTimeValues}
+                title={`Время ${routeKey}`}
+                isOpen={openFiltersList.includes(
+                  `ticketTime-${formSegment.id}`
+                )}
+                id={`ticketTime-${formSegment.id}`}
+                onToggle={handleToggleActiveFilterItem}
+                onSetActiveFilters={onActiveTicketTimeFilter}
+                minDeparture={TICKET_TIME_MIN}
+                maxDeparture={TICKET_TIME_MAX}
+                minTicketTimeDepartureValue={
+                  ticketTimeValues[routeKey].departureTime[0]
+                }
+                maxTicketTimeDepartureValue={
+                  ticketTimeValues[routeKey].departureTime[1]
+                }
+                minArrival={TICKET_TIME_MIN}
+                maxArrival={TICKET_TIME_MAX}
+                minTicketTimeArrivalValue={
+                  ticketTimeValues[routeKey].arrivalTime[0]
+                }
+                maxTicketTimeArrivalValue={
+                  ticketTimeValues[routeKey].arrivalTime[1]
+                }
+                onSetTicketTimeValues={setTicketTimeValues}
+              />
+
+              {activeForm === 'roundtrip' && (
+                <TicketTimeFilter
+                  route={returnRouteKey}
+                  ticketTimeValues={ticketTimeValues}
+                  title={`Время ${returnRouteKey}`}
+                  isOpen={openFiltersList.includes(
+                    `ticketTime-${formSegment.id}-${activeForm}`
+                  )}
+                  id={`ticketTime-${formSegment.id}-${activeForm}`}
+                  onToggle={handleToggleActiveFilterItem}
+                  onSetActiveFilters={onActiveTicketTimeFilter}
+                  minDeparture={TICKET_TIME_MIN}
+                  maxDeparture={TICKET_TIME_MAX}
+                  minTicketTimeDepartureValue={
+                    ticketTimeValues[returnRouteKey].departureTime[0]
+                  }
+                  maxTicketTimeDepartureValue={
+                    ticketTimeValues[returnRouteKey].departureTime[1]
+                  }
+                  minArrival={TICKET_TIME_MIN}
+                  maxArrival={TICKET_TIME_MAX}
+                  minTicketTimeArrivalValue={
+                    ticketTimeValues[returnRouteKey].arrivalTime[0]
+                  }
+                  maxTicketTimeArrivalValue={
+                    ticketTimeValues[returnRouteKey].arrivalTime[1]
+                  }
+                  onSetTicketTimeValues={setTicketTimeValues}
+                />
+              )}
+            </React.Fragment>
+          );
+        })}
     </Panel>
   );
 };

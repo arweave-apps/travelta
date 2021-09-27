@@ -1,88 +1,203 @@
 import React, { useCallback, useEffect } from 'react';
-import { CurrencyType } from '../../../redux/reducers/settings';
-import getCurrencySymbolCharCode from '../../../utils/getCurrencySymbolCharCode';
+
+import { ActiveTicketTimeFilters } from '../../../pages/Search/Search';
+import { msToTime } from '../../../utils/dateUtils';
+
 import SliderRange from '../../SliderRange';
 import FilterItem from '../FilterItem';
-import { ActivePriceFilters, OpenFiltersType } from '../Filters';
+import { OpenFiltersType, TicketTimeValues } from '../Filters';
 
 type TicketTimeFilterProps = {
+  route: string;
+  ticketTimeValues: TicketTimeValues;
   title: string;
   id: OpenFiltersType;
   isOpen: boolean;
   onToggle: (id: OpenFiltersType) => void;
-  currency: CurrencyType;
-  onSetActiveFilters: (filters: ActivePriceFilters) => void;
-  min: number;
-  max: number;
-  minCurrentPriceValue: number;
-  maxCurrentPriceValue: number;
-  onMinCurrentPriceValue: (value: number) => void;
-  onMaxCurrentPriceValue: (value: number) => void;
+  onSetActiveFilters: (filters: ActiveTicketTimeFilters) => void;
+  minDeparture: number;
+  maxDeparture: number;
+  minTicketTimeDepartureValue: number;
+  maxTicketTimeDepartureValue: number;
+  minArrival: number;
+  maxArrival: number;
+  minTicketTimeArrivalValue: number;
+  maxTicketTimeArrivalValue: number;
+  onSetTicketTimeValues: (newValues: TicketTimeValues) => void;
+};
+
+const STEP = 1800000; // ms in 30 min
+
+type ChangedValues = {
+  departureTime: number[];
+  arrivalTime: number[];
+};
+
+const upadateValues = (
+  route: string,
+  ticketTimeValues: TicketTimeValues,
+  changedValues: ChangedValues
+) => {
+  return Object.entries(ticketTimeValues).reduce(
+    (acc: TicketTimeValues, [currentKey, currentValues]) => {
+      if (currentKey === route) {
+        acc[currentKey] = changedValues;
+      } else {
+        acc[currentKey] = currentValues;
+      }
+
+      return acc;
+    },
+    {}
+  );
 };
 
 const TicketTimeFilter = ({
+  route,
+  ticketTimeValues,
   title,
   id,
   isOpen,
   onToggle,
-  currency,
   onSetActiveFilters,
-  min,
-  max,
-  minCurrentPriceValue,
-  maxCurrentPriceValue,
-  onMinCurrentPriceValue,
-  onMaxCurrentPriceValue,
+  minDeparture,
+  maxDeparture,
+  minTicketTimeDepartureValue,
+  maxTicketTimeDepartureValue,
+  minArrival,
+  maxArrival,
+  minTicketTimeArrivalValue,
+  maxTicketTimeArrivalValue,
+  onSetTicketTimeValues,
 }: TicketTimeFilterProps): JSX.Element => {
-  const handleChangeMinPriceValue = useCallback(
+  const handleChangeMinDepartureValue = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = Math.min(+e.target.value, maxCurrentPriceValue - 1);
-      onMinCurrentPriceValue(value);
+      if (!ticketTimeValues) {
+        return;
+      }
+
+      const value = Math.min(
+        +e.target.value,
+        maxTicketTimeDepartureValue - STEP
+      );
+
+      const changedValues = {
+        ...ticketTimeValues[route],
+        departureTime: [value, ticketTimeValues[route].departureTime[1]],
+      };
+
+      const newValues = upadateValues(route, ticketTimeValues, changedValues);
+
+      onSetTicketTimeValues(newValues);
     },
-    [maxCurrentPriceValue, onMinCurrentPriceValue]
+    [
+      maxTicketTimeDepartureValue,
+      onSetTicketTimeValues,
+      route,
+      ticketTimeValues,
+    ]
   );
 
-  const handleChangeMaxPriceValue = useCallback(
+  const handleChangeMaxDeaprtureValue = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = Math.max(+e.target.value, minCurrentPriceValue + 1);
-      onMaxCurrentPriceValue(value);
+      if (!ticketTimeValues) {
+        return;
+      }
+
+      const value = Math.max(
+        +e.target.value,
+        minTicketTimeDepartureValue + STEP
+      );
+
+      const changedValues = {
+        ...ticketTimeValues[route],
+        departureTime: [ticketTimeValues[route].departureTime[0], value],
+      };
+
+      const newValues = upadateValues(route, ticketTimeValues, changedValues);
+
+      onSetTicketTimeValues(newValues);
     },
-    [minCurrentPriceValue, onMaxCurrentPriceValue]
+    [
+      minTicketTimeDepartureValue,
+      onSetTicketTimeValues,
+      route,
+      ticketTimeValues,
+    ]
+  );
+
+  const handleChangeMinArrivalValue = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!ticketTimeValues) {
+        return;
+      }
+
+      const value = Math.min(+e.target.value, maxTicketTimeArrivalValue - STEP);
+
+      const changedValues = {
+        ...ticketTimeValues[route],
+        arrivalTime: [value, ticketTimeValues[route].arrivalTime[1]],
+      };
+
+      const newValues = upadateValues(route, ticketTimeValues, changedValues);
+
+      onSetTicketTimeValues(newValues);
+    },
+    [maxTicketTimeArrivalValue, onSetTicketTimeValues, route, ticketTimeValues]
+  );
+
+  const handleChangeMaxArrivalValue = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!ticketTimeValues) {
+        return;
+      }
+
+      const value = Math.max(+e.target.value, minTicketTimeArrivalValue + STEP);
+
+      const changedValues = {
+        ...ticketTimeValues[route],
+        arrivalTime: [ticketTimeValues[route].arrivalTime[0], value],
+      };
+
+      const newValues = upadateValues(route, ticketTimeValues, changedValues);
+
+      onSetTicketTimeValues(newValues);
+    },
+    [minTicketTimeArrivalValue, onSetTicketTimeValues, route, ticketTimeValues]
   );
 
   useEffect(() => {
-    onSetActiveFilters({
-      minPrice: minCurrentPriceValue,
-      maxPrice: maxCurrentPriceValue,
-    });
-  }, [maxCurrentPriceValue, minCurrentPriceValue, onSetActiveFilters]);
+    onSetActiveFilters(ticketTimeValues);
+  }, [onSetActiveFilters, ticketTimeValues]);
 
   return (
     <FilterItem title={title} isActive={isOpen} onClick={() => onToggle(id)}>
       <SliderRange
-        minRange={min}
-        maxRange={max}
-        minValue={minCurrentPriceValue}
-        maxValue={maxCurrentPriceValue}
-        onChangeMinPice={handleChangeMinPriceValue}
-        onChangeMaxPrice={handleChangeMaxPriceValue}
+        minRange={minDeparture}
+        maxRange={maxDeparture}
+        minValue={minTicketTimeDepartureValue}
+        maxValue={maxTicketTimeDepartureValue}
+        onChangeMinValue={handleChangeMinDepartureValue}
+        onChangeMaxValue={handleChangeMaxDeaprtureValue}
         leftValue="Отправление"
-        rightValue={`от ${maxCurrentPriceValue} ${getCurrencySymbolCharCode(
-          currency
+        rightValue={`${msToTime(minTicketTimeDepartureValue)}-${msToTime(
+          maxTicketTimeDepartureValue
         )}`}
+        step={STEP}
       />
 
       <SliderRange
-        minRange={min}
-        maxRange={max}
-        minValue={minCurrentPriceValue}
-        maxValue={maxCurrentPriceValue}
-        onChangeMinPice={handleChangeMinPriceValue}
-        onChangeMaxPrice={handleChangeMaxPriceValue}
+        minRange={minArrival}
+        maxRange={maxArrival}
+        minValue={minTicketTimeArrivalValue}
+        maxValue={maxTicketTimeArrivalValue}
+        onChangeMinValue={handleChangeMinArrivalValue}
+        onChangeMaxValue={handleChangeMaxArrivalValue}
         leftValue="Прибытие"
-        rightValue={`от ${maxCurrentPriceValue} ${getCurrencySymbolCharCode(
-          currency
+        rightValue={`${msToTime(minTicketTimeArrivalValue)}-${msToTime(
+          maxTicketTimeArrivalValue
         )}`}
+        step={STEP}
       />
     </FilterItem>
   );

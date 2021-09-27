@@ -24,6 +24,13 @@ import './Search.scss';
 
 export type ActivePriceFilters = Record<'minPrice' | 'maxPrice', number>;
 
+export type ActiveTicketTimeFilters = {
+  [key: string]: {
+    departureTime: number[];
+    arrivalTime: number[];
+  };
+};
+
 const numberOfTicketsLoaded = 10;
 
 const Search = (): JSX.Element => {
@@ -48,10 +55,16 @@ const Search = (): JSX.Element => {
     []
   );
 
+  const [
+    activeTicketTimeFilters,
+    setActiveTicketTimeFilter,
+  ] = useState<ActiveTicketTimeFilters | null>(null);
+
   const visibleTickets = useFilters(
     activeTransfersFilters,
     activePriceFilters,
     activeAirlinesFilters,
+    activeTicketTimeFilters,
     ticketsList,
     tickets
   );
@@ -91,6 +104,7 @@ const Search = (): JSX.Element => {
           onActiveTransfersFilters={setActiveTransfersFilters}
           onActivePriceFilters={setActivePriceFilters}
           onActiveAirlinesFilters={setActiveAirlinesFilters}
+          onActiveTicketTimeFilter={setActiveTicketTimeFilter}
           currency={currency}
         />
 
