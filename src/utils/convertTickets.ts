@@ -205,7 +205,7 @@ const getMultiTicketsWithSegments = (tickets: TicketsMultiArrangedById) => {
       const { price, route, deep_link } = ticket;
       const airlines: string[][] = [];
 
-      const segments = route.map((currRoute, i) => {
+      const segments = route.map((currRoute) => {
         const {
           duration,
           countryFrom,
@@ -228,16 +228,14 @@ const getMultiTicketsWithSegments = (tickets: TicketsMultiArrangedById) => {
         const transfers = getTransfers(route, routes[0]);
 
         const flightDuration = duration.departure;
-        const departureCityCode = i === 0 ? cityCodeFrom : cityCodeTo;
-        const arrivalCityCode = i === 0 ? cityCodeTo : cityCodeFrom;
-
-        const departureCityName = i === 0 ? cityFrom : cityTo;
-        const arrivalCityName = i === 0 ? cityTo : cityFrom;
 
         return {
           id: uuidv4(),
-          cityCodes: { departureCityCode, arrivalCityCode },
-          cityNames: { departureCityName, arrivalCityName },
+          cityCodes: {
+            departureCityCode: cityCodeFrom,
+            arrivalCityCode: cityCodeTo,
+          },
+          cityNames: { departureCityName: cityFrom, arrivalCityName: cityTo },
           flights,
           transfers,
           duration: flightDuration,
