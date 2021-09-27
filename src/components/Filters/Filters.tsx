@@ -164,6 +164,27 @@ const Filters = ({
     setMinCurrentPriceValue(priceRange.minPrice);
     setMaxCurrentPriceValue(priceRange.maxPrice);
     onActiveAirlinesFilters([...airlines]);
+
+    const res: TicketTimeValues = {};
+
+    for (let i = 0; i < formSegments.length; i++) {
+      const segment = formSegments[i];
+
+      res[`${segment.originCode}-${segment.destinationCode}`] = {
+        departureTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
+        arrivalTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
+      };
+
+      if (activeForm === 'roundtrip') {
+        res[`${segment.destinationCode}-${segment.originCode}`] = {
+          departureTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
+          arrivalTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
+        };
+      }
+    }
+
+    onActiveTicketTimeFilter(res);
+    setTicketTimeValues(res);
   };
 
   return (
