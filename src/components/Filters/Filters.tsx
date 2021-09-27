@@ -18,6 +18,8 @@ import {
 import getNounDeclension from '../../utils/getNounDeclension';
 import TicketTimeFilter from './TicketTimeFilter';
 import { ActiveTicketTimeFilters } from '../../pages/Search/Search';
+import { FormSegments } from '../../redux/reducers/aviaParams';
+import { FormsType } from '../../redux/reducers/pageSettings';
 
 type FiltersProps = {
   activeTransfersFilters: number[];
@@ -56,6 +58,31 @@ export type TicketTimeValues = {
 
 const TICKET_TIME_MIN = 0; // start ms
 const TICKET_TIME_MAX = 86400000; // ms in 24 hours
+
+const getInitialTimeFiltersValues = (
+  formSegments: FormSegments,
+  activeForm: FormsType
+) => {
+  const res: TicketTimeValues = {};
+
+  for (let i = 0; i < formSegments.length; i++) {
+    const segment = formSegments[i];
+
+    res[`${segment.originCode}-${segment.destinationCode}`] = {
+      departureTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
+      arrivalTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
+    };
+
+    if (activeForm === 'roundtrip') {
+      res[`${segment.destinationCode}-${segment.originCode}`] = {
+        departureTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
+        arrivalTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
+      };
+    }
+  }
+
+  return res;
+};
 
 const Filters = ({
   activeTransfersFilters,
@@ -116,25 +143,11 @@ const Filters = ({
   }, [transfersRange.max, transfersRange.min]);
 
   useEffect(() => {
-    const res: TicketTimeValues = {};
-
-    for (let i = 0; i < formSegments.length; i++) {
-      const segment = formSegments[i];
-
-      res[`${segment.originCode}-${segment.destinationCode}`] = {
-        departureTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
-        arrivalTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
-      };
-
-      if (activeForm === 'roundtrip') {
-        res[`${segment.destinationCode}-${segment.originCode}`] = {
-          departureTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
-          arrivalTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
-        };
-      }
-    }
-
-    setTicketTimeValues(res);
+    const initialTicketTimeValues = getInitialTimeFiltersValues(
+      formSegments,
+      activeForm
+    );
+    setTicketTimeValues(initialTicketTimeValues);
   }, [activeForm, formSegments]);
 
   const handleToggleActiveFilterItem = useCallback(
@@ -165,26 +178,12 @@ const Filters = ({
     setMaxCurrentPriceValue(priceRange.maxPrice);
     onActiveAirlinesFilters([...airlines]);
 
-    const res: TicketTimeValues = {};
-
-    for (let i = 0; i < formSegments.length; i++) {
-      const segment = formSegments[i];
-
-      res[`${segment.originCode}-${segment.destinationCode}`] = {
-        departureTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
-        arrivalTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
-      };
-
-      if (activeForm === 'roundtrip') {
-        res[`${segment.destinationCode}-${segment.originCode}`] = {
-          departureTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
-          arrivalTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
-        };
-      }
-    }
-
-    onActiveTicketTimeFilter(res);
-    setTicketTimeValues(res);
+    const initialTicketTimeValues = getInitialTimeFiltersValues(
+      formSegments,
+      activeForm
+    );
+    setTicketTimeValues(initialTicketTimeValues);
+    setTicketTimeValues(initialTicketTimeValues);
   };
 
   return (
