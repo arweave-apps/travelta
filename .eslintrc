@@ -31,6 +31,13 @@
     "prettier"
   ],
   "rules": {
+    "no-param-reassign": [
+      "error",
+      {
+        "props": true,
+        "ignorePropertyModificationsFor": ["acc"]
+      }
+    ],
     "no-console": ["error", { "allow": ["warn"] }],
     "consistent-return": ["error", { "treatUndefinedAsUnspecified": false }],
     "jsx-a11y/mouse-events-have-key-events": 0,
