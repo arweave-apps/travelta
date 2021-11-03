@@ -7,10 +7,13 @@ import {
   searchMultiTicketsConfig,
   searchTicketsConfig,
 } from '../../../api/apiConfig';
-import { SegmentType } from '../../../components/AviaSearchForm/helpers';
 import { Ticket } from '../../../interfaces/tickets';
 import { RootStateType } from '../../reducers';
-import { CabinClassTypes, PassangersType } from '../../reducers/aviaParams';
+import {
+  CabinClassTypes,
+  PassangersType,
+  FormSegments,
+} from '../../reducers/aviaParams';
 import { FormsType } from '../../reducers/pageSettings';
 import { CurrencyType } from '../../reducers/settings';
 import { Prediction, PriceSortTypes } from '../../reducers/tickets';
@@ -89,7 +92,7 @@ export const fetchAirlines = (): ThunkType => async (dispatch) => {
 };
 
 export const fetchTickets = (
-  segments: SegmentType[],
+  segments: FormSegments,
   passengers: PassangersType,
   selectedCabins: CabinClassTypes,
   currency: CurrencyType,

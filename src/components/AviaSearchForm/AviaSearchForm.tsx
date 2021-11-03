@@ -18,6 +18,7 @@ import {
 
 import Form from './Form';
 import { fetchTickets } from '../../redux/actions/tickets/tickets';
+import { setFormSegments } from '../../redux/actions/aviaParams/aviaParams';
 
 const AviaSearchForm = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -35,14 +36,15 @@ const AviaSearchForm = (): JSX.Element => {
     <Formik
       initialValues={initialValues}
       validationSchema={currentValidationSchema}
-      onSubmit={({ segments }) => {
+      onSubmit={({ formSegments }) => {
         if (!history.location.pathname.includes('search')) {
           history.push(`${history.location.pathname}/search`);
         }
 
+        dispatch(setFormSegments(formSegments));
         dispatch(
           fetchTickets(
-            segments,
+            formSegments,
             passangers,
             selectedCabins,
             currency,

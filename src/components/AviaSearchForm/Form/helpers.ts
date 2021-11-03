@@ -1,7 +1,11 @@
-import { InitialValues, SegmentType } from '../helpers';
+import {
+  FormSegmentId,
+  FormSegments,
+} from '../../../redux/reducers/aviaParams';
+import { InitialValues } from '../helpers';
 
 export const handleSwitchCities = (
-  segments: SegmentType[],
+  segments: FormSegments,
   formikSetValues: (
     formikValuesFromInput: React.SetStateAction<InitialValues>,
     shouldValidate?: boolean | undefined
@@ -20,11 +24,11 @@ export const handleSwitchCities = (
       : segment;
   });
 
-  formikSetValues({ segments: newSegments });
+  formikSetValues({ formSegments: newSegments });
 };
 
 export const handleResetDate = (
-  segments: SegmentType[],
+  segments: FormSegments,
   formikSetValues: (
     formikValuesFromInput: React.SetStateAction<InitialValues>,
     shouldValidate?: boolean | undefined
@@ -41,11 +45,11 @@ export const handleResetDate = (
     return segment;
   });
 
-  formikSetValues({ segments: newSegments });
+  formikSetValues({ formSegments: newSegments });
 };
 
 export const handleAddSegment = (
-  segments: SegmentType[],
+  segments: FormSegments,
   formikSetValues: (
     formikValuesFromInput: React.SetStateAction<InitialValues>,
     shouldValidate?: boolean | undefined
@@ -55,8 +59,10 @@ export const handleAddSegment = (
     return;
   }
 
+  const id = `segment-${segments.length + 1}` as FormSegmentId;
+
   const newSegment = {
-    id: `segment-${segments.length + 1}`,
+    id,
     origin: '',
     originCode: '',
     destination: '',
@@ -66,6 +72,6 @@ export const handleAddSegment = (
   };
 
   formikSetValues({
-    segments: [...segments, newSegment],
+    formSegments: [...segments, newSegment],
   });
 };

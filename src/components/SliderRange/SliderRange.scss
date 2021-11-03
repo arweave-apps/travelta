@@ -1,5 +1,9 @@
 $input-width: 255;
 
+.slider-wrapper {
+  padding-bottom: rem(20);
+}
+
 .slider-info {
   @include display(flex, space-between, center);
   width: 100%;

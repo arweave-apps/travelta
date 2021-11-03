@@ -42,7 +42,7 @@ const Form = (): JSX.Element => {
     handleBlur,
   } = useFormikContext<InitialValues>();
 
-  const { segments } = values;
+  const { formSegments } = values;
 
   const dispatch = useDispatch();
 
@@ -101,15 +101,15 @@ const Form = (): JSX.Element => {
       onSubmit={handleSubmit}
     >
       <FieldArray
-        name="segments"
+        name="formSegments"
         render={(arrayHelpers) => {
-          return segments.map((segment, i) => {
+          return formSegments.map((segment, i) => {
             return (
               <div className="search-form__segment" key={segment.id}>
                 <div className="search-form__origin">
                   <Autocomplete
-                    inputName={`segments.${i}.origin`}
-                    fieldValue={segments[i].origin}
+                    inputName={`formSegments.${i}.origin`}
+                    fieldValue={formSegments[i].origin}
                     placeholder="Откуда"
                     onChange={handleChangeInput}
                     onFocus={handleFocus}
@@ -118,20 +118,20 @@ const Form = (): JSX.Element => {
                       handleClickCity(
                         cityName,
                         cityCode,
-                        `segments.${i}.origin`,
-                        `segments.${i}.originCode`
+                        `formSegments.${i}.origin`,
+                        `formSegments.${i}.originCode`
                       )
                     }
-                    isOpen={isOpenLocationsDropdown(`segments.${i}.origin`)}
+                    isOpen={isOpenLocationsDropdown(`formSegments.${i}.origin`)}
                     locations={locations}
-                    errorText={getIn(errors, `segments.${i}.origin`)}
-                    hasError={isError(`segments.${i}.origin`)}
+                    errorText={getIn(errors, `formSegments.${i}.origin`)}
+                    hasError={isError(`formSegments.${i}.origin`)}
                   />
 
                   {activeForm !== 'multiCity' && (
                     <SwitchButton
                       onClick={() =>
-                        handleSwitchCities(segments, setValues, segment.id)
+                        handleSwitchCities(formSegments, setValues, segment.id)
                       }
                     />
                   )}
@@ -139,8 +139,8 @@ const Form = (): JSX.Element => {
 
                 <div className="search-form__destination">
                   <Autocomplete
-                    inputName={`segments.${i}.destination`}
-                    fieldValue={segments[i].destination}
+                    inputName={`formSegments.${i}.destination`}
+                    fieldValue={formSegments[i].destination}
                     placeholder="Куда"
                     onChange={handleChangeInput}
                     onFocus={handleFocus}
@@ -149,57 +149,62 @@ const Form = (): JSX.Element => {
                       handleClickCity(
                         cityName,
                         cityCode,
-                        `segments.${i}.destination`,
-                        `segments.${i}.destinationCode`
+                        `formSegments.${i}.destination`,
+                        `formSegments.${i}.destinationCode`
                       )
                     }
                     isOpen={isOpenLocationsDropdown(
-                      `segments.${i}.destination`
+                      `formSegments.${i}.destination`
                     )}
                     locations={locations}
-                    errorText={getIn(errors, `segments.${i}.destination`)}
-                    hasError={isError(`segments.${i}.destination`)}
+                    errorText={getIn(errors, `formSegments.${i}.destination`)}
+                    hasError={isError(`formSegments.${i}.destination`)}
                   />
                 </div>
 
                 <div className="search-form__datepicker">
                   <Datepicker
                     segmentId={segment.id}
-                    inputNameReturn={`segments.${i}.returnDate`}
-                    inputNameDeparture={`segments.${i}.departureDate`}
+                    inputNameReturn={`formSegments.${i}.returnDate`}
+                    inputNameDeparture={`formSegments.${i}.departureDate`}
                     returnDate={segment.returnDate}
                     departureDate={segment.departureDate}
-                    segments={segments}
-                    errorTextReturn={getIn(errors, `segments.${i}.returnDate`)}
+                    segments={formSegments}
+                    errorTextReturn={getIn(
+                      errors,
+                      `formSegments.${i}.returnDate`
+                    )}
                     errorTextDeparture={getIn(
                       errors,
-                      `segments.${i}.departureDate`
+                      `formSegments.${i}.departureDate`
                     )}
-                    hasErrorDeparture={isError(`segments.${i}.departureDate`)}
-                    hasErrorReturn={isError(`segments.${i}.returnDate`)}
+                    hasErrorDeparture={isError(
+                      `formSegments.${i}.departureDate`
+                    )}
+                    hasErrorReturn={isError(`formSegments.${i}.returnDate`)}
                     onBlurReturn={handleBlur}
                     onBlurDeparture={handleBlur}
                     onSetFormikDepartureDate={(date: Date | null) => {
-                      setFieldValue(`segments.${i}.departureDate`, date);
+                      setFieldValue(`formSegments.${i}.departureDate`, date);
                     }}
                     onSetFormikReturnDate={(date: Date | null) => {
-                      setFieldValue(`segments.${i}.returnDate`, date);
+                      setFieldValue(`formSegments.${i}.returnDate`, date);
                     }}
                     onResetFormikDate={(segmentId: string) =>
-                      handleResetDate(segments, setValues, segmentId)
+                      handleResetDate(formSegments, setValues, segmentId)
                     }
                   />
                 </div>
 
-                {segments.length > 1 &&
-                  segments[segments.length - 1] === segments[i] && (
+                {formSegments.length > 1 &&
+                  formSegments[formSegments.length - 1] === formSegments[i] && (
                     <DeleteButton
                       onClick={() => {
-                        if (segments.length === 1) {
+                        if (formSegments.length === 1) {
                           return;
                         }
 
-                        arrayHelpers.remove(segments.length - 1);
+                        arrayHelpers.remove(formSegments.length - 1);
                       }}
                     />
                   )}
@@ -218,8 +223,8 @@ const Form = (): JSX.Element => {
           <div className="search-form__add-btn">
             <SimpleButton
               bg="second"
-              disabled={segments.length > 5}
-              onClick={() => handleAddSegment(segments, setValues)}
+              disabled={formSegments.length > 5}
+              onClick={() => handleAddSegment(formSegments, setValues)}
             >
               + добавить перелёт
             </SimpleButton>

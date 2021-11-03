@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 
 import { CurrencyType } from '../../../redux/reducers/settings';
 
+import getCurrencySymbolCharCode from '../../../utils/getCurrencySymbolCharCode';
 import FilterItem from '../FilterItem';
 import SliderRange from '../../SliderRange';
 import { ActivePriceFilters, OpenFiltersType } from '../Filters';
@@ -65,9 +66,15 @@ const PriceFilter = ({
         maxRange={max}
         minValue={minCurrentPriceValue}
         maxValue={maxCurrentPriceValue}
-        currency={currency}
-        onChangeMinPice={handleChangeMinPriceValue}
-        onChangeMaxPrice={handleChangeMaxPriceValue}
+        onChangeMinValue={handleChangeMinPriceValue}
+        onChangeMaxValue={handleChangeMaxPriceValue}
+        leftValue={`от ${minCurrentPriceValue} ${getCurrencySymbolCharCode(
+          currency
+        )}`}
+        rightValue={`от ${maxCurrentPriceValue} ${getCurrencySymbolCharCode(
+          currency
+        )}`}
+        step={10}
       />
     </FilterItem>
   );
