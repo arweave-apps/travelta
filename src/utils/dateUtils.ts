@@ -69,3 +69,28 @@ export const getFormatedTimeFromSeconds = (seconds: number): string => {
 
   return `${hour}ч ${minutes}мин`;
 };
+
+export const msToTime = (ms: number): string => {
+  const minutes = Math.floor((ms / (1000 * 60)) % 60);
+  const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
+
+  const formatedHours = hours < 10 ? `0${hours}` : `${hours}`;
+  const formatedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+
+  return `${formatedHours}:${formatedMinutes}`;
+};
+
+export const msFromTime = (hours: number, minutes: number): number => {
+  return hours * 60 * 60 * 1000 + minutes * 60 * 1000;
+};
+
+/**
+ * Date with 0:00:00 time
+ */
+export const getDateWithoutTime = (date: Date): Date => {
+  const day = date.getDate();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+
+  return new Date(year, month, day);
+};

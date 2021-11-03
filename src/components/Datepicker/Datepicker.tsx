@@ -4,8 +4,7 @@ import { useSelector } from 'react-redux';
 import useOutsideClick from '../../hooks/useOutsideClick';
 
 import { getActiveForm, getDisabledDates } from '../../selectors/selectors';
-
-import { SegmentType } from '../AviaSearchForm/helpers';
+import { FormSegments } from '../../redux/reducers/aviaParams';
 
 import DatepickerCalendar from './DatepickerCalendar';
 import TextField from '../TextField';
@@ -18,7 +17,7 @@ type DatepickerPropsType = {
   inputNameDeparture: string;
   returnDate: Date | null;
   departureDate: Date | null;
-  segments: SegmentType[];
+  segments: FormSegments;
   errorTextReturn: string;
   errorTextDeparture: string;
   hasErrorReturn: boolean;

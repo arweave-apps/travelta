@@ -3,20 +3,19 @@ import React, { useCallback, useEffect, useRef } from 'react';
 
 import classNames from 'classnames';
 
-import { CurrencyType } from '../../redux/reducers/settings';
-
-import getCurrencySymbolCharCode from '../../utils/getCurrencySymbolCharCode';
-
 import './SliderRange.scss';
+import SliderRangeHeader from './SliderRangeHeader';
 
 type SliderRangeProps = {
   minRange: number;
   maxRange: number;
   minValue: number;
   maxValue: number;
-  currency: CurrencyType;
-  onChangeMinPice: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangeMaxPrice: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  leftValue: string;
+  rightValue: string;
+  onChangeMinValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeMaxValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  step: number;
 };
 
 const SliderRange = ({
@@ -24,9 +23,11 @@ const SliderRange = ({
   minRange,
   minValue,
   maxValue,
-  currency,
-  onChangeMinPice,
-  onChangeMaxPrice,
+  leftValue,
+  rightValue,
+  onChangeMinValue,
+  onChangeMaxValue,
+  step,
 }: SliderRangeProps): JSX.Element => {
   const sliderRangeRef = useRef<HTMLDivElement>(null);
 
@@ -57,16 +58,8 @@ const SliderRange = ({
   }, [getPercent, maxValue, minValue, sliderRangeRef]);
 
   return (
-    <>
-      <div className="slider-info">
-        <span className="slider-info__value">
-          {`от ${minValue} ${getCurrencySymbolCharCode(currency)}`}
-        </span>
-
-        <span className="slider-info__value">
-          {`от ${maxValue} ${getCurrencySymbolCharCode(currency)}`}
-        </span>
-      </div>
+    <div className="slider-wrapper">
+      <SliderRangeHeader leftValue={leftValue} rightValue={rightValue} />
 
       <div className="slider-range">
         <label className="slider-range__label" htmlFor="input-range-left">
@@ -84,8 +77,9 @@ const SliderRange = ({
             max={maxRange}
             value={minValue}
             onChange={(e) => {
-              onChangeMinPice(e);
+              onChangeMinValue(e);
             }}
+            step={step}
           />
         </label>
 
@@ -98,8 +92,9 @@ const SliderRange = ({
             max={maxRange}
             value={maxValue}
             onChange={(e) => {
-              onChangeMaxPrice(e);
+              onChangeMaxValue(e);
             }}
+            step={step}
           />
         </label>
 
@@ -108,7 +103,7 @@ const SliderRange = ({
           <div className="slider__interval" ref={sliderRangeRef} />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

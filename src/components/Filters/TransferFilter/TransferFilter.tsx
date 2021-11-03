@@ -5,7 +5,7 @@ import Checkbox from '../../Checkbox';
 import List from '../../List';
 import ListItem from '../../List/ListItem';
 import FilterItem from '../FilterItem';
-import { OpenFiltersType, TransferCheckboxsDataType } from '../Filters';
+import { OpenFiltersType, TransferCheckboxesDataType } from '../Filters';
 
 type ActiveTransferFilters = number[];
 
@@ -14,7 +14,7 @@ type TransferFilterProps = {
   onToggle: (id: OpenFiltersType) => void;
   activeFilters: ActiveTransferFilters;
   onSetActiveFilters: (filters: ActiveTransferFilters) => void;
-  checkboxes: TransferCheckboxsDataType[];
+  checkboxes: TransferCheckboxesDataType[];
 };
 
 const TransferFilter = ({

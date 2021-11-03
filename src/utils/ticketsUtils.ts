@@ -1,6 +1,6 @@
 import { Segment } from './convertTickets';
 
-const trunsfersInTicket = (array: Segment[]): number[] =>
+export const transfersInTicket = (array: Segment[]): number[] =>
   array.reduce((arr: number[], currItem) => {
     const num = currItem.transfers.length;
     arr.push(num);
@@ -8,4 +8,16 @@ const trunsfersInTicket = (array: Segment[]): number[] =>
     return arr;
   }, []);
 
-export default trunsfersInTicket;
+type SegmentsArrivalDatesType = string[];
+
+export const getArrivalDatesBySegments = (
+  array: Segment[]
+): SegmentsArrivalDatesType =>
+  array.reduce((acc: SegmentsArrivalDatesType, currItem) => {
+    const arrivalDate =
+      currItem.flights[currItem.flights.length - 1].arrival.date;
+
+    acc.push(arrivalDate);
+
+    return acc;
+  }, []);

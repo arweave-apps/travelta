@@ -4,8 +4,14 @@ import {
   convertData,
   ConvertedTickets,
   TicketsList,
+  CityNames,
+  CityCodes,
 } from '../../utils/convertTickets';
-import trunsfersInTicket from '../../utils/ticketsUtils';
+import { getDateWithoutTime } from '../../utils/dateUtils';
+import {
+  getArrivalDatesBySegments,
+  transfersInTicket,
+} from '../../utils/ticketsUtils';
 
 import {
   ActionSearchTypes,
@@ -26,11 +32,30 @@ export type PriceRange =
   | Record<'minPrice' | 'maxPrice', number>
   | Record<string, never>;
 
+export type SegmentNo =
+  | 'segment-0'
+  | 'segment-1'
+  | 'segment-2'
+  | 'segment-3'
+  | 'segment-4'
+  | 'segment-5';
+
+export type DateTimestamp = number;
+export type ArrivalDatesType = Record<SegmentNo, DateTimestamp[]>;
+
+export type TicketSegmentsSummaryInfo = {
+  segmentNo: SegmentNo;
+  cityNames: CityNames;
+  cityCodes: CityCodes;
+};
+
 export type FiltersLimits =
   | {
       transfersRange: TransfersRange;
       priceRange: PriceRange;
       airlines: string[];
+      arrivalDates: ArrivalDatesType | null;
+      ticketSegmentsInfo: TicketSegmentsSummaryInfo[];
     }
   | Record<string, never>;
 
@@ -93,40 +118,79 @@ export const ticketsReducer = (
       const { tickets: ticketsData, isMulti } = action.payload;
       const { tickets, ticketsList } = convertData(ticketsData, isMulti);
 
-      const filtersLimits = ticketsList.reduce(
-        (acc: FiltersLimits, currTicketId) => {
-          const { segments, price, airlines } = tickets[currTicketId];
-          const transfers = trunsfersInTicket(segments);
+      const filtersLimits = ticketsList.reduce((acc, currTicketId) => {
+        const { segments, price, airlines } = tickets[currTicketId];
 
-          const min = Math.min(...transfers);
-          const max = Math.max(...transfers);
+        const transfers = transfersInTicket(segments);
 
-          if (Object.keys(acc).length === 0) {
-            acc.transfersRange = {
-              min,
-              max,
-            };
-            acc.priceRange = {
-              minPrice: price,
-              maxPrice: price,
-            };
-            acc.airlines = airlines;
+        const min = Math.min(...transfers);
+        const max = Math.max(...transfers);
 
-            return acc;
+        if (Object.keys(acc).length === 0) {
+          acc.transfersRange = {
+            min: 0,
+            max: 0,
+          };
+          acc.priceRange = {
+            minPrice: 0,
+            maxPrice: 0,
+          };
+          acc.airlines = [];
+          acc.arrivalDates = null;
+          acc.ticketSegmentsInfo = [];
+        }
+
+        if (acc.ticketSegmentsInfo.length === 0) {
+          acc.ticketSegmentsInfo = segments.map(
+            ({ cityNames, cityCodes }, i) => {
+              return {
+                segmentNo: `segment-${i}` as SegmentNo,
+                cityNames,
+                cityCodes,
+              };
+            }
+          );
+        }
+
+        // todo: хранить вместо даты таймштамп data.getTime() c 00 временем
+        // ! сортировать даты по дате
+
+        const arrivalDatesBySegments = getArrivalDatesBySegments(segments);
+
+        arrivalDatesBySegments.forEach((isoDate, i) => {
+          const key = `segment-${i}` as SegmentNo;
+
+          if (!acc.arrivalDates) {
+            acc.arrivalDates = {} as ArrivalDatesType;
           }
 
-          acc.transfersRange.min = Math.min(acc.transfersRange.min, min);
-          acc.transfersRange.max = Math.max(acc.transfersRange.max, max);
+          if (!Object.prototype.hasOwnProperty.call(acc.arrivalDates, key)) {
+            acc.arrivalDates[key] = [];
+          }
 
-          acc.priceRange.minPrice = Math.min(acc.priceRange.minPrice, price);
-          acc.priceRange.maxPrice = Math.max(acc.priceRange.maxPrice, price);
+          const dateWithoutTime = getDateWithoutTime(
+            new Date(isoDate)
+          ).getTime();
 
-          acc.airlines = Array.from(new Set(acc.airlines.concat(airlines)));
+          // .toISOString();
 
-          return acc;
-        },
-        {}
-      );
+          if (acc.arrivalDates) {
+            acc.arrivalDates[key] = Array.from(
+              new Set(acc.arrivalDates[key].concat(dateWithoutTime))
+            );
+          }
+        });
+
+        acc.transfersRange.min = Math.min(acc.transfersRange.min, min);
+        acc.transfersRange.max = Math.max(acc.transfersRange.max, max);
+
+        acc.priceRange.minPrice = Math.min(acc.priceRange.minPrice, price);
+        acc.priceRange.maxPrice = Math.max(acc.priceRange.maxPrice, price);
+
+        acc.airlines = Array.from(new Set(acc.airlines.concat(airlines)));
+
+        return acc;
+      }, {} as FiltersLimits);
 
       return {
         ...state,
