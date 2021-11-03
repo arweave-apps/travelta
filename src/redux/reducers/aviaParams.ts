@@ -32,14 +32,22 @@ export type PassangersNamesTypes = 'adults' | 'children' | 'infants';
 export type CabinClassTypes = 'M' | 'W' | 'C' | 'F';
 export type PassangersType = Record<PassangersNamesTypes, number>;
 
-type FormSegemntId = string;
+// export type SegmentRoundtripId = 'segment-roundtrip';
+export type FormSegmentId =
+  | 'segment-1'
+  | 'segment-2'
+  | 'segment-3'
+  | 'segment-4'
+  | 'segment-5'
+  | 'segment-6';
+// | SegmentRoundtripId;
 type FormOriginCity = string;
 type FormOriginCityCode = string;
 type FormDestinationCity = string;
 type FormDestinationCityCode = string;
 
 export type FormSegment = {
-  id: FormSegemntId;
+  id: FormSegmentId;
   origin: FormOriginCity;
   originCode: FormOriginCityCode;
 

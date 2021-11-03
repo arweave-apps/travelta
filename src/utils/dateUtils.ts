@@ -83,3 +83,14 @@ export const msToTime = (ms: number): string => {
 export const msFromTime = (hours: number, minutes: number): number => {
   return hours * 60 * 60 * 1000 + minutes * 60 * 1000;
 };
+
+/**
+ * Date with 0:00:00 time
+ */
+export const getDateWithoutTime = (date: Date): Date => {
+  const day = date.getDate();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+
+  return new Date(year, month, day);
+};

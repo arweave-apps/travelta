@@ -1,4 +1,7 @@
-import { FormSegments } from '../../../redux/reducers/aviaParams';
+import {
+  FormSegmentId,
+  FormSegments,
+} from '../../../redux/reducers/aviaParams';
 import { InitialValues } from '../helpers';
 
 export const handleSwitchCities = (
@@ -56,8 +59,10 @@ export const handleAddSegment = (
     return;
   }
 
+  const id = `segment-${segments.length + 1}` as FormSegmentId;
+
   const newSegment = {
-    id: `segment-${segments.length + 1}`,
+    id,
     origin: '',
     originCode: '',
     destination: '',

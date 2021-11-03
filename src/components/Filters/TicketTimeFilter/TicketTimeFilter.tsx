@@ -1,20 +1,34 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { SetStateAction, useCallback, useEffect } from 'react';
+import { EntriesArray } from '../../../interfaces/types';
 
-import { ActiveTicketTimeFilters } from '../../../pages/Search/Search';
+import {
+  ActiveTicketDateFilters,
+  ActiveTicketTimeFilters,
+} from '../../../pages/Search/Search';
+import { DateTimestamp, SegmentNo } from '../../../redux/reducers/tickets';
 import { msToTime } from '../../../utils/dateUtils';
+import Checkbox from '../../Checkbox';
+import List from '../../List';
+import ListItem from '../../List/ListItem';
 
 import SliderRange from '../../SliderRange';
 import FilterItem from '../FilterItem';
-import { OpenFiltersType, TicketTimeValues } from '../Filters';
+import {
+  OpenFiltersType,
+  TicketTimeValues,
+  DateCheckboxesType,
+} from '../Filters';
+
+import './TicketTimeFilter.scss';
 
 type TicketTimeFilterProps = {
-  route: string;
+  segmentNo: SegmentNo;
   ticketTimeValues: TicketTimeValues;
   title: string;
-  id: OpenFiltersType;
+  timeFilterId: OpenFiltersType;
   isOpen: boolean;
   onToggle: (id: OpenFiltersType) => void;
-  onSetActiveFilters: (filters: ActiveTicketTimeFilters) => void;
+  onSetActiveTimeFilters: (filters: ActiveTicketTimeFilters) => void;
   minDeparture: number;
   maxDeparture: number;
   minTicketTimeDepartureValue: number;
@@ -24,6 +38,11 @@ type TicketTimeFilterProps = {
   minTicketTimeArrivalValue: number;
   maxTicketTimeArrivalValue: number;
   onSetTicketTimeValues: (newValues: TicketTimeValues) => void;
+  checkboxes: DateCheckboxesType[] | null;
+  activeDateFilters: ActiveTicketDateFilters | null;
+  onSetActiveTicketDatesFilters: React.Dispatch<
+    SetStateAction<ActiveTicketDateFilters | null>
+  >;
 };
 
 const STEP = 1800000; // ms in 30 min
@@ -33,33 +52,34 @@ type ChangedValues = {
   arrivalTime: number[];
 };
 
-const upadateValues = (
-  route: string,
+const updateValues = (
+  formSegmentId: SegmentNo,
   ticketTimeValues: TicketTimeValues,
   changedValues: ChangedValues
 ) => {
-  return Object.entries(ticketTimeValues).reduce(
-    (acc: TicketTimeValues, [currentKey, currentValues]) => {
-      if (currentKey === route) {
-        acc[currentKey] = changedValues;
-      } else {
-        acc[currentKey] = currentValues;
-      }
+  const arr = Object.entries(
+    ticketTimeValues
+  ) as EntriesArray<TicketTimeValues>;
 
-      return acc;
-    },
-    {}
-  );
+  return arr.reduce((acc, [currentKey, currentValues]) => {
+    if (currentKey === formSegmentId) {
+      acc[currentKey] = changedValues;
+    } else {
+      acc[currentKey] = currentValues;
+    }
+
+    return acc;
+  }, {} as TicketTimeValues);
 };
 
 const TicketTimeFilter = ({
-  route,
+  segmentNo,
   ticketTimeValues,
   title,
-  id,
+  timeFilterId,
   isOpen,
   onToggle,
-  onSetActiveFilters,
+  onSetActiveTimeFilters,
   minDeparture,
   maxDeparture,
   minTicketTimeDepartureValue,
@@ -69,6 +89,9 @@ const TicketTimeFilter = ({
   minTicketTimeArrivalValue,
   maxTicketTimeArrivalValue,
   onSetTicketTimeValues,
+  checkboxes,
+  activeDateFilters,
+  onSetActiveTicketDatesFilters,
 }: TicketTimeFilterProps): JSX.Element => {
   const handleChangeMinDepartureValue = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,23 +105,27 @@ const TicketTimeFilter = ({
       );
 
       const changedValues = {
-        ...ticketTimeValues[route],
-        departureTime: [value, ticketTimeValues[route].departureTime[1]],
+        ...ticketTimeValues[segmentNo],
+        departureTime: [value, ticketTimeValues[segmentNo].departureTime[1]],
       };
 
-      const newValues = upadateValues(route, ticketTimeValues, changedValues);
+      const newValues = updateValues(
+        segmentNo,
+        ticketTimeValues,
+        changedValues
+      );
 
       onSetTicketTimeValues(newValues);
     },
     [
       maxTicketTimeDepartureValue,
       onSetTicketTimeValues,
-      route,
+      segmentNo,
       ticketTimeValues,
     ]
   );
 
-  const handleChangeMaxDeaprtureValue = useCallback(
+  const handleChangeMaxDepartureValue = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (!ticketTimeValues) {
         return;
@@ -110,18 +137,22 @@ const TicketTimeFilter = ({
       );
 
       const changedValues = {
-        ...ticketTimeValues[route],
-        departureTime: [ticketTimeValues[route].departureTime[0], value],
+        ...ticketTimeValues[segmentNo],
+        departureTime: [ticketTimeValues[segmentNo].departureTime[0], value],
       };
 
-      const newValues = upadateValues(route, ticketTimeValues, changedValues);
+      const newValues = updateValues(
+        segmentNo,
+        ticketTimeValues,
+        changedValues
+      );
 
       onSetTicketTimeValues(newValues);
     },
     [
       minTicketTimeDepartureValue,
       onSetTicketTimeValues,
-      route,
+      segmentNo,
       ticketTimeValues,
     ]
   );
@@ -135,15 +166,24 @@ const TicketTimeFilter = ({
       const value = Math.min(+e.target.value, maxTicketTimeArrivalValue - STEP);
 
       const changedValues = {
-        ...ticketTimeValues[route],
-        arrivalTime: [value, ticketTimeValues[route].arrivalTime[1]],
+        ...ticketTimeValues[segmentNo],
+        arrivalTime: [value, ticketTimeValues[segmentNo].arrivalTime[1]],
       };
 
-      const newValues = upadateValues(route, ticketTimeValues, changedValues);
+      const newValues = updateValues(
+        segmentNo,
+        ticketTimeValues,
+        changedValues
+      );
 
       onSetTicketTimeValues(newValues);
     },
-    [maxTicketTimeArrivalValue, onSetTicketTimeValues, route, ticketTimeValues]
+    [
+      maxTicketTimeArrivalValue,
+      onSetTicketTimeValues,
+      segmentNo,
+      ticketTimeValues,
+    ]
   );
 
   const handleChangeMaxArrivalValue = useCallback(
@@ -155,37 +195,85 @@ const TicketTimeFilter = ({
       const value = Math.max(+e.target.value, minTicketTimeArrivalValue + STEP);
 
       const changedValues = {
-        ...ticketTimeValues[route],
-        arrivalTime: [ticketTimeValues[route].arrivalTime[0], value],
+        ...ticketTimeValues[segmentNo],
+        arrivalTime: [ticketTimeValues[segmentNo].arrivalTime[0], value],
       };
 
-      const newValues = upadateValues(route, ticketTimeValues, changedValues);
+      const newValues = updateValues(
+        segmentNo,
+        ticketTimeValues,
+        changedValues
+      );
 
       onSetTicketTimeValues(newValues);
     },
-    [minTicketTimeArrivalValue, onSetTicketTimeValues, route, ticketTimeValues]
+    [
+      minTicketTimeArrivalValue,
+      onSetTicketTimeValues,
+      segmentNo,
+      ticketTimeValues,
+    ]
   );
 
   useEffect(() => {
-    onSetActiveFilters(ticketTimeValues);
-  }, [onSetActiveFilters, ticketTimeValues]);
+    onSetActiveTimeFilters(ticketTimeValues);
+  }, [onSetActiveTimeFilters, ticketTimeValues]);
+
+  useEffect(() => {
+    if (checkboxes) {
+      onSetActiveTicketDatesFilters((prevState) => {
+        return {
+          ...prevState,
+          [segmentNo]: checkboxes.map(({ value }) => value),
+        };
+      });
+    }
+  }, [checkboxes, segmentNo, onSetActiveTicketDatesFilters]);
+
+  const handleClickCheckbox = (value: DateTimestamp) => {
+    if (activeDateFilters) {
+      if (activeDateFilters[segmentNo].includes(value)) {
+        const idx = activeDateFilters[segmentNo].indexOf(value);
+
+        const newActiveDateFilters = {
+          ...activeDateFilters,
+          [segmentNo]: [
+            ...activeDateFilters[segmentNo].slice(0, idx),
+            ...activeDateFilters[segmentNo].slice(idx + 1),
+          ],
+        };
+
+        onSetActiveTicketDatesFilters(newActiveDateFilters);
+      } else {
+        const newActiveDateFilters = {
+          ...activeDateFilters,
+          [segmentNo]: [...activeDateFilters[segmentNo], value],
+        };
+
+        onSetActiveTicketDatesFilters(newActiveDateFilters);
+      }
+    }
+  };
 
   return (
-    <FilterItem title={title} isActive={isOpen} onClick={() => onToggle(id)}>
+    <FilterItem
+      title={title}
+      isActive={isOpen}
+      onClick={() => onToggle(timeFilterId)}
+    >
       <SliderRange
         minRange={minDeparture}
         maxRange={maxDeparture}
         minValue={minTicketTimeDepartureValue}
         maxValue={maxTicketTimeDepartureValue}
         onChangeMinValue={handleChangeMinDepartureValue}
-        onChangeMaxValue={handleChangeMaxDeaprtureValue}
+        onChangeMaxValue={handleChangeMaxDepartureValue}
         leftValue="Отправление"
         rightValue={`${msToTime(minTicketTimeDepartureValue)}-${msToTime(
           maxTicketTimeDepartureValue
         )}`}
         step={STEP}
       />
-
       <SliderRange
         minRange={minArrival}
         maxRange={maxArrival}
@@ -199,6 +287,31 @@ const TicketTimeFilter = ({
         )}`}
         step={STEP}
       />
+
+      <div className="filter-subheader">
+        <h3 className="accordion__title">Дата прибытия</h3>
+      </div>
+
+      <List>
+        {checkboxes &&
+          checkboxes.map((checkbox) => {
+            const { id, label, value } = checkbox;
+
+            return (
+              <ListItem key={id}>
+                <Checkbox
+                  id={id}
+                  label={label}
+                  checked={
+                    !!activeDateFilters &&
+                    activeDateFilters[segmentNo].includes(value)
+                  }
+                  onChange={() => handleClickCheckbox(value)}
+                />
+              </ListItem>
+            );
+          })}
+      </List>
     </FilterItem>
   );
 };

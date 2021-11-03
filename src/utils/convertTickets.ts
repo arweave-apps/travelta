@@ -296,11 +296,11 @@ type Transfer = {
   id: string;
 };
 
-type CityNames = {
+export type CityNames = {
   departureCityName: string;
   arrivalCityName: string;
 };
-type CityCodes = {
+export type CityCodes = {
   departureCityCode: string;
   arrivalCityCode: string;
 };

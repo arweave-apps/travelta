@@ -4,18 +4,25 @@ import {
   TicketsList,
   TicketsWithSegments,
 } from '../../utils/convertTickets';
-import trunsfersInTicket from '../../utils/ticketsUtils';
+import { transfersInTicket } from '../../utils/ticketsUtils';
 import { ActivePriceFilters } from '../../components/Filters/Filters';
-import { ActiveTicketTimeFilters } from './Search';
-import { msFromTime } from '../../utils/dateUtils';
+import {
+  ActiveAirlinesFilters,
+  ActiveTicketDateFilters,
+  ActiveTicketTimeFilters,
+  ActiveTransfersFilters,
+} from './Search';
+import { getDateWithoutTime, msFromTime } from '../../utils/dateUtils';
+import { SegmentNo } from '../../redux/reducers/tickets';
 
 export default function useFilters(
-  activeTransfersFilters: number[],
+  activeTransfersFilters: ActiveTransfersFilters,
   activePriceFilters: ActivePriceFilters | null,
-  activeAirlinesFilters: string[],
+  activeAirlinesFilters: ActiveAirlinesFilters,
   activeTicketTimeFilters: ActiveTicketTimeFilters | null,
   ticketsList: TicketsList,
-  tickets: ConvertedTickets
+  tickets: ConvertedTickets,
+  activeTicketDatesFilters: ActiveTicketDateFilters | null
 ): TicketsList {
   const [visibleTickets, setVisibleTickets] = useState<TicketsList>([]);
 
@@ -23,12 +30,12 @@ export default function useFilters(
     const filterByTransfers = (ticket: TicketsWithSegments) => {
       const { segments } = ticket;
 
-      const maxTrunsfersInTicket = Math.max(...trunsfersInTicket(segments));
-      const minTrunsfersInTicket = Math.min(...trunsfersInTicket(segments));
+      const maxTransfersInTicket = Math.max(...transfersInTicket(segments));
+      const minTransfersInTicket = Math.min(...transfersInTicket(segments));
 
       return (
-        activeTransfersFilters.includes(maxTrunsfersInTicket) ||
-        activeTransfersFilters.includes(minTrunsfersInTicket)
+        activeTransfersFilters.includes(maxTransfersInTicket) ||
+        activeTransfersFilters.includes(minTransfersInTicket)
       );
     };
 
@@ -62,10 +69,7 @@ export default function useFilters(
       for (let i = 0; i < segments.length; i++) {
         const segment = segments[i];
 
-        const departureCode = segment.cityCodes.departureCityCode;
-        const arrivalCode = segment.cityCodes.arrivalCityCode;
-
-        const key = `${departureCode}-${arrivalCode}`;
+        const key = `segment-${i}` as SegmentNo;
 
         const departureMin = activeTicketTimeFilters[key].departureTime[0];
         const departureMax = activeTicketTimeFilters[key].departureTime[1];
@@ -78,6 +82,16 @@ export default function useFilters(
         const segmentArrivalDate = new Date(
           segment.flights[segment.flights.length - 1].arrival.date
         );
+
+        const segmentArrivalDateWithoutTime = getDateWithoutTime(
+          segmentArrivalDate
+        );
+
+        const isIncludeDate =
+          !!activeTicketDatesFilters &&
+          activeTicketDatesFilters[key].some(
+            (timestamp) => timestamp === segmentArrivalDateWithoutTime.getTime()
+          );
 
         const ticketDepartureTimeMs = msFromTime(
           segmentDepartureDate.getHours(),
@@ -92,7 +106,8 @@ export default function useFilters(
           departureMin < ticketDepartureTimeMs &&
             ticketDepartureTimeMs < departureMax &&
             arrivalMin < ticketArrivalTimeMs &&
-            ticketArrivalTimeMs < arrivalMax
+            ticketArrivalTimeMs < arrivalMax &&
+            isIncludeDate
         );
       }
 
@@ -114,6 +129,7 @@ export default function useFilters(
   }, [
     activeAirlinesFilters,
     activePriceFilters,
+    activeTicketDatesFilters,
     activeTicketTimeFilters,
     activeTransfersFilters,
     tickets,

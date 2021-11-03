@@ -21,6 +21,7 @@ import {
 } from '../../selectors/selectors';
 
 import './Search.scss';
+import { DateTimestamp } from '../../redux/reducers/tickets';
 
 export type ActivePriceFilters = Record<'minPrice' | 'maxPrice', number>;
 
@@ -29,6 +30,13 @@ export type ActiveTicketTimeFilters = {
     departureTime: number[];
     arrivalTime: number[];
   };
+};
+
+export type ActiveTransfersFilters = number[];
+export type ActiveAirlinesFilters = string[];
+
+export type ActiveTicketDateFilters = {
+  [key: string]: DateTimestamp[];
 };
 
 const numberOfTicketsLoaded = 10;
@@ -42,23 +50,30 @@ const Search = (): JSX.Element => {
 
   const [visibleTicketsCount, setVisibleTicketsCount] = useState<number>(1);
 
-  const [activeTransfersFilters, setActiveTransfersFilters] = useState<
-    number[]
-  >([]);
+  const [
+    activeTransfersFilters,
+    setActiveTransfersFilters,
+  ] = useState<ActiveTransfersFilters>([]);
 
   const [
     activePriceFilters,
     setActivePriceFilters,
   ] = useState<ActivePriceFilters | null>(null);
 
-  const [activeAirlinesFilters, setActiveAirlinesFilters] = useState<string[]>(
-    []
-  );
+  const [
+    activeAirlinesFilters,
+    setActiveAirlinesFilters,
+  ] = useState<ActiveAirlinesFilters>([]);
 
   const [
     activeTicketTimeFilters,
     setActiveTicketTimeFilter,
   ] = useState<ActiveTicketTimeFilters | null>(null);
+
+  const [
+    activeTicketDatesFilters,
+    setActiveTicketDatesFilters,
+  ] = useState<ActiveTicketDateFilters | null>(null);
 
   const visibleTickets = useFilters(
     activeTransfersFilters,
@@ -66,7 +81,8 @@ const Search = (): JSX.Element => {
     activeAirlinesFilters,
     activeTicketTimeFilters,
     ticketsList,
-    tickets
+    tickets,
+    activeTicketDatesFilters
   );
 
   if (isTicketsLoading) {
@@ -101,10 +117,12 @@ const Search = (): JSX.Element => {
         <Filters
           activeTransfersFilters={activeTransfersFilters}
           activeAirlinesFilters={activeAirlinesFilters}
+          activeTicketDatesFilters={activeTicketDatesFilters}
           onActiveTransfersFilters={setActiveTransfersFilters}
           onActivePriceFilters={setActivePriceFilters}
           onActiveAirlinesFilters={setActiveAirlinesFilters}
           onActiveTicketTimeFilter={setActiveTicketTimeFilter}
+          onActiveTicketDatesFilters={setActiveTicketDatesFilters}
           currency={currency}
         />
 
