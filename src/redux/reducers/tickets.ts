@@ -152,9 +152,6 @@ export const ticketsReducer = (
           );
         }
 
-        // todo: хранить вместо даты таймштамп data.getTime() c 00 временем
-        // ! сортировать даты по дате
-
         const arrivalDatesBySegments = getArrivalDatesBySegments(segments);
 
         arrivalDatesBySegments.forEach((isoDate, i) => {
@@ -171,8 +168,6 @@ export const ticketsReducer = (
           const dateWithoutTime = getDateWithoutTime(
             new Date(isoDate)
           ).getTime();
-
-          // .toISOString();
 
           if (acc.arrivalDates) {
             acc.arrivalDates[key] = Array.from(
