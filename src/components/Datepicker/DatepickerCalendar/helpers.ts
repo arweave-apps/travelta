@@ -80,7 +80,7 @@ export const isFilledRightHalfCell = (
     );
   }
 
-  // красит правую половину у startDate, если выбранны обе даты
+  // красит правую половину у startDate, если выбраны обе даты
   if (!startDate || !endDate) {
     return false;
   }
@@ -110,7 +110,7 @@ export const isFilledLeftHalfCell = (
     );
   }
 
-  // красит левую половину у endDate, если выбранны обе даты
+  // красит левую половину у endDate, если выбраны обе даты
   if (!startDate || !endDate) {
     return false;
   }

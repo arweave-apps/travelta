@@ -68,7 +68,7 @@ const createFlight = (route: Route): Flight => {
     },
 
     flightNo: flight_no,
-    fareFcategory: fare_category,
+    fareCategory: fare_category,
     airline,
     bagsRecheck: bags_recheck_required,
   };
@@ -277,7 +277,7 @@ type Flight = {
   departure: FlightPoint;
   arrival: FlightPoint;
   flightNo: number;
-  fareFcategory: string;
+  fareCategory: string;
   airline: string;
   bagsRecheck: boolean;
 };

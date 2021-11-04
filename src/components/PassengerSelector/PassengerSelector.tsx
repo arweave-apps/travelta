@@ -8,12 +8,12 @@ import getNounDeclension from '../../utils/getNounDeclension';
 
 import {
   setCabinClass,
-  setPassangers,
+  setPassengers,
 } from '../../redux/actions/aviaParams/aviaParams';
 
-import { getPassangers, getSelectedCabins } from '../../selectors/selectors';
+import { getPassengers, getSelectedCabins } from '../../selectors/selectors';
 
-import { cabinClassItems, getCabinClassName, passangerItems } from './helpers';
+import { cabinClassItems, getCabinClassName, passengerItems } from './helpers';
 
 import DownArrowIcon from '../../assets/images/icons/down-arrow.svg';
 
@@ -26,20 +26,20 @@ import Divider from '../Divider';
 import TriggerButton from '../TriggerButton';
 import Icon from '../Icon';
 
-import './PassangerSelector.scss';
+import './PassengerSelector.scss';
 
 import {
   CabinClassTypes,
-  PassangersNamesTypes,
+  PassengersNamesTypes,
 } from '../../redux/reducers/aviaParams';
 
-const PassangerSelector = (): JSX.Element => {
+const PassengerSelector = (): JSX.Element => {
   const dispatch = useDispatch();
 
-  const passangers = useSelector(getPassangers);
+  const passengers = useSelector(getPassengers);
   const selectedCabins = useSelector(getSelectedCabins);
 
-  const [totalPassangers, setTotalPassangers] = useState<number>(1);
+  const [totalPassengers, setTotalPassengers] = useState<number>(1);
   const [isOpen, setOpen] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -50,46 +50,46 @@ const PassangerSelector = (): JSX.Element => {
   };
 
   useEffect(() => {
-    const { adults, children, infants } = passangers;
+    const { adults, children, infants } = passengers;
     const total = adults + children + infants;
 
-    setTotalPassangers(total);
-  }, [passangers, totalPassangers]);
+    setTotalPassengers(total);
+  }, [passengers, totalPassengers]);
 
   const handleChangeCabinClass = (cabinClass: CabinClassTypes) => {
     dispatch(setCabinClass(cabinClass));
   };
 
   const handleClickCounter = useCallback(
-    (changedValue: number, passangerType: PassangersNamesTypes) => {
-      if (passangerType === 'infants' && changedValue > passangers.adults) {
+    (changedValue: number, passengerType: PassengersNamesTypes) => {
+      if (passengerType === 'infants' && changedValue > passengers.adults) {
         return;
       }
 
-      dispatch(setPassangers(changedValue, passangerType));
+      dispatch(setPassengers(changedValue, passengerType));
     },
-    [dispatch, passangers.adults]
+    [dispatch, passengers.adults]
   );
 
   return (
     <div
-      className={classNames('passanger-select', {
-        'passanger-select--opened': isOpen,
+      className={classNames('passenger-select', {
+        'passenger-select--opened': isOpen,
       })}
       ref={wrapperRef}
     >
       <TriggerButton onClick={toggleDropdownMenu} />
 
-      <div className="passanger-select__info">
-        <span className="passanger-select__passangers">
-          {`${totalPassangers} ${getNounDeclension(totalPassangers, [
+      <div className="passenger-select__info">
+        <span className="passenger-select__passengers">
+          {`${totalPassengers} ${getNounDeclension(totalPassengers, [
             'пассажир',
             'пассажира',
             'пассажиров',
           ])}`}
         </span>
 
-        <span className="passanger-select__cabin-class">
+        <span className="passenger-select__cabin-class">
           {getCabinClassName(selectedCabins)}
         </span>
       </div>
@@ -98,26 +98,26 @@ const PassangerSelector = (): JSX.Element => {
 
       {isOpen && (
         <Dropdown>
-          {passangerItems.map(({ text, subtext, count }) => {
+          {passengerItems.map(({ text, subtext, count }) => {
             const { name, min, max } = count;
-            const currentNumber = passangers[name];
+            const currentNumber = passengers[name];
 
             return (
               <DropdownItem key={name} hasMargin>
                 <TextBlock text={text} subtext={subtext} hasColumn />
 
                 <Counter
-                  passangerType={name}
+                  passengerType={name}
                   number={currentNumber}
                   minDisabled={
                     currentNumber === min ||
                     (name === 'adults' &&
-                      passangers.adults === passangers.infants)
+                      passengers.adults === passengers.infants)
                   }
                   maxDisabled={
-                    totalPassangers === max ||
+                    totalPassengers === max ||
                     (name === 'infants' &&
-                      passangers.infants === passangers.adults)
+                      passengers.infants === passengers.adults)
                   }
                   onClickCounter={handleClickCounter}
                 />
@@ -146,4 +146,4 @@ const PassangerSelector = (): JSX.Element => {
   );
 };
 
-export default PassangerSelector;
+export default PassengerSelector;

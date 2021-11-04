@@ -18,9 +18,9 @@ import TriggerButton from '../TriggerButton';
 import './CurrencySelector.scss';
 
 type CurrencyTextType = 'Рубли' | 'Евро' | 'Доллары';
-type CurrensyListType = { label: CurrencyType; text: CurrencyTextType };
+type CurrencyListType = { label: CurrencyType; text: CurrencyTextType };
 
-const currencyList: CurrensyListType[] = [
+const currencyList: CurrencyListType[] = [
   { label: 'RUB', text: 'Рубли' },
   { label: 'EUR', text: 'Евро' },
   { label: 'USD', text: 'Доллары' },

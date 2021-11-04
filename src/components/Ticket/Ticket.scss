@@ -86,7 +86,7 @@
     margin-bottom: rem(12);
   }
 
-  &__point-wrapepr {
+  &__point-wrapper {
     position: absolute;
     @include center-pos();
     @include display(flex, space-between, center);
@@ -120,7 +120,7 @@
   &__right {
     @include display(flex, flex-start, center);
     flex-direction: column;
-    border-left: $border-width solid $ticket-devider-color;
+    border-left: $border-width solid $ticket-divider-color;
     padding: $gap $gap 0 $gap;
 
     grid-area: ticket-right;
@@ -204,7 +204,7 @@
     width: 100%;
     height: rem(25);
 
-    background: $ticket-devider-color;
+    background: $ticket-divider-color;
     border: none;
     border-radius: 0 0 $radius $radius;
 
@@ -222,7 +222,7 @@
 
     &:hover {
       cursor: pointer;
-      background: darken($ticket-devider-color, 1%);
+      background: darken($ticket-divider-color, 1%);
     }
 
     &:hover > svg {

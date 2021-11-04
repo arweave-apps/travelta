@@ -4,12 +4,12 @@ import Panel from '../Panel';
 
 import './ErrorCard.scss';
 
-type ErrorCardPorps = {
+type ErrorCardProps = {
   title: string;
   recommendation?: string;
 };
 
-const ErrorCard = ({ title, recommendation }: ErrorCardPorps): JSX.Element => {
+const ErrorCard = ({ title, recommendation }: ErrorCardProps): JSX.Element => {
   return (
     <Panel className="error-card">
       <div className="error-card__title">

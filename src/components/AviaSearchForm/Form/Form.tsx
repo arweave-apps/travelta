@@ -14,7 +14,7 @@ import { getActiveForm, getLocations } from '../../../selectors/selectors';
 import Autocomplete from '../../Autocomplete';
 import Datepicker from '../../Datepicker';
 import DeleteButton from '../../DeleteButton';
-import PassangerSelector from '../../PassangerSelector';
+import PassengerSelector from '../../PassengerSelector';
 import SimpleButton from '../../SimpleButton';
 import SwitchButton from '../../SwitchButton';
 
@@ -56,7 +56,7 @@ const Form = (): JSX.Element => {
     dispatch(fetchLocations(value));
   };
 
-  const debounсe = useDebounce(getCities, 500);
+  const debounce = useDebounce(getCities, 500);
 
   const handleFocus = useCallback((e: React.FormEvent<HTMLInputElement>) => {
     setActiveInputName(e.currentTarget.name);
@@ -85,7 +85,7 @@ const Form = (): JSX.Element => {
 
     handleChange(e);
 
-    debounсe(enteredValue);
+    debounce(enteredValue);
     setIsOpenDropdown(true);
   };
 
@@ -216,7 +216,7 @@ const Form = (): JSX.Element => {
 
       <div className="search-form__action">
         <div className="search-form__select">
-          <PassangerSelector />
+          <PassengerSelector />
         </div>
 
         {activeForm === 'multiCity' && (

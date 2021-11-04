@@ -1,11 +1,11 @@
 import {
   CabinClassTypes,
-  PassangersNamesTypes,
+  PassengersNamesTypes,
   FormSegments,
 } from '../../reducers/aviaParams';
 
 export const SET_CABIN_CLASS = 'SET_CABIN_CLASS';
-export const SET_PASSANGERS = 'SET_PASSANGERS';
+export const SET_PASSENGERS = 'SET_PASSENGERS';
 export const SET_FORM_SEGMENTS = 'SET_FORM_SEGMENTS';
 
 type ActionSetCabinClassType = {
@@ -13,9 +13,9 @@ type ActionSetCabinClassType = {
   payload: CabinClassTypes;
 };
 
-type ActionSetPassangersType = {
-  type: typeof SET_PASSANGERS;
-  payload: { value: number; name: PassangersNamesTypes };
+type ActionSetPassengersType = {
+  type: typeof SET_PASSENGERS;
+  payload: { value: number; name: PassengersNamesTypes };
 };
 
 type ActionSetFormSegmentsType = {
@@ -34,5 +34,5 @@ export type CityPayloadType = {
 
 export type ActionAviaParamsTypes =
   | ActionSetCabinClassType
-  | ActionSetPassangersType
+  | ActionSetPassengersType
   | ActionSetFormSegmentsType;

@@ -10,12 +10,12 @@ import RadioButton from '../RadioButton';
 
 import './DirectionFilter.scss';
 
-type FilterItemstype = {
+type FilterItemsType = {
   id: FormsType;
   text: string;
 };
 
-export const filterItems: FilterItemstype[] = [
+export const filterItems: FilterItemsType[] = [
   {
     id: 'roundtrip',
     text: 'Туда-обратно',

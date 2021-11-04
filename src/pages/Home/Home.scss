@@ -386,7 +386,7 @@ $img-width: 37.5%;
     color: $accent-color;
   }
 
-  &__bages {
+  &__badges {
     @include display(flex, center, flex-start);
     flex-wrap: wrap;
 
@@ -397,7 +397,7 @@ $img-width: 37.5%;
     }
   }
 
-  &__bage {
+  &__badge {
     @include font-roboto(rem(14), $primary-text-color, normal, normal, rem(16));
     min-width: rem(100);
 
@@ -848,7 +848,7 @@ $self-width: calc(50% - 55px);
     }
   }
 
-  &__desclaimer {
+  &__declaimer {
     @include font-roboto(rem(13), $main-text-color, normal, normal, rem(16));
     text-align: center;
   }
