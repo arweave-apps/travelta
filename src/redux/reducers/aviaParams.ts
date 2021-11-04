@@ -1,7 +1,7 @@
 import {
   ActionAviaParamsTypes,
   SET_CABIN_CLASS,
-  SET_PASSANGERS,
+  SET_PASSENGERS,
   SET_FORM_SEGMENTS,
 } from '../actions/aviaParams/types';
 
@@ -19,7 +19,7 @@ const initialState: InitialAviaParamsStateType = {
       returnDate: null,
     },
   ],
-  passangers: {
+  passengers: {
     adults: 1,
     children: 0,
     infants: 0,
@@ -28,9 +28,9 @@ const initialState: InitialAviaParamsStateType = {
   selectedCabins: 'M',
 };
 
-export type PassangersNamesTypes = 'adults' | 'children' | 'infants';
+export type PassengersNamesTypes = 'adults' | 'children' | 'infants';
 export type CabinClassTypes = 'M' | 'W' | 'C' | 'F';
-export type PassangersType = Record<PassangersNamesTypes, number>;
+export type PassengersType = Record<PassengersNamesTypes, number>;
 
 // export type SegmentRoundtripId = 'segment-roundtrip';
 export type FormSegmentId =
@@ -62,7 +62,7 @@ export type FormSegments = FormSegment[];
 
 export type InitialAviaParamsStateType = {
   formSegments: FormSegments;
-  passangers: PassangersType;
+  passengers: PassengersType;
   selectedCabins: CabinClassTypes;
 };
 
@@ -74,9 +74,9 @@ export const aviaParamsReducer = (
     case SET_CABIN_CLASS:
       return { ...state, selectedCabins: action.payload };
 
-    case SET_PASSANGERS: {
+    case SET_PASSENGERS: {
       const { name, value } = action.payload;
-      return { ...state, passangers: { ...state.passangers, [name]: value } };
+      return { ...state, passengers: { ...state.passengers, [name]: value } };
     }
 
     case SET_FORM_SEGMENTS: {

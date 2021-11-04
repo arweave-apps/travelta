@@ -42,7 +42,7 @@ import Layout from '../../components/Layout';
 
 import './Home.scss';
 
-const bestFlightCountriesBages = [
+const bestFlightCountriesBadges = [
   'Africa',
   'United Arab Emirates',
   'Canada',
@@ -395,7 +395,7 @@ const Home = (): JSX.Element => {
 
               <div className="offers__content">
                 <span className="offers__title">
-                  Flight from Yekatinburg to Sochi
+                  Flight from Yekaterinburg to Sochi
                 </span>
 
                 <a href="" className="offers__link">
@@ -409,7 +409,7 @@ const Home = (): JSX.Element => {
 
               <div className="offers__content">
                 <span className="offers__title">
-                  Flight from Yekatinburg to Dubai
+                  Flight from Yekaterinburg to Dubai
                 </span>
 
                 <a href="" className="offers__link">
@@ -423,7 +423,7 @@ const Home = (): JSX.Element => {
 
               <div className="offers__content">
                 <span className="offers__title">
-                  Flight from Yekatinburg to Moscow
+                  Flight from Yekaterinburg to Moscow
                 </span>
 
                 <a href="" className="offers__link">
@@ -446,13 +446,13 @@ const Home = (): JSX.Element => {
             <span className="best-flights__selector">Yekaterinburg</span>
           </h2>
 
-          <div className="best-flights__bages">
-            {bestFlightCountriesBages.map((country) => {
+          <div className="best-flights__badges">
+            {bestFlightCountriesBadges.map((country) => {
               return (
                 <button
                   key={country}
                   type="button"
-                  className="best-flights__bage"
+                  className="best-flights__badge"
                 >
                   {country}
                 </button>
@@ -497,10 +497,10 @@ const Home = (): JSX.Element => {
       <Layout containerSize="small" tag="section" className="members">
         <div className="section-inner members__content">
           <div className="members__right">
-            <h2 className="members__title">Members Exlusive</h2>
+            <h2 className="members__title">Members Exclusive</h2>
             <p className="members__info">
               Sign up to keep up to date with our latest updates and get the
-              best deals for your travelsup to stay{' '}
+              best deals for your travels up to stay{' '}
             </p>
           </div>
 
@@ -576,7 +576,7 @@ const Home = (): JSX.Element => {
             </a>
           </span>
 
-          <span className="footer__desclaimer">
+          <span className="footer__declaimer">
             This is a tutorial project. It can contain errors. No guarantee of a
             deal.{' '}
             <b className="footer__warning">

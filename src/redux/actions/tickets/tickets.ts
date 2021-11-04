@@ -11,7 +11,7 @@ import { Ticket } from '../../../interfaces/tickets';
 import { RootStateType } from '../../reducers';
 import {
   CabinClassTypes,
-  PassangersType,
+  PassengersType,
   FormSegments,
 } from '../../reducers/aviaParams';
 import { FormsType } from '../../reducers/pageSettings';
@@ -93,7 +93,7 @@ export const fetchAirlines = (): ThunkType => async (dispatch) => {
 
 export const fetchTickets = (
   segments: FormSegments,
-  passengers: PassangersType,
+  passengers: PassengersType,
   selectedCabins: CabinClassTypes,
   currency: CurrencyType,
   activeForm: FormsType

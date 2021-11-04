@@ -5,7 +5,7 @@ export const SET_ACTIVE_FORM = 'SET_ACTIVE_FORM';
 export const SET_BEFORE_DISABLED_DATES = 'SET_BEFORE_DISABLED_DATES';
 export const SET_AFTER_DISABLED_DATES = 'SET_AFTER_DISABLED_DATES';
 
-type ActionSetAсtiveFormType = {
+type ActionSetActiveFormType = {
   type: typeof SET_ACTIVE_FORM;
   payload: FormsType;
 };
@@ -21,6 +21,6 @@ type ActionSetAfterDisabledDatesType = {
 };
 
 export type ActionPageSettingsTypes =
-  | ActionSetAсtiveFormType
+  | ActionSetActiveFormType
   | ActionSetBeforeDisabledDatesType
   | ActionSetAfterDisabledDatesType;

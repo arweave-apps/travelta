@@ -6,7 +6,7 @@ import { sortTicketsByPrice } from '../../redux/actions/tickets/tickets';
 import { PriceSortTypes } from '../../redux/reducers/tickets';
 import { getSortTicketBy } from '../../selectors/selectors';
 
-import DownArrowicon from '../../assets/images/icons/down-arrow.svg';
+import DownArrowIcon from '../../assets/images/icons/down-arrow.svg';
 
 import Dropdown from '../Dropdown';
 import DropdownItem from '../Dropdown/DropdownItem/DropdownItem';
@@ -62,7 +62,7 @@ const SearchAction = ({ totalTickets }: SearchActionsProps): JSX.Element => {
           <span className="action__selector">{selectedItemText}</span>
 
           <Icon
-            icon={<DownArrowicon />}
+            icon={<DownArrowIcon />}
             className="down-arrow"
             isActive={isOpen}
             isDark

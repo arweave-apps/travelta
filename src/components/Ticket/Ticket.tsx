@@ -8,7 +8,7 @@ import getNounDeclension from '../../utils/getNounDeclension';
 import { TicketsWithSegments } from '../../utils/convertTickets';
 import getCurrencySymbolCharCode from '../../utils/getCurrencySymbolCharCode';
 import {
-  getFormatedTimeFromSeconds,
+  getFormattedTimeFromSeconds,
   getFormattedStringDate,
   getFormattedStringTime,
 } from '../../utils/dateUtils';
@@ -71,11 +71,11 @@ const Ticket = ({ ticket, currency }: TicketProps): JSX.Element => {
 
                 <div className="ticket__plane">
                   <div className="ticket__duration">
-                    В пути {getFormatedTimeFromSeconds(duration)}
+                    В пути {getFormattedTimeFromSeconds(duration)}
                   </div>
 
                   <div className="ticket__timeline">
-                    <div className="ticket__point-wrapepr">
+                    <div className="ticket__point-wrapper">
                       {transfers.length > 0 && (
                         <div className="ticket__point" />
                       )}

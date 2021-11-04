@@ -1,27 +1,27 @@
 import {
   CabinClassTypes,
-  PassangersNamesTypes,
+  PassengersNamesTypes,
 } from '../../redux/reducers/aviaParams';
 
-type PassangerItemsTextTypes = 'Взрослые' | 'Дети' | 'Младенцы';
-type PassangerItemsSubTextTypes =
+type PassengerItemsTextTypes = 'Взрослые' | 'Дети' | 'Младенцы';
+type PassengerItemsSubTextTypes =
   | 'старше 12 лет'
   | 'от 2 до 12'
   | 'до 2 лет, без места';
 
-type PassangerCountType = {
-  name: PassangersNamesTypes;
+type PassengerCountType = {
+  name: PassengersNamesTypes;
   min: number;
   max: number;
 };
 
-type PassangerItemsType = {
-  text: PassangerItemsTextTypes;
-  subtext: PassangerItemsSubTextTypes;
-  count: PassangerCountType;
+type PassengerItemsType = {
+  text: PassengerItemsTextTypes;
+  subtext: PassengerItemsSubTextTypes;
+  count: PassengerCountType;
 };
 
-export const passangerItems: PassangerItemsType[] = [
+export const passengerItems: PassengerItemsType[] = [
   {
     text: 'Взрослые',
     subtext: 'старше 12 лет',
@@ -39,7 +39,7 @@ export const passangerItems: PassangerItemsType[] = [
   },
 ];
 
-type CabinIdTypes = 'econom' | 'comfort' | 'business' | 'first-class';
+type CabinIdTypes = 'economy' | 'comfort' | 'business' | 'first-class';
 type CabinTextTypes = 'Эконом' | 'Комфорт' | 'Бизнес' | 'Первый класс';
 
 type CabinClassItemType = {
@@ -50,7 +50,7 @@ type CabinClassItemType = {
 
 export const cabinClassItems: CabinClassItemType[] = [
   {
-    id: 'econom',
+    id: 'economy',
     text: 'Эконом',
     cabinClass: 'M',
   },

@@ -12,7 +12,7 @@ import {
 import {
   getActiveForm,
   getCurrency,
-  getPassangers,
+  getPassengers,
   getSelectedCabins,
 } from '../../selectors/selectors';
 
@@ -25,7 +25,7 @@ const AviaSearchForm = (): JSX.Element => {
   const history = useHistory();
 
   const currency = useSelector(getCurrency);
-  const passangers = useSelector(getPassangers);
+  const passengers = useSelector(getPassengers);
   const selectedCabins = useSelector(getSelectedCabins);
   const activeForm = useSelector(getActiveForm);
 
@@ -45,7 +45,7 @@ const AviaSearchForm = (): JSX.Element => {
         dispatch(
           fetchTickets(
             formSegments,
-            passangers,
+            passengers,
             selectedCabins,
             currency,
             activeForm

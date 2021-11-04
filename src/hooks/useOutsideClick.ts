@@ -16,11 +16,11 @@ export default function useOutsideClick(
       const target = e.target as Node;
 
       if (Array.isArray(ref.current)) {
-        const isConatainsNode = ref.current.every(
+        const isContainsNode = ref.current.every(
           (node) => node && !node.contains(target)
         );
 
-        if (isConatainsNode) {
+        if (isContainsNode) {
           handler();
         }
       } else if (ref.current && !ref.current.contains(target)) {

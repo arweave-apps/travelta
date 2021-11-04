@@ -56,7 +56,7 @@ export const getFormattedStringTime = (date: Date): string => {
   return minutes < 10 ? `${hours}:0${minutes}` : `${hours}:${minutes}`;
 };
 
-export const getFormatedTimeFromSeconds = (seconds: number): string => {
+export const getFormattedTimeFromSeconds = (seconds: number): string => {
   const hours = seconds / 3600;
   const hour = Math.trunc(hours);
   const decimal = hours - hour;
@@ -74,10 +74,10 @@ export const msToTime = (ms: number): string => {
   const minutes = Math.floor((ms / (1000 * 60)) % 60);
   const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
 
-  const formatedHours = hours < 10 ? `0${hours}` : `${hours}`;
-  const formatedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+  const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
 
-  return `${formatedHours}:${formatedMinutes}`;
+  return `${formattedHours}:${formattedMinutes}`;
 };
 
 export const msFromTime = (hours: number, minutes: number): number => {
