@@ -1,7 +1,5 @@
 import React from 'react';
 
-import classNames from 'classnames';
-
 import DownArrowIcon from '../../../assets/images/icons/down-arrow.svg';
 
 import Icon from '../../Icon';
@@ -34,11 +32,7 @@ const FilterItem = ({
       </div>
 
       {isActive && (
-        <div
-          className={classNames('accordion__content', {
-            'accordion__content--open': isActive,
-          })}
-        >
+        <div className="accordion__content">
           <div className="accordion__content-wrapper">{children}</div>
         </div>
       )}
