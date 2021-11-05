@@ -2,7 +2,6 @@ import axios from 'axios';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import {
-  aggregationPriceConfig,
   carriersConfig,
   searchMultiTicketsConfig,
   searchTicketsConfig,
@@ -16,7 +15,7 @@ import {
 } from '../../reducers/aviaParams';
 import { FormsType } from '../../reducers/pageSettings';
 import { CurrencyType } from '../../reducers/settings';
-import { Prediction, PriceSortTypes } from '../../reducers/tickets';
+import { PriceSortTypes } from '../../reducers/tickets';
 import {
   ActionSearchTypes,
   SET_TICKETS,
@@ -24,7 +23,6 @@ import {
   FETCH_TICKETS_ERROR,
   SET_CARRIERS,
   Carrier,
-  SET_PREDICTIONS,
   SORT_TICKETS_BY_PRICE,
 } from './types';
 
@@ -65,13 +63,6 @@ export const setTickets = (
 ): ActionSearchTypes => ({
   type: SET_TICKETS,
   payload: { tickets, isMulti },
-});
-
-export const setPredictions = (
-  predictions: Prediction[]
-): ActionSearchTypes => ({
-  type: SET_PREDICTIONS,
-  payload: predictions,
 });
 
 export const setCarriers = (carriers: Carrier[]): ActionSearchTypes => ({
@@ -152,7 +143,6 @@ export const fetchTickets = (
       dispatch(setTickets(data, isMulti));
     } else {
       const { url, apikey } = searchTicketsConfig;
-      const { url: aggrUrl, apikey: aggrApiKey } = aggregationPriceConfig;
 
       const {
         originCode,
@@ -177,44 +167,17 @@ export const fetchTickets = (
         )}&return_to=${returnDate?.toLocaleDateString('en-GB')}`;
       }
 
-      const responseTicket = axios.get(requestUrl, {
+      const response = await axios.get(requestUrl, {
         headers: { apikey },
       });
 
-      const now = new Date();
-      const mileseconds = now.setDate(departureDate.getDate() + 7);
-      const afterWeekDate = new Date(mileseconds);
-      const limitAggreationPrce = 7;
-
-      const responseAggregationPrice = axios.get(
-        `${aggrUrl}?fly_from=${originCode}&fly_to=${destinationCode}&date_from=${departureDate.toLocaleDateString(
-          'en-GB'
-        )}&date_to=${afterWeekDate.toLocaleDateString(
-          'en-GB'
-        )}&adults=${adults}&infants=${infants}&children=${children}&curr=${currency}&locale=${locale}&limit=${limitAggreationPrce}`,
-        {
-          headers: { apikey: aggrApiKey },
-        }
-      );
-
-      const response = await Promise.all([
-        responseTicket,
-        responseAggregationPrice,
-      ]);
-
-      const [dataTickets, dataAggregationPrice] = response.map(
-        (res) => res.data.data
-      );
+      const { data } = response;
 
       if (segments.length === 1 && isMulti) {
-        dispatch(setTickets(dataTickets, !isMulti));
+        dispatch(setTickets(data.data, !isMulti));
       } else {
-        dispatch(setTickets(dataTickets, isMulti));
+        dispatch(setTickets(data.data, isMulti));
       }
-
-      dispatch(
-        setPredictions(dataAggregationPrice.slice(0, limitAggreationPrce))
-      );
     }
   } catch (error) {
     dispatch(ticketsError(error));

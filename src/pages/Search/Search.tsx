@@ -7,14 +7,12 @@ import ErrorCard from '../../components/ErrorCard';
 import Filters from '../../components/Filters';
 import Layout from '../../components/Layout';
 import Loader from '../../components/Loader';
-import Prediction from '../../components/Prediction';
 import SearchAction from '../../components/SearchAction';
 import Ticket from '../../components/Ticket';
 import SimpleButton from '../../components/SimpleButton';
 
 import {
   getCurrency,
-  getPredictions,
   getTickets,
   getTicketsList,
   getTicketsLoading,
@@ -46,7 +44,6 @@ const Search = (): JSX.Element => {
   const ticketsList = useSelector(getTicketsList);
   const tickets = useSelector(getTickets);
   const isTicketsLoading = useSelector(getTicketsLoading);
-  const predictions = useSelector(getPredictions);
 
   const [visibleTicketsCount, setVisibleTicketsCount] = useState<number>(1);
 
@@ -126,43 +123,41 @@ const Search = (): JSX.Element => {
           currency={currency}
         />
 
-        {predictions.length > 0 && (
-          <Prediction items={predictions} currency={currency} />
-        )}
+        <div className="avia-search__content">
+          <SearchAction totalTickets={visibleTickets.length} />
 
-        <SearchAction totalTickets={visibleTickets.length} />
+          <div className="tickets">
+            {visibleTickets.length > 0 ? (
+              visibleTickets.slice(0, ticketsPerPage).map((ticketId) => {
+                return (
+                  <Ticket
+                    key={ticketId}
+                    ticket={tickets[ticketId]}
+                    currency={currency}
+                  />
+                );
+              })
+            ) : (
+              <ErrorCard
+                title="Установлены слишком жесткие фильтры"
+                recommendation="Измените фильтры"
+              />
+            )}
 
-        <div className="tickets">
-          {visibleTickets.length > 0 ? (
-            visibleTickets.slice(0, ticketsPerPage).map((ticketId) => {
-              return (
-                <Ticket
-                  key={ticketId}
-                  ticket={tickets[ticketId]}
-                  currency={currency}
-                />
-              );
-            })
-          ) : (
-            <ErrorCard
-              title="Установлены слишком жесткие фильтры"
-              recommendation="Измените фильтры"
-            />
-          )}
-
-          {visibleTickets.length > 0 && (
-            <div className="tickets__btn">
-              <SimpleButton
-                bg="accent"
-                onClick={handleCLickVisibleTicketsCount}
-                disabled={isButtonDisabled}
-              >
-                {isButtonDisabled
-                  ? 'Показаны все доступные билеты'
-                  : `Показать еще ${numberOfTicketsLoaded} билетов`}
-              </SimpleButton>
-            </div>
-          )}
+            {visibleTickets.length > 0 && (
+              <div className="tickets__btn">
+                <SimpleButton
+                  bg="accent"
+                  onClick={handleCLickVisibleTicketsCount}
+                  disabled={isButtonDisabled}
+                >
+                  {isButtonDisabled
+                    ? 'Показаны все доступные билеты'
+                    : `Показать еще ${numberOfTicketsLoaded} билетов`}
+                </SimpleButton>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </Layout>

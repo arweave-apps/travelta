@@ -129,6 +129,7 @@
     display: grid;
     grid-template-areas: 'a a b b' 'c d e f';
     grid-template-rows: repeat(2, rem(240));
+    grid-template-columns: repeat(4, 25%);
     grid-gap: rem(20);
 
     @include mq('tablet-wide') {

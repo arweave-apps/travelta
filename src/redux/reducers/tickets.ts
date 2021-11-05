@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-
 import {
   convertData,
   ConvertedTickets,
@@ -19,7 +17,6 @@ import {
   FETCH_TICKETS_ERROR,
   FETCH_TICKETS_REQUESTED,
   SET_CARRIERS,
-  SET_PREDICTIONS,
   SET_TICKETS,
   SORT_TICKETS_BY_PRICE,
 } from '../actions/tickets/types';
@@ -62,7 +59,6 @@ export type FiltersLimits =
 const initialState: InitialSearchStateType = {
   tickets: {},
   ticketsList: [],
-  predictions: [],
   filtersLimits: {},
   carriers: {},
   sortByPrice: 'lowPrice',
@@ -73,21 +69,9 @@ const initialState: InitialSearchStateType = {
 export type PriceSortTypes = 'lowPrice' | 'heighPrice' | null;
 export type Carriers = Record<string, Carrier> | Record<string, never>;
 
-export type PredictionWithId = {
-  id: string;
-  date: string;
-  price: number;
-};
-
-export type Prediction = {
-  date: string;
-  price: number;
-};
-
 export type InitialSearchStateType = {
   tickets: ConvertedTickets;
   ticketsList: TicketsList;
-  predictions: PredictionWithId[];
   filtersLimits: FiltersLimits;
   sortByPrice: PriceSortTypes;
   carriers: Carriers;
@@ -179,7 +163,11 @@ export const ticketsReducer = (
         acc.transfersRange.min = Math.min(acc.transfersRange.min, min);
         acc.transfersRange.max = Math.max(acc.transfersRange.max, max);
 
-        acc.priceRange.minPrice = Math.min(acc.priceRange.minPrice, price);
+        if (acc.priceRange.minPrice === 0) {
+          acc.priceRange.minPrice = price;
+        } else {
+          acc.priceRange.minPrice = Math.min(acc.priceRange.minPrice, price);
+        }
         acc.priceRange.maxPrice = Math.max(acc.priceRange.maxPrice, price);
 
         acc.airlines = Array.from(new Set(acc.airlines.concat(airlines)));
@@ -193,20 +181,6 @@ export const ticketsReducer = (
         filtersLimits,
         tickets,
         ticketsList,
-      };
-    }
-
-    case SET_PREDICTIONS: {
-      const predictionsWithId = action.payload.map((prediction) => {
-        return {
-          ...prediction,
-          id: uuidv4(),
-        };
-      });
-
-      return {
-        ...state,
-        predictions: predictionsWithId,
       };
     }
 
@@ -242,7 +216,6 @@ export const ticketsReducer = (
         ...state,
         tickets: {},
         ticketsList: [],
-        predictions: [],
         filtersLimits: {},
         sortByPrice: 'lowPrice',
         loading: false,

@@ -22,15 +22,6 @@
   }
 
   &__content {
-    max-height: 0;
-    overflow: auto;
-    transition: max-height 0.3s linear;
-
-    &--open {
-      max-height: rem(300);
-      transition: max-height 0.3s linear;
-    }
-
     &-wrapper {
       padding: $gap 0;
       height: 100%;

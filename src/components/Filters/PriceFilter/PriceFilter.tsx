@@ -20,6 +20,8 @@ type PriceFilterProps = {
   onMaxCurrentPriceValue: (value: number) => void;
 };
 
+const PRICE_CHANGE_INTERVAL = 1;
+
 const PriceFilter = ({
   isOpen,
   onToggle,
@@ -71,10 +73,10 @@ const PriceFilter = ({
         leftValue={`от ${minCurrentPriceValue} ${getCurrencySymbolCharCode(
           currency
         )}`}
-        rightValue={`от ${maxCurrentPriceValue} ${getCurrencySymbolCharCode(
+        rightValue={`до ${maxCurrentPriceValue} ${getCurrencySymbolCharCode(
           currency
         )}`}
-        step={10}
+        step={PRICE_CHANGE_INTERVAL}
       />
     </FilterItem>
   );

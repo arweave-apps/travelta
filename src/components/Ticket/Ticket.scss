@@ -66,8 +66,7 @@
     @include display(flex, center, center);
     flex-direction: column;
     width: rem(200);
-    margin-left: rem(32);
-    margin-right: rem(32);
+    margin: 0 rem(18);
   }
 
   &__duration {

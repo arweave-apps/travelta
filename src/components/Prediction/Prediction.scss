@@ -1,7 +1,0 @@
-.prediction {
-  @include display(flex, space-between, center);
-
-  grid-area: prediction;
-
-  overflow: hidden;
-}
