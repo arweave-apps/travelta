@@ -3,22 +3,21 @@
   padding-bottom: rem(100);
 
   &__inner {
-    display: grid;
-    grid-template-columns: rem(295) rem(730);
-    grid-template-areas:
-      'filters prediction'
-      'filters action'
-      'filters tickets';
-    grid-template-rows: repeat(2, max-content);
-    grid-gap: ($gap);
+    @include display(flex, flex-start, flex-start);
+    gap: $gap;
+  }
+
+  &__content {
+    width: rem(730);
+    height: 100%;
   }
 }
 
 .tickets {
-  grid-area: tickets;
+  width: 100%;
 
   &__btn {
-    width: 100%;
+    width: inherit;
     height: rem(70);
   }
 }

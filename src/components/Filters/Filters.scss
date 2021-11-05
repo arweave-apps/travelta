@@ -5,8 +5,7 @@
   background-color: $panel-color;
   border-radius: $radius;
 
-  grid-area: filters;
-
+  width: rem(295);
   height: max-content;
 
   &__header {

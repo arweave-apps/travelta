@@ -123,39 +123,41 @@ const Search = (): JSX.Element => {
           currency={currency}
         />
 
-        <SearchAction totalTickets={visibleTickets.length} />
+        <div className="avia-search__content">
+          <SearchAction totalTickets={visibleTickets.length} />
 
-        <div className="tickets">
-          {visibleTickets.length > 0 ? (
-            visibleTickets.slice(0, ticketsPerPage).map((ticketId) => {
-              return (
-                <Ticket
-                  key={ticketId}
-                  ticket={tickets[ticketId]}
-                  currency={currency}
-                />
-              );
-            })
-          ) : (
-            <ErrorCard
-              title="Установлены слишком жесткие фильтры"
-              recommendation="Измените фильтры"
-            />
-          )}
+          <div className="tickets">
+            {visibleTickets.length > 0 ? (
+              visibleTickets.slice(0, ticketsPerPage).map((ticketId) => {
+                return (
+                  <Ticket
+                    key={ticketId}
+                    ticket={tickets[ticketId]}
+                    currency={currency}
+                  />
+                );
+              })
+            ) : (
+              <ErrorCard
+                title="Установлены слишком жесткие фильтры"
+                recommendation="Измените фильтры"
+              />
+            )}
 
-          {visibleTickets.length > 0 && (
-            <div className="tickets__btn">
-              <SimpleButton
-                bg="accent"
-                onClick={handleCLickVisibleTicketsCount}
-                disabled={isButtonDisabled}
-              >
-                {isButtonDisabled
-                  ? 'Показаны все доступные билеты'
-                  : `Показать еще ${numberOfTicketsLoaded} билетов`}
-              </SimpleButton>
-            </div>
-          )}
+            {visibleTickets.length > 0 && (
+              <div className="tickets__btn">
+                <SimpleButton
+                  bg="accent"
+                  onClick={handleCLickVisibleTicketsCount}
+                  disabled={isButtonDisabled}
+                >
+                  {isButtonDisabled
+                    ? 'Показаны все доступные билеты'
+                    : `Показать еще ${numberOfTicketsLoaded} билетов`}
+                </SimpleButton>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </Layout>
