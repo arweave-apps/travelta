@@ -85,6 +85,11 @@ const Form = (): JSX.Element => {
 
     handleChange(e);
 
+    if (!enteredValue) {
+      setIsOpenDropdown(false);
+      return;
+    }
+
     debounce(enteredValue);
     setIsOpenDropdown(true);
   };
