@@ -163,7 +163,11 @@ export const ticketsReducer = (
         acc.transfersRange.min = Math.min(acc.transfersRange.min, min);
         acc.transfersRange.max = Math.max(acc.transfersRange.max, max);
 
-        acc.priceRange.minPrice = Math.min(acc.priceRange.minPrice, price);
+        if (acc.priceRange.minPrice === 0) {
+          acc.priceRange.minPrice = price;
+        } else {
+          acc.priceRange.minPrice = Math.min(acc.priceRange.minPrice, price);
+        }
         acc.priceRange.maxPrice = Math.max(acc.priceRange.maxPrice, price);
 
         acc.airlines = Array.from(new Set(acc.airlines.concat(airlines)));
