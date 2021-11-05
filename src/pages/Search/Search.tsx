@@ -7,14 +7,12 @@ import ErrorCard from '../../components/ErrorCard';
 import Filters from '../../components/Filters';
 import Layout from '../../components/Layout';
 import Loader from '../../components/Loader';
-import Prediction from '../../components/Prediction';
 import SearchAction from '../../components/SearchAction';
 import Ticket from '../../components/Ticket';
 import SimpleButton from '../../components/SimpleButton';
 
 import {
   getCurrency,
-  getPredictions,
   getTickets,
   getTicketsList,
   getTicketsLoading,
@@ -46,7 +44,6 @@ const Search = (): JSX.Element => {
   const ticketsList = useSelector(getTicketsList);
   const tickets = useSelector(getTickets);
   const isTicketsLoading = useSelector(getTicketsLoading);
-  const predictions = useSelector(getPredictions);
 
   const [visibleTicketsCount, setVisibleTicketsCount] = useState<number>(1);
 
@@ -125,10 +122,6 @@ const Search = (): JSX.Element => {
           onActiveTicketDatesFilters={setActiveTicketDatesFilters}
           currency={currency}
         />
-
-        {predictions.length > 0 && (
-          <Prediction items={predictions} currency={currency} />
-        )}
 
         <SearchAction totalTickets={visibleTickets.length} />
 
