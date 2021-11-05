@@ -11,7 +11,6 @@ import { ConvertedTickets, TicketsList } from '../utils/convertTickets';
 import {
   Carriers,
   FiltersLimits,
-  PredictionWithId,
   PriceSortTypes,
 } from '../redux/reducers/tickets';
 
@@ -35,9 +34,6 @@ export const getCurrency = (state: RootStateType): CurrencyType =>
 
 export const getTickets = (state: RootStateType): ConvertedTickets =>
   state.tickets.tickets;
-
-export const getPredictions = (state: RootStateType): PredictionWithId[] =>
-  state.tickets.predictions;
 
 export const getTicketsList = (state: RootStateType): TicketsList =>
   state.tickets.ticketsList;
