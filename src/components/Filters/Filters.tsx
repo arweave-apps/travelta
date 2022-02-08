@@ -25,7 +25,7 @@ import {
 } from '../../pages/Search/Search';
 import { getFormattedStringDate } from '../../utils/dateUtils';
 import { ArrivalDatesType, DateTimestamp } from '../../redux/reducers/tickets';
-import { KeysArray } from '../../interfaces/types';
+import { EntriesArray, KeysArray } from '../../interfaces/types';
 
 type FiltersProps = {
   activeTransfersFilters: ActiveTransfersFilters;
@@ -61,7 +61,10 @@ export type DateCheckboxesType = {
   value: DateTimestamp;
 };
 
-type DateCheckboxesDataType = Record<string, DateCheckboxesType[]>;
+type DateCheckboxesDataType = Record<
+  keyof ArrivalDatesType,
+  DateCheckboxesType[]
+>;
 
 export type ActivePriceFilters = Record<'minPrice' | 'maxPrice', number>;
 
@@ -82,20 +85,16 @@ const TICKET_TIME_MIN = 0; // start ms
 const TICKET_TIME_MAX = 86400000; // ms in 24 hours
 
 const getInitialTimeFiltersValues = (arrivalDates: ArrivalDatesType) => {
-  const res = {} as TicketTimeValues;
-
   const keys = Object.keys(arrivalDates) as KeysArray<ArrivalDatesType>;
 
-  for (let i = 0; i < keys.length; i++) {
-    const key = keys[i];
-
-    res[key] = {
+  return keys.reduce((acc: TicketTimeValues, key) => {
+    acc[key] = {
       departureTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
       arrivalTime: [TICKET_TIME_MIN, TICKET_TIME_MAX],
     };
-  }
 
-  return res;
+    return acc;
+  }, {});
 };
 
 const Filters = ({
@@ -181,14 +180,10 @@ const Filters = ({
       return;
     }
 
-    const checkboxesData = {} as DateCheckboxesDataType;
-
-    const keys = Object.keys(arrivalDates) as KeysArray<ArrivalDatesType>;
-
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-
-      const checkboxData = arrivalDates[key].map((timestamp, k) => {
+    const checkboxesData = (Object.entries(
+      arrivalDates
+    ) as EntriesArray<ArrivalDatesType>).reduce((acc, [key, segmentNo]) => {
+      const checkboxData = segmentNo.map((timestamp, k) => {
         return {
           id: `${key}/${k}-date-checkbox`,
           label: getFormattedStringDate(new Date(timestamp)),
@@ -196,8 +191,9 @@ const Filters = ({
         };
       });
 
-      checkboxesData[key] = checkboxData.sort((a, b) => a.value - b.value);
-    }
+      acc[key] = checkboxData.sort((a, b) => a.value - b.value);
+      return acc;
+    }, {} as DateCheckboxesDataType);
 
     setDateCheckboxes(checkboxesData);
   }, [arrivalDates]);
@@ -236,17 +232,16 @@ const Filters = ({
     }
 
     if (dateCheckboxes) {
-      const chxKeys = Object.keys(
+      const activeCheckboxes = (Object.entries(
         dateCheckboxes
-      ) as KeysArray<DateCheckboxesDataType>;
+      ) as EntriesArray<DateCheckboxesDataType>).reduce(
+        (acc, [key, checkboxes]) => {
+          acc[key] = checkboxes.map(({ value }) => value);
 
-      const activeCheckboxes = chxKeys.reduce((acc, key) => {
-        const checkboxes = dateCheckboxes[key];
-
-        acc[key] = checkboxes.map(({ value }) => value);
-
-        return acc;
-      }, {} as ActiveTicketDateFilters);
+          return acc;
+        },
+        {} as ActiveTicketDateFilters
+      );
 
       onActiveTicketDatesFilters(activeCheckboxes);
     }
