@@ -14,7 +14,7 @@
     "lint:ci": "eslint --fix --color --ext .js,.jsx,.ts,.tsx",
     "prepare": "husky install"
   },
-  "author": "Sergey Vakhramov <vsa8813@gmail.com>",
+  "author": "websega",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -27,7 +27,6 @@
     "@babel/preset-env": "^7.13.5",
     "@babel/preset-react": "^7.12.13",
     "@babel/preset-typescript": "^7.13.0",
-    "@commitlint/cli": "^12.0.0",
     "@types/classnames": "^2.2.11",
     "@types/fork-ts-checker-webpack-plugin": "^0.4.5",
     "@types/node": "^14.14.31",
@@ -45,7 +44,6 @@
     "cross-env": "^7.0.3",
     "css-loader": "^5.1.0",
     "css-minimizer-webpack-plugin": "^1.1.5",
-    "cz-customizable": "^6.3.0",
     "dotenv-webpack": "^7.0.2",
     "eslint": "^7.20.0",
     "eslint-config-airbnb": "^18.2.1",
@@ -59,7 +57,7 @@
     "eslint-plugin-sonarjs": "^0.6.0",
     "eslint-webpack-plugin": "^2.5.2",
     "html-webpack-plugin": "^5.2.0",
-    "husky": "^6.0.0",
+    "husky": "^7.0.0",
     "lint-staged": "^10.5.4",
     "mini-css-extract-plugin": "^1.3.9",
     "postcss": "^8.2.6",
@@ -99,14 +97,6 @@
     "sass-resources-loader": "^2.1.1",
     "uuid": "^8.3.2",
     "yup": "^0.32.9"
-  },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-customizable"
-    },
-    "cz-customizable": {
-      "config": "config/git/commitizen.js"
-    }
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": "npm run lint:ci --"
